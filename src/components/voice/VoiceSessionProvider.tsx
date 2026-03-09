@@ -13,6 +13,15 @@ export function VoiceSessionProvider({ children }: VoiceSessionProviderProps) {
   const router = useRouter();
   const pathname = usePathname();
   const disconnect = useVoiceSessionStore((state) => state.disconnect);
+  const preWarm = useVoiceSessionStore((state) => state.preWarm);
+
+  // Pre-warm the LiveKit room on page load.
+  // This establishes the WebRTC connection in the background so that
+  // when the user clicks "Start", we only need to dispatch the agent
+  // (saving ~1-2s of WebRTC handshake time).
+  useEffect(() => {
+    preWarm();
+  }, [preWarm]);
 
   // Listen for agent navigation commands
   useEffect(() => {

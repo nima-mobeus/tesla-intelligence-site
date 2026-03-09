@@ -46,6 +46,22 @@ export interface UIComponent {
   timestamp: Date;
 }
 
+// Pre-warm data saved between prepare and activate
+interface PreWarmData {
+  room: Room;
+  roomName: string;
+  sessionId: string;
+  templates: ComponentTemplate[];
+  defaults: {
+    avatarEnabled: boolean;
+    avatarVisible: boolean;
+    micMuted: boolean;
+    volumeMuted: boolean;
+    avatarAvailable: boolean;
+  };
+  agentName: string;
+}
+
 // Store state
 interface VoiceSessionState {
   // Connection
@@ -53,6 +69,10 @@ interface VoiceSessionState {
   sessionId: string | null;
   sessionState: SessionState;
   error: string | null;
+
+  // Pre-warm (invisible to UI — room connected in background)
+  _preWarm: PreWarmData | null;
+  _preWarmState: 'idle' | 'warming' | 'ready' | 'failed';
 
   // Agent
   agentName: string | null;
@@ -93,6 +113,7 @@ interface VoiceSessionState {
   isOverlayVisible: boolean;
 
   // Actions
+  preWarm: () => Promise<void>;
   connect: () => Promise<void>;
   disconnect: () => Promise<void>;
   toggleMute: () => void;
@@ -123,6 +144,8 @@ export const useVoiceSessionStore = create<VoiceSessionState>((set, get) => ({
   sessionId: null,
   sessionState: 'idle',
   error: null,
+  _preWarm: null,
+  _preWarmState: 'idle',
   agentName: null,
   currentAgentName: null,
   agentState: 'initializing',
@@ -154,16 +177,107 @@ export const useVoiceSessionStore = create<VoiceSessionState>((set, get) => ({
   isOverlayExpanded: false,
   isOverlayVisible: true,
 
-  // Connect to voice session via widget API (no agentId needed — determined by API key)
+  // Pre-warm: create room + connect WebRTC in the background on page load.
+  // Invisible to the user — no mic permission, no UI change.
+  preWarm: async () => {
+    const { _preWarmState, sessionState } = get();
+
+    // Don't pre-warm if already warming, ready, or actively connected
+    if (_preWarmState !== 'idle' && _preWarmState !== 'failed') return;
+    if (sessionState === 'connected' || sessionState === 'connecting') return;
+
+    set({ _preWarmState: 'warming' });
+
+    try {
+      const widgetHost = process.env.NEXT_PUBLIC_WIDGET_HOST || 'https://app.mobeus.ai';
+      const apiKey = process.env.NEXT_PUBLIC_WIDGET_API_KEY || '';
+
+      if (!apiKey) {
+        set({ _preWarmState: 'failed' });
+        return;
+      }
+
+      // Call prepare endpoint — creates room, returns token (no agent dispatch)
+      const response = await fetch(`${widgetHost}/api/widget/session/prepare`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ apiKey }),
+      });
+
+      if (!response.ok) {
+        console.warn('Pre-warm prepare failed:', response.status);
+        set({ _preWarmState: 'failed' });
+        return;
+      }
+
+      const sessionData = await response.json();
+
+      const defaults = sessionData.defaults || {};
+
+      // Create room and connect (WebRTC handshake happens here)
+      const room = new Room({
+        adaptiveStream: true,
+        dynacast: true,
+        audioCaptureDefaults: {
+          autoGainControl: true,
+          echoCancellation: true,
+          noiseSuppression: true,
+        },
+      });
+
+      // Set up event listeners early so they're ready when agent joins
+      setupRoomEventListeners(room, set, get);
+
+      // Connect to room — this is the WebRTC warm-up
+      await room.connect(sessionData.wsUrl || sessionData.livekitUrl, sessionData.token);
+
+      // Do NOT enable mic yet (avoids browser permission prompt)
+      // Do NOT register RPC handlers yet (agent not present)
+
+      console.log('Pre-warm: room connected, WebRTC warm');
+
+      // Handle the pre-warmed room being disconnected (e.g. timeout)
+      room.once(RoomEvent.Disconnected, () => {
+        const { _preWarmState } = get();
+        if (_preWarmState === 'ready') {
+          console.log('Pre-warm: room disconnected, resetting');
+          set({ _preWarm: null, _preWarmState: 'idle' });
+        }
+      });
+
+      set({
+        _preWarm: {
+          room,
+          roomName: sessionData.roomName,
+          sessionId: sessionData.sessionId,
+          templates: Array.isArray(sessionData.templates) ? sessionData.templates : [],
+          defaults: {
+            avatarEnabled: Boolean(defaults.avatarEnabled),
+            avatarVisible: typeof defaults.avatarVisible === 'boolean' ? defaults.avatarVisible : true,
+            micMuted: typeof defaults.micMuted === 'boolean' ? defaults.micMuted : false,
+            volumeMuted: typeof defaults.volumeMuted === 'boolean' ? defaults.volumeMuted : false,
+            avatarAvailable: Boolean(defaults.avatarAvailable),
+          },
+          agentName: sessionData.agent?.name || 'AI Assistant',
+        },
+        _preWarmState: 'ready',
+      });
+    } catch (err) {
+      console.warn('Pre-warm failed (will fall back to normal flow):', err);
+      set({ _preWarmState: 'failed' });
+    }
+  },
+
+  // Connect to voice session — uses pre-warmed room if available, otherwise falls back
   connect: async () => {
-    const { sessionState, room: existingRoom } = get();
+    const { sessionState, room: existingRoom, _preWarmState, _preWarm } = get();
 
     if (sessionState !== 'idle' && sessionState !== 'error') {
       console.warn('Already connecting or connected');
       return;
     }
 
-    // Clean up any existing room
+    // Clean up any existing room (not the pre-warm room)
     if (existingRoom) {
       await existingRoom.disconnect();
     }
@@ -196,7 +310,6 @@ export const useVoiceSessionStore = create<VoiceSessionState>((set, get) => ({
     });
 
     try {
-      // Read env vars injected by deploy service
       const widgetHost = process.env.NEXT_PUBLIC_WIDGET_HOST || 'https://app.mobeus.ai';
       const apiKey = process.env.NEXT_PUBLIC_WIDGET_API_KEY || '';
 
@@ -204,7 +317,69 @@ export const useVoiceSessionStore = create<VoiceSessionState>((set, get) => ({
         throw new Error('Widget API key not configured');
       }
 
-      // Create session via widget API
+      // ── Fast path: pre-warmed room is ready ──
+      if (_preWarmState === 'ready' && _preWarm && _preWarm.room.state === 'connected') {
+        console.log('Using pre-warmed room:', _preWarm.roomName);
+
+        const { room, roomName, sessionId, templates, defaults, agentName } = _preWarm;
+
+        const avatarAvailable = defaults.avatarAvailable;
+        const defaultAvatarEnabled = avatarAvailable ? defaults.avatarEnabled : false;
+        const defaultAvatarVisible = avatarAvailable ? defaults.avatarVisible : defaultAvatarEnabled;
+
+        set({
+          avatarEnabled: defaultAvatarEnabled,
+          avatarVisible: defaultAvatarVisible,
+          avatarAvailable,
+          avatarTogglePending: false,
+          isMuted: defaults.micMuted,
+          isVolumeMuted: defaults.volumeMuted,
+          agentName,
+          currentAgentName: agentName,
+          templates,
+        });
+
+        // Dispatch agent to the pre-warmed room
+        const activateResponse = await fetch(`${widgetHost}/api/widget/session/activate`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ apiKey, roomName }),
+        });
+
+        if (!activateResponse.ok) {
+          const errData = await activateResponse.json().catch(() => ({}));
+          throw new Error(errData.error || 'Failed to activate session');
+        }
+
+        // Enable microphone (triggers browser permission prompt NOW)
+        await room.localParticipant.setMicrophoneEnabled(!defaults.micMuted);
+
+        // Register RPC handlers (agent is about to join)
+        registerRpcHandlers(room, set, get);
+
+        set({
+          room,
+          sessionId,
+          sessionState: 'connected',
+          isOverlayExpanded: true,
+          _preWarm: null,
+          _preWarmState: 'idle',
+        });
+        applyAudioRouting(get);
+
+        return;
+      }
+
+      // ── Slow path: fallback (no pre-warm or pre-warm failed) ──
+      console.log('No pre-warm available, using standard flow');
+
+      // Clean up stale pre-warm if any
+      if (_preWarm?.room) {
+        try { await _preWarm.room.disconnect(); } catch {}
+      }
+      set({ _preWarm: null, _preWarmState: 'idle' });
+
+      // Create session via widget API (original flow: room + agent dispatch together)
       const response = await fetch(`${widgetHost}/api/widget/session`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -300,7 +475,7 @@ export const useVoiceSessionStore = create<VoiceSessionState>((set, get) => ({
 
   // Disconnect from session
   disconnect: async () => {
-    const { room, avatarAudioElement, agentAudioElement } = get();
+    const { room, avatarAudioElement, agentAudioElement, _preWarm } = get();
 
     if (!room) return;
 
@@ -315,6 +490,12 @@ export const useVoiceSessionStore = create<VoiceSessionState>((set, get) => ({
     } finally {
       avatarAudioElement?.remove();
       agentAudioElement?.remove();
+
+      // Also clean up pre-warm room if different from active room
+      if (_preWarm?.room && _preWarm.room !== room) {
+        try { await _preWarm.room.disconnect(); } catch {}
+      }
+
       set({
         room: null,
         sessionId: null,
@@ -339,6 +520,8 @@ export const useVoiceSessionStore = create<VoiceSessionState>((set, get) => ({
         currentScene: null,
         sceneHistory: [],
         sceneActive: false,
+        _preWarm: null,
+        _preWarmState: 'idle',
       });
     }
   },
