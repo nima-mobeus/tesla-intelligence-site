@@ -111,6 +111,9 @@ interface VoiceSessionState {
   // Chat panel state
   isChatPanelOpen: boolean;
 
+  // Theme
+  theme: 'light' | 'dark';
+
   // Legacy overlay state (kept for compatibility)
   isOverlayExpanded: boolean;
   isOverlayVisible: boolean;
@@ -125,6 +128,8 @@ interface VoiceSessionState {
   toggleAvatarHard: () => Promise<void>;
   sendTextMessage: (text: string) => Promise<void>;
   toggleChatPanel: () => void;
+  toggleTheme: () => void;
+  setTheme: (theme: 'light' | 'dark') => void;
   setOverlayExpanded: (expanded: boolean) => void;
   setOverlayVisible: (visible: boolean) => void;
   clearTranscripts: () => void;
@@ -179,6 +184,7 @@ export const useVoiceSessionStore = create<VoiceSessionState>((set, get) => ({
   sceneActive: false,
 
   isChatPanelOpen: false,
+  theme: 'light',
   isOverlayExpanded: false,
   isOverlayVisible: true,
 
@@ -660,6 +666,23 @@ export const useVoiceSessionStore = create<VoiceSessionState>((set, get) => ({
       } else {
         document.body.classList.remove('chat-squeezed');
       }
+    }
+  },
+
+  // Theme controls
+  toggleTheme: () => {
+    const next = get().theme === 'light' ? 'dark' : 'light';
+    set({ theme: next });
+    if (typeof document !== 'undefined') {
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('scene-theme', next);
+    }
+  },
+  setTheme: (theme) => {
+    set({ theme });
+    if (typeof document !== 'undefined') {
+      document.documentElement.setAttribute('data-theme', theme);
+      localStorage.setItem('scene-theme', theme);
     }
   },
 

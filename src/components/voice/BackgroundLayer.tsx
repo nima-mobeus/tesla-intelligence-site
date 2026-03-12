@@ -13,7 +13,7 @@ export function BackgroundLayer() {
 
   return (
     <>
-      {/* Base hero background — always visible */}
+      {/* Base hero background — always visible, shows through scene gradient */}
       <div
         style={{
           position: 'fixed',
@@ -27,8 +27,8 @@ export function BackgroundLayer() {
           minWidth: '100vw',
           minHeight: '100vh',
           opacity: isConnected ? 1 : 0.8,
-          filter: 'brightness(1.25) saturate(1)',
-          transition: 'opacity 0.6s ease',
+          filter: `brightness(var(--theme-video-brightness)) saturate(var(--theme-video-saturate))`,
+          transition: 'opacity 0.6s ease, filter 0.6s ease',
         }}
       />
 
@@ -47,6 +47,7 @@ export function BackgroundLayer() {
             backgroundSize: 'cover',
             minWidth: '100vw',
             minHeight: '100vh',
+            filter: `brightness(var(--theme-video-brightness)) saturate(var(--theme-video-saturate))`,
           }}
         />
       )}

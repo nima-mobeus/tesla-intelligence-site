@@ -48,14 +48,54 @@
   --ring: oklch(0.708 0 0);
   --radius: 0.625rem;
 
-  /* ── Scene Card Theme (dark background context) ── */
+  /* ── Scene Card Theme — Light (default, "Linen") ── */
+  --theme-chart-line: #1e293b;
+  --theme-card-data: #64748b;
+  --theme-card-voice: #334155;
+  --theme-card-bg: rgba(255, 255, 255, 0.82);
+  --theme-card-border: rgba(4, 30, 66, 0.06);
+  --theme-card-blur: 12px;
+  --theme-card-title: #1a1a2e;
+
+  /* Scene page-level */
+  --theme-scene-bg: rgba(245, 240, 235, 0.92);
+  --theme-scene-text: #1a1a2e;
+  --theme-scene-text-muted: #64748b;
+  --theme-scene-badge-bg: rgba(255, 255, 255, 0.85);
+  --theme-scene-badge-text: #443e44;
+  --theme-scene-footer: #94a3b8;
+
+  /* Action buttons */
+  --theme-action-btn: #64748b;
+  --theme-action-btn-hover: #1e293b;
+
+  /* Video filter */
+  --theme-video-brightness: 1.25;
+  --theme-video-saturate: 1;
+}
+
+/* ── Dark theme (Onyx) ── */
+[data-theme="dark"] {
   --theme-chart-line: #3b82f6;
   --theme-card-data: #94a3b8;
   --theme-card-voice: #e2e8f0;
-  --theme-card-bg: rgba(255, 255, 255, 0.05);
+  --theme-card-bg: rgba(12, 14, 18, 0.15);
   --theme-card-border: rgba(255, 255, 255, 0.1);
   --theme-card-blur: 8px;
   --theme-card-title: #ffffff;
+
+  --theme-scene-bg: rgba(5, 5, 8, 0.95);
+  --theme-scene-text: #ffffff;
+  --theme-scene-text-muted: #94a3b8;
+  --theme-scene-badge-bg: rgba(255, 255, 255, 0.1);
+  --theme-scene-badge-text: rgba(255, 255, 255, 0.7);
+  --theme-scene-footer: rgba(255, 255, 255, 0.4);
+
+  --theme-action-btn: rgba(255, 255, 255, 0.5);
+  --theme-action-btn-hover: #ffffff;
+
+  --theme-video-brightness: 0.72;
+  --theme-video-saturate: 0.9;
 }
 
 /* ── Scene Card Animations ── */
@@ -190,4 +230,45 @@
 .animate-slide-in-left {
   animation: slide-in-from-left 0.6s ease-out forwards;
   opacity: 0;
+}
+
+/* ── Card Enter Animation ── */
+@keyframes card-enter {
+  0% { opacity: 0; transform: scale(0.96) translateY(8px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+.animate-card-enter {
+  animation: card-enter 0.5s ease-out forwards;
+  opacity: 0;
+}
+
+/* ── Screenshot Mode (force opaque for html2canvas) ── */
+.screenshot-mode .card-glass {
+  background: var(--theme-card-bg) !important;
+  backdrop-filter: none !important;
+}
+
+/* ── Card Glass (theme-aware) ── */
+.card-glass {
+  background: var(--theme-card-bg);
+  border: 1px solid var(--theme-card-border);
+  backdrop-filter: blur(var(--theme-card-blur));
+  border-radius: 0.75rem;
+  padding: 1rem 1.25rem;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  container-type: inline-size;
+}
+
+/* ── Scene overlay gradient (avatar shows on right) ── */
+.scene-gradient-overlay {
+  background: linear-gradient(
+    to right,
+    var(--theme-scene-bg) 0%,
+    var(--theme-scene-bg) 60%,
+    color-mix(in srgb, var(--theme-scene-bg) 70%, transparent) 80%,
+    color-mix(in srgb, var(--theme-scene-bg) 40%, transparent) 100%
+  );
 }

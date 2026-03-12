@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Mic, MicOff, MessageCircle, X, ArrowRight, Loader2 } from 'lucide-react';
+import { Mic, MicOff, MessageCircle, X, ArrowRight } from 'lucide-react';
 import { useVoiceSessionStore } from '@/lib/stores/voice-session-store';
 import { assets } from '@/assets';
 
@@ -9,6 +9,8 @@ export function ControlBar() {
   const sessionState = useVoiceSessionStore((s) => s.sessionState);
   const isMuted = useVoiceSessionStore((s) => s.isMuted);
   const isChatPanelOpen = useVoiceSessionStore((s) => s.isChatPanelOpen);
+  const sceneActive = useVoiceSessionStore((s) => s.sceneActive);
+  const theme = useVoiceSessionStore((s) => s.theme);
   const connect = useVoiceSessionStore((s) => s.connect);
   const disconnect = useVoiceSessionStore((s) => s.disconnect);
   const toggleMute = useVoiceSessionStore((s) => s.toggleMute);
@@ -20,6 +22,14 @@ export function ControlBar() {
   const isConnecting = sessionState === 'connecting';
   const isIdle = sessionState === 'idle' || sessionState === 'error';
 
+  // When scene is active, icons shift right to avoid overlap with slide action icons
+  // Slide actions are at top-right z-45, control bar is at z-50
+  const isDark = theme === 'dark';
+  // On idle (landing page): always dark bg → white icons
+  // On scene: depends on theme
+  const iconColor = (!sceneActive || isDark) ? 'text-white/70 hover:text-white' : 'text-gray-600 hover:text-gray-900';
+  const iconBg = (!sceneActive || isDark) ? 'bg-white/10 hover:bg-white/20' : 'bg-black/5 hover:bg-black/10';
+
   // Delay TALK button appearance by 2s
   useEffect(() => {
     if (isIdle) {
@@ -29,8 +39,11 @@ export function ControlBar() {
     setShowTalkButton(false);
   }, [isIdle]);
 
+  // Position: when connected + scene active, push further right to clear slide action icons
+  const rightOffset = isConnected && sceneActive ? 'right-4 md:right-8 top-12 md:top-14' : 'right-4 md:right-8 top-4 md:top-6';
+
   return (
-    <div className="fixed top-4 right-4 md:top-6 md:right-8 z-50 flex items-center gap-3">
+    <div className={`fixed ${rightOffset} z-50 flex items-center gap-2`}>
       {/* Before connect: TALK button + avatar thumbnail */}
       {isIdle && showTalkButton && (
         <>
@@ -74,24 +87,13 @@ export function ControlBar() {
       {/* Connected: control icons */}
       {isConnected && (
         <>
-          {/* Volume/Mute indicator (shown when muted) */}
-          {isMuted && (
-            <button
-              onClick={toggleMute}
-              className="p-2 rounded-full bg-red-500/80 text-white hover:bg-red-600/80 transition-colors"
-              title="Unmute"
-            >
-              <X className="w-4 h-4" />
-            </button>
-          )}
-
           {/* Mic toggle */}
           <button
             onClick={toggleMute}
             className={`p-2 rounded-full transition-colors ${
               isMuted
                 ? 'bg-red-500/80 text-white hover:bg-red-600/80'
-                : 'bg-white/10 text-white/70 hover:bg-white/20 hover:text-white'
+                : `${iconBg} ${iconColor}`
             }`}
             title={isMuted ? 'Unmute mic' : 'Mute mic'}
           >
@@ -103,8 +105,8 @@ export function ControlBar() {
             onClick={toggleChatPanel}
             className={`p-2 rounded-full transition-colors ${
               isChatPanelOpen
-                ? 'bg-white/20 text-white'
-                : 'bg-white/10 text-white/70 hover:bg-white/20 hover:text-white'
+                ? 'bg-red-500/80 text-white'
+                : `${iconBg} ${iconColor}`
             }`}
             title={isChatPanelOpen ? 'Close chat' : 'Open chat'}
           >

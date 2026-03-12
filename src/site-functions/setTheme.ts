@@ -1,32 +1,26 @@
 /**
  * setTheme — Switch the website theme dynamically.
  *
- * @param args.theme - 'light' | 'dark' | 'system'
+ * @param args.theme - 'light' | 'dark'
  *
  * Registered as window.__siteFunctions.setTheme
  * The voice agent can call this via the callSiteFunction RPC.
  */
-export default function setTheme(args: { theme: 'light' | 'dark' | 'system' }): { success: boolean; theme: string } {
+export default function setTheme(args: { theme: 'light' | 'dark' }): { success: boolean; theme: string } {
   const { theme } = args;
 
-  if (!['light', 'dark', 'system'].includes(theme)) {
+  if (!['light', 'dark'].includes(theme)) {
     return { success: false, theme: 'unknown' };
   }
 
-  const root = document.documentElement;
+  document.documentElement.setAttribute('data-theme', theme);
 
-  if (theme === 'system') {
-    root.classList.remove('light', 'dark');
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    root.classList.add(prefersDark ? 'dark' : 'light');
-  } else {
-    root.classList.remove('light', 'dark');
-    root.classList.add(theme);
-  }
+  // Also expose for direct window access
+  (window as any).__currentTheme = theme;
 
-  // Persist choice
+  // Persist
   try {
-    localStorage.setItem('theme-preference', theme);
+    localStorage.setItem('scene-theme', theme);
   } catch {
     // ignore
   }
