@@ -60,7 +60,7 @@ export function ChatPanel() {
     <div
       ref={panelRef}
       className={`fixed top-0 h-dvh z-50 flex flex-col
-        backdrop-blur-2xl bg-white/10 border-l border-white/10
+        bg-white/10 border-l border-white/10
         transition-all duration-500 ease-out
         ${isSleeping ? 'chat-sleeping' : ''}
       `}
