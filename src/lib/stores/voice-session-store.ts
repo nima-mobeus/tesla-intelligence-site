@@ -1198,9 +1198,6 @@ function registerRpcHandlers(
         sceneHistory: [...state.sceneHistory, sceneData],
       }));
 
-      // Auto-switch to dark theme for immersive scenes
-      get().setTheme('dark');
-
       return JSON.stringify({ success: true });
     } catch (error) {
       console.error('RPC setScene error:', error);
