@@ -154,11 +154,24 @@ reg('journal-entry', () => import('./JournalEntryCard'));
 reg('checklist', () => import('./ChecklistCard'));
 reg('timeline', () => import('./TimelineCard'));
 
-// ─── Aliases (prompt compatibility) ──────────────────────────────────────────
+// ─── Aliases (prompt compatibility & LLM hallucination resilience) ───────────
 reg('profile-roster', () => import('./OrgRoster'));
 reg('area-chart', () => import('./SceneLineChart'));
 reg('progress', () => import('./SceneBarChart'));
 reg('news-article', () => import('./NewsFeedCard'));
+
+// Common LLM hallucinations (e.g. "donut-chart" instead of "donut")
+reg('donut-chart', () => import('./SceneDonutChart'));
+reg('bar', () => import('./SceneBarChart'));
+reg('line', () => import('./SceneLineChart'));
+reg('stat-card', () => import('./StatCard'));
+reg('stats', () => import('./StatCard'));
+reg('kpi', () => import('./KPIStrip'));
+reg('kpi-card', () => import('./KPIStrip'));
+reg('metric', () => import('./MetricList'));
+reg('info', () => import('./InfoCard'));
+reg('checklist-card', () => import('./ChecklistCard'));
+reg('timeline-card', () => import('./TimelineCard'));
 
 // ─── Custom client components ────────────────────────────────────────────────
 // Client-specific components are added below this line.
