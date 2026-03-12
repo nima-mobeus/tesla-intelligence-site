@@ -198,11 +198,25 @@
 
 /* ── Slide Action Icons Shift ── */
 .slide-action-icons {
-  transition: right 0.5s ease-out;
+  transition: right 0.5s ease-out, opacity 0.3s ease;
 }
 @media (min-width: 1280px) {
   .chat-squeezed .slide-action-icons {
     right: calc(var(--glass-chat-width) + 2rem) !important;
+  }
+}
+/* On mobile/tablet: hide when chat is open (full-screen chat) */
+@media (max-width: 1279px) {
+  .chat-squeezed .slide-action-icons {
+    opacity: 0;
+    pointer-events: none;
+  }
+}
+
+/* On mobile: chat panel at z-60 (full-screen overlay) */
+@media (max-width: 1279px) {
+  .chat-squeezed .telelabor-panel {
+    z-index: 60;
   }
 }
 

@@ -47,7 +47,7 @@ export function SceneManager() {
   const logoSrc = isDark ? teslaLogoWhite : teslaLogo;
 
   return (
-    <div className="fixed inset-0 z-40 overflow-hidden grid grid-rows-[auto_1fr_auto] p-3 md:p-6 lg:p-8">
+    <div className="relative w-full lg:h-dvh overflow-hidden grid grid-rows-[auto_1fr_auto] p-3 md:p-6 lg:p-8">
       {/* Semi-transparent background overlay with gradient for avatar peek-through */}
       <div className="absolute inset-0 z-0 scene-gradient-overlay" />
 
@@ -71,8 +71,8 @@ export function SceneManager() {
         </div>
       )}
 
-      {/* Slide action icons — top-right, shifts left on chat squeeze */}
-      <div className="slide-action-icons fixed top-3 right-3 md:top-6 md:right-6 z-[45] flex items-center gap-1.5">
+      {/* Slide action icons — fixed to viewport, shifts left on chat squeeze */}
+      <div className="slide-action-icons fixed top-3 right-3 md:top-6 md:right-6 z-[60] flex items-center gap-1.5">
         <ActionIcon icon={isDark ? Sun : Moon} onClick={toggleTheme} title="Toggle theme" />
         <ActionIcon icon={Camera} onClick={handleScreenshot} title="Screenshot" />
         <ActionIcon icon={Download} onClick={handleScreenshot} title="Download" />

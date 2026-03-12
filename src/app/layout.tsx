@@ -38,7 +38,7 @@ export default function RootLayout({
       <body className="bg-white text-gray-900 antialiased">
         <VoiceSessionProvider>
           <BackgroundLayer />
-          <div id="scene-root" className="relative z-[2]">
+          <div id="scene-root" className="relative z-[2] lg:h-dvh">
             <SceneLayout>{children}</SceneLayout>
           </div>
           <ControlBar />

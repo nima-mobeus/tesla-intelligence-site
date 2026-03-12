@@ -39,11 +39,14 @@ export function ControlBar() {
     setShowTalkButton(false);
   }, [isIdle]);
 
-  // Position: when connected + scene active, push further right to clear slide action icons
+  // z-100 when chat open so icons float above chat panel (z-50)
+  // z-60 when closed (above slide action icons at z-40)
+  const zIndex = isChatPanelOpen ? 'z-[100]' : 'z-[60]';
+  // Position: when connected + scene active, push below slide action icons row
   const rightOffset = isConnected && sceneActive ? 'right-4 md:right-8 top-12 md:top-14' : 'right-4 md:right-8 top-4 md:top-6';
 
   return (
-    <div className={`fixed ${rightOffset} z-50 flex items-center gap-2`}>
+    <div className={`fixed ${rightOffset} ${zIndex} flex items-center gap-2`}>
       {/* Before connect: TALK button + avatar thumbnail */}
       {isIdle && showTalkButton && (
         <>
