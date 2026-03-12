@@ -21,6 +21,10 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+  /* Scene card font families (enables font-data / font-voice / font-hero Tailwind utilities) */
+  --font-data: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  --font-voice: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-hero: "Playfair Display", Georgia, "Times New Roman", serif;
 }
 
 :root {
@@ -43,4 +47,19 @@
   --input: oklch(0.922 0 0);
   --ring: oklch(0.708 0 0);
   --radius: 0.625rem;
+
+  /* ── Scene Card Theme (dark background context) ── */
+  --theme-chart-line: #3b82f6;
+  --theme-card-data: #94a3b8;
+  --theme-card-voice: #e2e8f0;
+  --theme-card-bg: rgba(255, 255, 255, 0.05);
+  --theme-card-border: rgba(255, 255, 255, 0.1);
+  --theme-card-blur: 8px;
+  --theme-card-title: #ffffff;
+}
+
+/* ── Scene Card Animations ── */
+@keyframes blink-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.2; }
 }

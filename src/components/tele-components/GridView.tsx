@@ -11,6 +11,32 @@ interface CardDef {
 }
 
 /**
+ * CARD_SIZE — flex-grow weights per card type.
+ * sm (1) = compact, md (2) = standard, lg (3) = expansive.
+ * Drives row-height distribution so large charts get more vertical space.
+ */
+const CARD_SIZE: Record<string, number> = {
+  // sm — compact
+  'kpi-strip': 1,
+  // lg — expansive
+  'bar-chart': 3, 'donut': 3, 'line-chart': 3, 'table': 3,
+  'heatmap': 3, 'waterfall': 3, 'scatter-plot': 3, 'gauge': 3,
+  'stacked-bar': 3, 'area-chart': 3, 'world-map': 3,
+  'comparison-table': 3, 'incident-card': 3, 'risk-matrix': 3,
+  'live-map': 3, 'domino-card': 3,
+  // everything else defaults to md (2) via fallback
+};
+
+function getCardSize(type: string): number {
+  return CARD_SIZE[type] ?? 2;
+}
+
+/** Returns the max card size weight for a row of cards. */
+function rowWeight(rowCards: CardDef[]): number {
+  return Math.max(...rowCards.map(c => getCardSize(c.type)));
+}
+
+/**
  * Layout code parser.
  * - "CxR" format: "2x3" = 2 columns, 3 rows
  * - "A-B-C" format: "1-2-3" = row 1 has 1 col, row 2 has 2 cols, row 3 has 3 cols
@@ -93,10 +119,13 @@ export default function GridView({ data, accentColor, onAction }: TeleComponentP
     return null;
   }
 
+  // Build weighted row template: e.g. "2fr 3fr 1fr" based on max card size per row
+  const rowTemplate = rows.map(r => `${rowWeight(r)}fr`).join(' ');
+
   return (
     <div
       className="grid gap-4 w-full h-full"
-      style={{ gridTemplateRows: `repeat(${rows.length}, 1fr)` }}
+      style={{ gridTemplateRows: rowTemplate }}
     >
       {rows.map((rowCards, rowIndex) => (
         <div
