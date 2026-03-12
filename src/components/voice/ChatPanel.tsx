@@ -19,6 +19,7 @@ export function ChatPanel() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const sleepTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const isConnected = sessionState === 'connected';
 
@@ -27,11 +28,15 @@ export function ChatPanel() {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [transcripts]);
 
-  // Sleep mode: dim after mouse idle
+  // Sleep mode: dim after mouse idle (don't sleep when input is focused)
   const resetSleep = useCallback(() => {
     setIsSleeping(false);
     if (sleepTimerRef.current) clearTimeout(sleepTimerRef.current);
-    sleepTimerRef.current = setTimeout(() => setIsSleeping(true), SLEEP_TIMEOUT);
+    sleepTimerRef.current = setTimeout(() => {
+      if (document.activeElement !== inputRef.current) {
+        setIsSleeping(true);
+      }
+    }, SLEEP_TIMEOUT);
   }, []);
 
   useEffect(() => {
@@ -49,6 +54,18 @@ export function ChatPanel() {
     };
   }, [isChatPanelOpen, resetSleep]);
 
+  // Add/remove chat-sleeping class on body (for CSS targeting)
+  useEffect(() => {
+    if (isSleeping) {
+      document.body.classList.add('chat-sleeping');
+    } else {
+      document.body.classList.remove('chat-sleeping');
+    }
+    return () => {
+      document.body.classList.remove('chat-sleeping');
+    };
+  }, [isSleeping]);
+
   const handleSend = async () => {
     const message = textInput.trim();
     if (!message) return;
@@ -59,22 +76,29 @@ export function ChatPanel() {
   return (
     <div
       ref={panelRef}
-      className={`fixed top-0 h-dvh z-50 flex flex-col
-        bg-white/10 border-l border-white/10
-        transition-all duration-500 ease-out
-        ${isSleeping ? 'chat-sleeping' : ''}
+      className={`fixed telelabor-panel top-0 h-dvh z-50 flex flex-col
+        border-l-0
+        transition-[right,opacity] duration-500 ease-out
+        max-xl:left-0 max-xl:right-0 max-xl:w-full
       `}
       style={{
         width: 'var(--glass-chat-width)',
-        right: isChatPanelOpen ? '0' : 'calc(var(--glass-chat-width) * -1)',
+        maxWidth: '100vw',
+        right: isChatPanelOpen ? '0' : 'calc(-1 * var(--glass-chat-width))',
         opacity: isChatPanelOpen ? 1 : 0,
+        pointerEvents: isChatPanelOpen ? 'auto' : 'none',
       }}
     >
       {/* Chat messages area */}
       <div className="chat-messages-container flex-1 px-4 pt-20 pb-4 flex flex-col gap-3">
         {transcripts.length === 0 && isConnected && (
           <div className="flex-1 flex items-center justify-center">
-            <p className="text-white/30 text-sm font-voice">Conversation will appear here...</p>
+            <p
+              className="text-sm font-voice"
+              style={{ color: 'var(--theme-chat-placeholder)' }}
+            >
+              Conversation will appear here...
+            </p>
           </div>
         )}
 
@@ -97,13 +121,17 @@ export function ChatPanel() {
               </div>
             )}
 
-            {/* Bubble */}
+            {/* Bubble — theme-aware colors */}
             <div
-              className={`chat-message-bubble max-w-[80%] rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed ${
-                t.participant === 'user'
-                  ? 'bg-white/20 text-white ml-auto'
-                  : 'bg-white/10 text-white/90'
-              }`}
+              className={`chat-message-bubble max-w-[75%] sm:max-w-[70%] rounded-2xl px-3.5 py-2.5
+                text-sm leading-relaxed transition-all duration-500
+                hover:brightness-110 hover:shadow-lg
+                ${t.participant === 'user' ? 'ml-auto' : ''}`}
+              style={{
+                background: 'var(--theme-chat-bubble)',
+                color: 'var(--theme-chat-text)',
+                boxShadow: '0 4px 16px rgba(0, 0, 0, 0.1)',
+              }}
             >
               {t.text}
             </div>
@@ -115,8 +143,9 @@ export function ChatPanel() {
 
       {/* Text input area */}
       <div className="shrink-0 px-4 pb-4 pt-2">
-        <div className="flex items-center gap-2 bg-white/10 rounded-xl px-3 py-2">
+        <div className="flex items-center gap-2 bg-black/40 backdrop-blur-sm rounded-full px-3 sm:px-4 py-2 sm:py-2.5">
           <input
+            ref={inputRef}
             value={textInput}
             onChange={(e) => setTextInput(e.target.value)}
             onKeyDown={(e) => {
@@ -125,8 +154,9 @@ export function ChatPanel() {
                 handleSend();
               }
             }}
+            onFocus={resetSleep}
             placeholder="Type a message..."
-            className="flex-1 bg-transparent text-white text-sm placeholder:text-white/30 focus:outline-none font-voice"
+            className="flex-1 min-w-0 bg-transparent text-white text-sm placeholder:text-white/30 focus:outline-none font-voice"
             disabled={!isConnected}
           />
           <button

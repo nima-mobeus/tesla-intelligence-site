@@ -69,6 +69,11 @@
   --theme-action-btn: #64748b;
   --theme-action-btn-hover: #1e293b;
 
+  /* Chat bubbles */
+  --theme-chat-bubble: rgba(255, 255, 255, 0.8);
+  --theme-chat-text: #443e44;
+  --theme-chat-placeholder: rgba(0, 0, 0, 0.3);
+
   /* Video filter */
   --theme-video-brightness: 1.25;
   --theme-video-saturate: 1;
@@ -93,6 +98,10 @@
 
   --theme-action-btn: rgba(255, 255, 255, 0.5);
   --theme-action-btn-hover: #ffffff;
+
+  --theme-chat-bubble: rgba(12, 14, 18, 0.85);
+  --theme-chat-text: #e0e0e0;
+  --theme-chat-placeholder: rgba(255, 255, 255, 0.3);
 
   --theme-video-brightness: 0.72;
   --theme-video-saturate: 0.9;
@@ -151,9 +160,14 @@
 }
 
 /* ── Sleep Mode (dim after mouse idle) ── */
-.chat-sleeping .chat-message-bubble { opacity: 0.2 !important; transition: opacity 0.8s ease; }
+.telelabor-panel .chat-message-bubble,
+.telelabor-panel .chat-avatar,
+.telelabor-panel .chat-icon { transition: opacity 800ms ease; }
+.chat-sleeping .chat-message-bubble { opacity: 0.2 !important; }
 .chat-sleeping .chat-avatar,
-.chat-sleeping .chat-icon { opacity: 0.4 !important; transition: opacity 0.8s ease; }
+.chat-sleeping .chat-icon { opacity: 0.4 !important; }
+.chat-sleeping .telelabor-panel > :last-child { opacity: 0.2 !important; transition: opacity 800ms ease; }
+.telelabor-panel > :last-child { transition: opacity 800ms ease; }
 
 /* ── Chat Messages Scroll + Fade ── */
 .chat-messages-container {
