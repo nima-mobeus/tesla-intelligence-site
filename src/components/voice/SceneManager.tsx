@@ -81,7 +81,17 @@ export function SceneManager() {
       </div>
 
       {/* Header row — logo + badge + back button */}
-      <header className="relative z-10 flex items-center gap-4 shrink-0">
+      <header className="relative z-10 flex items-center gap-4 shrink-0 pr-48">
+        {hasHistory && (
+          <button
+            onClick={navigateSceneBack}
+            className="flex items-center gap-1 text-sm transition-colors"
+            style={{ color: 'var(--theme-scene-text-muted)' }}
+          >
+            <ChevronLeft className="w-4 h-4" />
+            Back
+          </button>
+        )}
         <Image
           src={logoSrc}
           alt="Tesla"
@@ -98,16 +108,6 @@ export function SceneManager() {
           >
             {currentScene.badge}
           </span>
-        )}
-        {hasHistory && (
-          <button
-            onClick={navigateSceneBack}
-            className="flex items-center gap-1 text-sm transition-colors ml-auto"
-            style={{ color: 'var(--theme-scene-text-muted)' }}
-          >
-            <ChevronLeft className="w-4 h-4" />
-            Back
-          </button>
         )}
       </header>
 

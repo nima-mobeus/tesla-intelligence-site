@@ -22,8 +22,6 @@ export function ControlBar() {
   const isConnecting = sessionState === 'connecting';
   const isIdle = sessionState === 'idle' || sessionState === 'error';
 
-  // When scene is active, icons shift right to avoid overlap with slide action icons
-  // Slide actions are at top-right z-45, control bar is at z-50
   const isDark = theme === 'dark';
   // On idle (landing page): always dark bg → white icons
   // On scene: depends on theme
@@ -42,99 +40,81 @@ export function ControlBar() {
   // z-100 when chat open so icons float above chat panel (z-50)
   // z-60 when closed (above slide action icons at z-40)
   const zIndex = isChatPanelOpen ? 'z-[100]' : 'z-[60]';
-  // Position: when connected + scene active, push below slide action icons row
-  const rightOffset = isConnected && sceneActive ? 'right-4 md:right-8 top-12 md:top-14' : 'right-4 md:right-8 top-4 md:top-6';
 
   return (
-    <div className={`fixed ${rightOffset} ${zIndex} flex items-center gap-2`}>
-      {/* Before connect: TALK button + avatar thumbnail */}
-      {isIdle && showTalkButton && (
-        <>
-          <button
-            onClick={connect}
-            className="start-button inline-flex items-center gap-2 rounded-none text-sm"
-          >
-            TALK <ArrowRight className="w-3.5 h-3.5" />
-          </button>
-          <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-white/30 shadow-lg">
-            <img
-              src={assets.avatarProfile}
-              alt="Avatar"
-              className="w-full h-full object-cover"
-            />
-          </div>
-        </>
-      )}
+    <div className={`fixed top-4 right-4 md:top-6 md:right-8 ${zIndex} inline-flex items-center gap-2 sm:gap-3 transition-all duration-300 ease-in-out`}>
 
-      {/* Connecting: loading spinner on avatar */}
-      {isConnecting && (
-        <div className="relative w-10 h-10">
-          <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-white/30 shadow-lg">
-            <img
-              src={assets.avatarProfile}
-              alt="Avatar"
-              className="w-full h-full object-cover"
-            />
-          </div>
-          <svg className="absolute inset-0 w-10 h-10 loading-ring" viewBox="0 0 40 40">
-            <circle
-              cx="20" cy="20" r="18"
-              fill="none" stroke="rgba(255,255,255,0.6)" strokeWidth="2"
-              strokeDasharray="80 40"
-              strokeLinecap="round"
-            />
-          </svg>
-        </div>
-      )}
-
-      {/* Connected: control icons */}
+      {/* ── Chat toggle (bare icon, no bg — red X when open) ── */}
       {isConnected && (
-        <>
-          {/* Mic toggle */}
-          <button
-            onClick={toggleMute}
-            className={`p-2 rounded-full transition-colors ${
-              isMuted
-                ? 'bg-red-500/80 text-white hover:bg-red-600/80'
-                : `${iconBg} ${iconColor}`
-            }`}
-            title={isMuted ? 'Unmute mic' : 'Mute mic'}
-          >
-            {isMuted ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
-          </button>
-
-          {/* Chat toggle */}
-          <button
-            onClick={toggleChatPanel}
-            className={`p-2 rounded-full transition-colors ${
-              isChatPanelOpen
-                ? 'bg-red-500/80 text-white'
-                : `${iconBg} ${iconColor}`
-            }`}
-            title={isChatPanelOpen ? 'Close chat' : 'Open chat'}
-          >
-            {isChatPanelOpen ? <X className="w-4 h-4" /> : <MessageCircle className="w-4 h-4" />}
-          </button>
-
-          {/* Disconnect */}
-          <button
-            onClick={disconnect}
-            className="p-2 rounded-full bg-red-500/80 text-white hover:bg-red-600 transition-colors"
-            title="Disconnect"
-          >
-            <X className="w-4 h-4" />
-          </button>
-
-          {/* Avatar thumbnail */}
-          <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-white/30 shadow-lg">
-            <img
-              src={assets.avatarProfile}
-              alt="Avatar"
-              className="w-full h-full object-cover"
-            />
-          </div>
-        </>
+        <button
+          onClick={toggleChatPanel}
+          className={`transition-all duration-300 ${
+            isChatPanelOpen
+              ? 'text-red-500 hover:text-red-400'
+              : `${iconColor}`
+          }`}
+          title={isChatPanelOpen ? 'Close chat' : 'Open chat'}
+        >
+          {isChatPanelOpen ? <X className="w-5 h-5" /> : <MessageCircle className="w-5 h-5" />}
+        </button>
       )}
+
+      {/* ── Mic toggle ── */}
+      {isConnected && (
+        <button
+          onClick={toggleMute}
+          className={`p-2 rounded-full transition-all duration-200 ${
+            isMuted
+              ? 'text-red-500 hover:text-red-400'
+              : `${iconBg} ${iconColor}`
+          }`}
+          title={isMuted ? 'Unmute mic' : 'Mute mic'}
+        >
+          {isMuted ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
+        </button>
+      )}
+
+      {/* ── TALK button (idle) ── */}
+      {isIdle && showTalkButton && (
+        <button
+          onClick={connect}
+          className="start-button inline-flex items-center gap-2 rounded-none text-sm"
+        >
+          TALK <ArrowRight className="w-3.5 h-3.5" />
+        </button>
+      )}
+
+      {/* ── Disconnect (red circle, only when connected) ── */}
+      {isConnected && (
+        <button
+          onClick={disconnect}
+          className="bg-red-600 text-white p-2.5 rounded-full hover:bg-red-500 transition-colors duration-300 shadow-lg shadow-red-600/30"
+          title="Disconnect"
+        >
+          <X className="w-4 h-4" />
+        </button>
+      )}
+
+      {/* ── Avatar thumbnail (always — pulsates on connecting) ── */}
+      <div
+        className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full overflow-hidden border-2 transition-all cursor-pointer ${
+          isConnecting
+            ? 'border-[rgba(45,64,89,0.6)] bg-[rgba(45,64,89,0.1)] animate-pulse'
+            : isConnected
+              ? 'border-[rgba(45,64,89,0.8)] shadow-lg'
+              : 'border-white/30 shadow-lg'
+        }`}
+        onClick={isIdle ? connect : undefined}
+      >
+        <img
+          src={assets.avatarProfile}
+          alt="Avatar"
+          className={`w-full h-full object-cover rounded-full transition-all duration-300 ${
+            isIdle ? 'brightness-75 hover:brightness-100' :
+            isConnecting ? '' : 'brightness-125'
+          }`}
+        />
+      </div>
     </div>
   );
 }
