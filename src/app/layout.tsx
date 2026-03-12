@@ -35,7 +35,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="bg-white text-gray-900 antialiased">
+      <body className="antialiased">
         <VoiceSessionProvider>
           <BackgroundLayer />
           <div id="scene-root" className="relative z-[2] lg:h-dvh">

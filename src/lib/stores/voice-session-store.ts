@@ -543,9 +543,15 @@ export const useVoiceSessionStore = create<VoiceSessionState>((set, get) => ({
         currentScene: null,
         sceneHistory: [],
         sceneActive: false,
+        theme: 'light',
         _preWarm: null,
         _preWarmState: 'idle',
       });
+      // Reset body background to light
+      if (typeof document !== 'undefined') {
+        document.documentElement.removeAttribute('data-theme');
+        document.body.classList.remove('chat-squeezed', 'chat-sleeping');
+      }
     }
   },
 
@@ -731,6 +737,7 @@ export const useVoiceSessionStore = create<VoiceSessionState>((set, get) => ({
   // Scene actions
   clearScene: () => {
     set({ sceneActive: false, currentScene: null });
+    get().setTheme('light');
   },
 
   navigateSceneBack: () => {
@@ -746,6 +753,7 @@ export const useVoiceSessionStore = create<VoiceSessionState>((set, get) => ({
       });
     } else {
       set({ sceneActive: false, currentScene: null, sceneHistory: [] });
+      get().setTheme('light');
     }
   },
 
@@ -1190,6 +1198,9 @@ function registerRpcHandlers(
         sceneHistory: [...state.sceneHistory, sceneData],
       }));
 
+      // Auto-switch to dark theme for immersive scenes
+      get().setTheme('dark');
+
       return JSON.stringify({ success: true });
     } catch (error) {
       console.error('RPC setScene error:', error);
@@ -1201,6 +1212,8 @@ function registerRpcHandlers(
   localParticipant.registerRpcMethod('clearScene', async () => {
     console.log('RPC: clearScene');
     set({ sceneActive: false, currentScene: null });
+    // Restore light theme when leaving scene
+    get().setTheme('light');
     return JSON.stringify({ success: true });
   });
 
