@@ -13,9 +13,6 @@ export function SceneManager() {
   const navigateSceneBack = useVoiceSessionStore((s) => s.navigateSceneBack);
   const sceneHistory = useVoiceSessionStore((s) => s.sceneHistory);
   const tellAgent = useVoiceSessionStore((s) => s.tellAgent);
-  const avatarVideoTrack = useVoiceSessionStore((s) => s.avatarVideoTrack);
-  const avatarEnabled = useVoiceSessionStore((s) => s.avatarEnabled);
-  const avatarVisible = useVoiceSessionStore((s) => s.avatarVisible);
   const theme = useVoiceSessionStore((s) => s.theme);
   const toggleTheme = useVoiceSessionStore((s) => s.toggleTheme);
 
@@ -50,26 +47,6 @@ export function SceneManager() {
     <div className="relative w-full lg:h-dvh overflow-hidden grid grid-rows-[auto_1fr_auto] p-3 md:p-6 lg:p-8">
       {/* Semi-transparent background overlay with gradient for avatar peek-through */}
       <div className="absolute inset-0 z-0 scene-gradient-overlay" />
-
-      {/* Avatar background layer (visible through gradient) */}
-      {avatarEnabled && avatarVisible && avatarVideoTrack && (
-        <div className="absolute inset-0 z-[-1] pointer-events-none">
-          <video
-            ref={(el) => {
-              if (el && avatarVideoTrack) {
-                avatarVideoTrack.attach(el);
-              }
-            }}
-            autoPlay
-            playsInline
-            muted
-            className="w-full h-full object-cover"
-            style={{
-              filter: `brightness(var(--theme-video-brightness)) saturate(var(--theme-video-saturate))`,
-            }}
-          />
-        </div>
-      )}
 
       {/* Slide action icons — fixed to viewport, shifts left on chat squeeze */}
       <div className="slide-action-icons fixed top-3 right-3 md:top-6 md:right-6 z-[60] flex items-center gap-1.5">
