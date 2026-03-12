@@ -30,7 +30,7 @@ export default function RankedListCard({ data, accentColor, onAction }: TeleComp
                                 <div className="h-full rounded-sm" style={{ width: `${pct}%`, background: `linear-gradient(90deg, ${getColor(88)}, ${getColor(38)})` }} />
                             </div>
                             <span className="font-data text-sm font-bold min-w-[40px] text-right shrink-0" style={{ color: `${getColor(90)}` }}>
-                                {item.displayValue || item.value.toLocaleString()}{unit ? ` ${unit}` : ''}
+                                {item.displayValue || (item.value ?? 0).toLocaleString()}{unit ? ` ${unit}` : ''}
                             </span>
                             {item.change && (
                                 <span className="font-data text-sm font-bold min-w-[32px] text-right" style={{ color: item.change.startsWith('+') ? '#22c55e' : '#ff4040' }}>

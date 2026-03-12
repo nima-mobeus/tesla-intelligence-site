@@ -21,9 +21,10 @@ export default function SceneBarChart({ data, accentColor, onAction }: TeleCompo
     const max = Math.max(...bars.map(b => b.value), 1);
 
     const fmt = (n: number) => {
-        if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`;
-        if (n >= 1_000) return `${(n / 1_000).toFixed(0)}K`;
-        return n.toLocaleString();
+        const v = n ?? 0;
+        if (v >= 1_000_000) return `${(v / 1_000_000).toFixed(1)}M`;
+        if (v >= 1_000) return `${(v / 1_000).toFixed(0)}K`;
+        return v.toLocaleString();
     };
 
     return (

@@ -69,10 +69,10 @@ export default function SceneLineChart({ data: propData, accentColor, onAction }
                 {/* Min/Max annotation */}
                 <div className="flex justify-between mt-1">
                     <span className="font-data text-sm font-medium" style={{ color: `${getColor(85)}` }}>
-                        {mn.toLocaleString()}{unit ? ` ${unit}` : ''}
+                        {(mn ?? 0).toLocaleString()}{unit ? ` ${unit}` : ''}
                     </span>
                     <span className="font-data text-sm font-bold" style={{ color: `${getColor(90)}` }}>
-                        {mx.toLocaleString()}{unit ? ` ${unit}` : ''}
+                        {(mx ?? 0).toLocaleString()}{unit ? ` ${unit}` : ''}
                     </span>
                 </div>
             </div>

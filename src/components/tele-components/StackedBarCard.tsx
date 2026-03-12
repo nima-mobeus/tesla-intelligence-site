@@ -11,7 +11,7 @@ interface StackedBarCardData { title?: string; groups: StackedGroup[]; unit?: st
 
 export default function StackedBarCard({ data }: TeleComponentProps) {
   const { title, groups = [], unit } = data as StackedBarCardData;
-  const maxTotal = Math.max(...groups.map(g => g.segments.reduce((s, seg) => s + seg.value, 0)), 1);
+  const maxTotal = Math.max(...groups.map(g => g.segments.reduce((s, seg) => s + (seg.value ?? 0), 0)), 1);
   const allLabels = [...new Set(groups.flatMap(g => g.segments.map(s => s.label)))];
 
   return (
@@ -21,7 +21,7 @@ export default function StackedBarCard({ data }: TeleComponentProps) {
       )}
       <div className="flex flex-col gap-1 flex-1 justify-center">
         {groups.map((g, gi) => {
-          const total = g.segments.reduce((s, seg) => s + seg.value, 0);
+          const total = g.segments.reduce((s, seg) => s + (seg.value ?? 0), 0);
           return (
             <div key={gi} className="flex items-center gap-1.5">
               <span className="font-data text-sm md:text-sm w-14 text-left truncate font-bold" style={{ color: getColor(70) }}>{g.label}</span>

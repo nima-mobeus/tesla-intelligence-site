@@ -35,7 +35,7 @@ export default function BarChart({ data, accentColor = '#2563eb' }: TeleComponen
                 <span className="font-medium">{bar.label}</span>
                 {showValues && (
                   <span className="text-muted-foreground tabular-nums">
-                    {bar.value.toLocaleString()} {unit}
+                    {(bar.value ?? 0).toLocaleString()} {unit}
                   </span>
                 )}
               </div>

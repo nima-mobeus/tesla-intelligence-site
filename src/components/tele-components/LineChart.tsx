@@ -54,7 +54,7 @@ export default function LineChart({ data, accentColor = '#2563eb' }: TeleCompone
             <g key={v}>
               <line x1={PAD.left} y1={toY(v)} x2={W - PAD.right} y2={toY(v)} stroke="#e5e7eb" strokeWidth={1} />
               <text x={PAD.left - 6} y={toY(v) + 4} textAnchor="end" className="fill-gray-400" fontSize={10}>
-                {Math.round(v).toLocaleString()}
+                {Math.round(v ?? 0).toLocaleString()}
               </text>
             </g>
           ))}

@@ -32,7 +32,7 @@ export default function FunnelCard({ data }: TeleComponentProps) {
               >
                 <span className="font-data text-sm md:text-sm text-white font-bold truncate">{s.label}</span>
                 <span className="font-data text-sm md:text-sm text-white font-bold">
-                  {s.displayValue || s.value.toLocaleString()}{unit ? ` ${unit}` : ''}
+                  {s.displayValue || (s.value ?? 0).toLocaleString()}{unit ? ` ${unit}` : ''}
                 </span>
               </div>
             </div>
