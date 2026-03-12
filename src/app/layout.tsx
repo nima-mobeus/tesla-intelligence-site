@@ -1,8 +1,10 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { VoiceSessionProvider } from '@/components/voice/VoiceSessionProvider';
-import { VoiceOverlay } from '@/components/voice/VoiceOverlay';
+import { BackgroundLayer } from '@/components/voice/BackgroundLayer';
 import { SceneLayout } from '@/components/voice/SceneLayout';
+import { ControlBar } from '@/components/voice/ControlBar';
+import { ChatPanel } from '@/components/voice/ChatPanel';
 
 const agentName = process.env.NEXT_PUBLIC_AGENT_NAME || 'AI Assistant';
 
@@ -18,10 +20,29 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="min-h-screen bg-white text-gray-900 antialiased">
+      <head>
+        <link
+          rel="preconnect"
+          href="https://fonts.googleapis.com"
+        />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=JetBrains+Mono:wght@400&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap"
+          rel="stylesheet"
+        />
+      </head>
+      <body className="bg-white text-gray-900 antialiased">
         <VoiceSessionProvider>
-          <SceneLayout>{children}</SceneLayout>
-          <VoiceOverlay />
+          <BackgroundLayer />
+          <div id="scene-root" className="relative z-[2]">
+            <SceneLayout>{children}</SceneLayout>
+          </div>
+          <ControlBar />
+          <ChatPanel />
         </VoiceSessionProvider>
       </body>
     </html>

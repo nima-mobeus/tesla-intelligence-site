@@ -108,7 +108,10 @@ interface VoiceSessionState {
   sceneHistory: SceneData[];
   sceneActive: boolean;
 
-  // Overlay state
+  // Chat panel state
+  isChatPanelOpen: boolean;
+
+  // Legacy overlay state (kept for compatibility)
   isOverlayExpanded: boolean;
   isOverlayVisible: boolean;
 
@@ -121,6 +124,7 @@ interface VoiceSessionState {
   toggleAvatarVisible: () => void;
   toggleAvatarHard: () => Promise<void>;
   sendTextMessage: (text: string) => Promise<void>;
+  toggleChatPanel: () => void;
   setOverlayExpanded: (expanded: boolean) => void;
   setOverlayVisible: (visible: boolean) => void;
   clearTranscripts: () => void;
@@ -174,6 +178,7 @@ export const useVoiceSessionStore = create<VoiceSessionState>((set, get) => ({
   sceneHistory: [],
   sceneActive: false,
 
+  isChatPanelOpen: false,
   isOverlayExpanded: false,
   isOverlayVisible: true,
 
@@ -361,10 +366,14 @@ export const useVoiceSessionStore = create<VoiceSessionState>((set, get) => ({
           room,
           sessionId,
           sessionState: 'connected',
+          isChatPanelOpen: true,
           isOverlayExpanded: true,
           _preWarm: null,
           _preWarmState: 'idle',
         });
+        if (typeof document !== 'undefined') {
+          document.body.classList.add('chat-squeezed');
+        }
         applyAudioRouting(get);
 
         return;
@@ -457,8 +466,12 @@ export const useVoiceSessionStore = create<VoiceSessionState>((set, get) => ({
         room,
         sessionId: sessionData.sessionId,
         sessionState: 'connected',
-        isOverlayExpanded: true, // Auto-expand when connected
+        isChatPanelOpen: true,
+        isOverlayExpanded: true,
       });
+      if (typeof document !== 'undefined') {
+        document.body.classList.add('chat-squeezed');
+      }
       applyAudioRouting(get);
 
       // Note: No PATCH /api/sessions/{id} needed — agent shutdown callback handles persistence
@@ -496,6 +509,9 @@ export const useVoiceSessionStore = create<VoiceSessionState>((set, get) => ({
         try { await _preWarm.room.disconnect(); } catch {}
       }
 
+      if (typeof document !== 'undefined') {
+        document.body.classList.remove('chat-squeezed');
+      }
       set({
         room: null,
         sessionId: null,
@@ -504,6 +520,7 @@ export const useVoiceSessionStore = create<VoiceSessionState>((set, get) => ({
         agentParticipant: null,
         isMuted: false,
         isVolumeMuted: false,
+        isChatPanelOpen: false,
         isOverlayExpanded: false,
         avatarEnabled: false,
         avatarVisible: true,
@@ -630,6 +647,19 @@ export const useVoiceSessionStore = create<VoiceSessionState>((set, get) => ({
       }));
     } catch (error) {
       console.error('Failed to send text input:', error);
+    }
+  },
+
+  // Chat panel toggle
+  toggleChatPanel: () => {
+    const next = !get().isChatPanelOpen;
+    set({ isChatPanelOpen: next });
+    if (typeof document !== 'undefined') {
+      if (next) {
+        document.body.classList.add('chat-squeezed');
+      } else {
+        document.body.classList.remove('chat-squeezed');
+      }
     }
   },
 

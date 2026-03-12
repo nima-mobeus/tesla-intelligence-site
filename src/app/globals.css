@@ -22,9 +22,9 @@
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
   /* Scene card font families (enables font-data / font-voice / font-hero Tailwind utilities) */
-  --font-data: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
-  --font-voice: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-hero: "Playfair Display", Georgia, "Times New Roman", serif;
+  --font-data: 'JetBrains Mono', ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  --font-voice: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-hero: 'Playfair Display', Georgia, "Times New Roman", serif;
 }
 
 :root {
@@ -62,4 +62,132 @@
 @keyframes blink-dot {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.2; }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   IMMERSIVE LAYOUT — Glass Chat Panel, Squeeze, Sleep, Pulse
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── Glass Chat Width ── */
+:root {
+  --glass-chat-width: 18rem;
+}
+@media (max-width: 1279px) {
+  :root { --glass-chat-width: 100vw; }
+}
+
+/* ── Desktop Overflow Lock ── */
+@media (min-width: 1024px) {
+  html, body { height: 100dvh; overflow: hidden; }
+}
+
+/* ── Squeeze Layout (chat open → content shrinks) ── */
+.chat-squeezed #scene-root {
+  max-width: calc(100vw - var(--glass-chat-width));
+  transition: max-width 0.5s ease-out;
+  overflow-x: hidden;
+}
+
+/* ── Font utility classes ── */
+.font-hero { font-family: var(--font-hero); }
+.font-voice { font-family: var(--font-voice); }
+.font-data { font-family: var(--font-data); }
+
+/* Scale titles down when chat squeezes */
+.chat-squeezed #scene-root .font-hero,
+.chat-squeezed #scene-root .font-voice {
+  transform: scale(0.85);
+  transform-origin: top left;
+  transition: transform 0.5s ease-out;
+}
+
+/* ── Chat Bubble Animations ── */
+@keyframes chat-bubble-enter {
+  0% { opacity: 0; transform: translateY(30px) scale(0.95); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+.animate-chat-bubble-enter {
+  animation: chat-bubble-enter 0.4s ease-out forwards;
+}
+
+/* ── Sleep Mode (dim after mouse idle) ── */
+.chat-sleeping .chat-message-bubble { opacity: 0.2 !important; transition: opacity 0.8s ease; }
+.chat-sleeping .chat-avatar,
+.chat-sleeping .chat-icon { opacity: 0.4 !important; transition: opacity 0.8s ease; }
+
+/* ── Chat Messages Scroll + Fade ── */
+.chat-messages-container {
+  overflow-y: auto;
+  scrollbar-width: none;
+  mask-image: linear-gradient(to bottom, transparent 0%, transparent 70px, black 170px);
+}
+.chat-messages-container::-webkit-scrollbar { display: none; }
+
+/* ── Hero Pulse Animation (connecting/thinking) ── */
+@keyframes hero-pulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.7; }
+}
+.hero-pulse-overlay {
+  animation: hero-pulse 2s ease-in-out infinite;
+}
+
+/* ── Button Styles ── */
+.btn-action {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 0.75rem 2rem;
+  background: var(--color-midnight, #1a1a2e);
+  color: white;
+  font-family: var(--font-data);
+  font-size: 0.875rem; font-weight: 700;
+  letter-spacing: 0.05em; text-transform: uppercase;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+.btn-action:hover { transform: translateY(-1px); }
+
+.start-button {
+  background: #1a1a2e; color: white;
+  font-family: var(--font-data);
+  font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.1em;
+  padding: 0.75rem 1.5rem;
+  border: none; cursor: pointer;
+  transition: all 0.3s ease;
+}
+.start-button:hover { transform: translateY(-1px); }
+
+/* ── Slide Action Icons Shift ── */
+.slide-action-icons {
+  transition: right 0.5s ease-out;
+}
+@media (min-width: 1280px) {
+  .chat-squeezed .slide-action-icons {
+    right: calc(var(--glass-chat-width) + 2rem) !important;
+  }
+}
+
+/* ── Container Queries for Grid ── */
+.grid-container { container-type: inline-size; }
+@container (max-width: 900px) {
+  .grid-container .lg\:grid-cols-3 {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+/* ── Loading Ring Animation (avatar thumbnail) ── */
+@keyframes loading-ring-spin {
+  to { transform: rotate(360deg); }
+}
+.loading-ring {
+  animation: loading-ring-spin 1.5s linear infinite;
+}
+
+/* ── Slide In From Left (WelcomeLanding) ── */
+@keyframes slide-in-from-left {
+  0% { opacity: 0; transform: translateX(-30px); }
+  100% { opacity: 1; transform: translateX(0); }
+}
+.animate-slide-in-left {
+  animation: slide-in-from-left 0.6s ease-out forwards;
+  opacity: 0;
 }
