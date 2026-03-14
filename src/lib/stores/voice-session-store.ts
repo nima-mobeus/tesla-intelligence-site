@@ -60,6 +60,7 @@ interface PreWarmData {
     avatarAvailable: boolean;
   };
   agentName: string;
+  agentDispatched?: boolean;
 }
 
 // Store state
@@ -270,6 +271,7 @@ export const useVoiceSessionStore = create<VoiceSessionState>((set, get) => ({
             avatarAvailable: Boolean(defaults.avatarAvailable),
           },
           agentName: sessionData.agent?.name || 'AI Assistant',
+          agentDispatched: Boolean(sessionData.agentDispatched),
         },
         _preWarmState: 'ready',
       });
@@ -350,11 +352,15 @@ export const useVoiceSessionStore = create<VoiceSessionState>((set, get) => ({
           templates,
         });
 
-        // Dispatch agent to the pre-warmed room
+        // Dispatch agent to the pre-warmed room (skip if already eagerly dispatched)
         const activateResponse = await fetch(`${widgetHost}/api/widget/session/activate`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ apiKey, roomName }),
+          body: JSON.stringify({
+            apiKey,
+            roomName,
+            agentAlreadyDispatched: _preWarm.agentDispatched || false,
+          }),
         });
 
         if (!activateResponse.ok) {
