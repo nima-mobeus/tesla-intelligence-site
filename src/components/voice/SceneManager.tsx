@@ -120,15 +120,17 @@ export function SceneManager() {
                 <div className="animate-pulse h-full rounded-xl" style={{ background: 'var(--theme-card-bg)' }} />
               }
             >
-              <GridView
-                data={{
-                  layout: currentScene.layout,
-                  cards: currentScene.cards,
-                  maxRows: currentScene.maxRows,
-                }}
-                accentColor={isDark ? '#3b82f6' : '#1e293b'}
-                onAction={handleAction}
-              />
+              <div key={currentScene.id}>
+                <GridView
+                  data={{
+                    layout: currentScene.layout,
+                    cards: currentScene.cards,
+                    maxRows: currentScene.maxRows,
+                  }}
+                  accentColor={isDark ? '#3b82f6' : '#1e293b'}
+                  onAction={handleAction}
+                />
+              </div>
             </Suspense>
           ) : (
             <div className="flex items-center justify-center h-full" style={{ color: 'var(--theme-scene-text-muted)' }}>

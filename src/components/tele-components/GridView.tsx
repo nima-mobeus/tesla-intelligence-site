@@ -174,7 +174,7 @@ function CardRenderer({ card, index = 0, accentColor, onAction }: {
         className={`card-glass animate-card-enter ${
           card.span === 'full' ? 'col-span-full' : ''
         }`}
-        style={{ animationDelay: `${index * 0.06}s` }}
+        style={{ animationDelay: `${index * 0.08}s` }}
       >
         <Component
           data={card.props || {}}
