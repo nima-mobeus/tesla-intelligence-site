@@ -216,9 +216,9 @@ export const CERTIFIED_SCENES: Record<string, CertifiedScene> = {
         type: 'risk-matrix',
         props: {
           title: 'Cascade Risk',
-          items: [
-            { asset: 'Berlin Dojo 5', risk: 'Same relay model CRF-420', likelihood: 'medium' },
-            { asset: 'Mumbai Dojo 8', risk: 'Same relay model CRF-420', likelihood: 'medium' },
+          risks: [
+            { label: 'Berlin Dojo 5', likelihood: 1, impact: 1 },
+            { label: 'Mumbai Dojo 8', likelihood: 1, impact: 2 },
           ],
         },
       },
@@ -729,11 +729,12 @@ export const CERTIFIED_SCENES: Record<string, CertifiedScene> = {
         props: {
           title: 'Deployment Breakdown',
           segments: [
-            { label: 'Factory', value: 1400, color: '#3b82f6' },
-            { label: 'Commercial', value: 680, color: '#22c55e' },
-            { label: 'Home Edition', value: 20, color: '#f59e0b' },
+            { label: 'Factory', percent: 66.7, color: '#3b82f6' },
+            { label: 'Commercial', percent: 32.4, color: '#22c55e' },
+            { label: 'Home Edition', percent: 0.9, color: '#f59e0b' },
           ],
-          unit: 'K units',
+          centerValue: '2.1M',
+          centerLabel: 'UNITS',
         },
       },
       {
@@ -754,10 +755,10 @@ export const CERTIFIED_SCENES: Record<string, CertifiedScene> = {
         props: {
           title: 'Roadmap Timeline',
           events: [
-            { date: '2029', label: 'Gen 3 mass production begins' },
-            { date: 'Q3 2030', label: 'Project FINE v3 hand delivery' },
-            { date: '2031', label: 'Gen 4 launch — 48 DOF, 20hr, multi-tasking' },
-            { date: '2032', label: 'Target: $9,800 unit cost' },
+            { date: '2029', title: 'Gen 3 mass production begins' },
+            { date: 'Q3 2030', title: 'Project FINE v3 hand delivery' },
+            { date: '2031', title: 'Gen 4 launch — 48 DOF, 20hr, multi-tasking' },
+            { date: '2032', title: 'Target: $9,800 unit cost' },
           ],
         },
       },
@@ -1343,12 +1344,13 @@ export const CERTIFIED_SCENES: Record<string, CertifiedScene> = {
         props: {
           title: 'Revenue by Region',
           segments: [
-            { label: 'United States', value: 380, color: '#3b82f6' },
-            { label: 'China', value: 340, color: '#e31937' },
-            { label: 'European Union', value: 210, color: '#a855f7' },
-            { label: 'Rest of World', value: 290, color: '#6b7280' },
+            { label: 'United States', percent: 31.1, color: '#3b82f6' },
+            { label: 'China', percent: 27.9, color: '#e31937' },
+            { label: 'European Union', percent: 17.2, color: '#a855f7' },
+            { label: 'Rest of World', percent: 23.8, color: '#6b7280' },
           ],
-          unit: '$B',
+          centerValue: '$1.22T',
+          centerLabel: 'TOTAL',
         },
       },
       {
@@ -1367,10 +1369,10 @@ export const CERTIFIED_SCENES: Record<string, CertifiedScene> = {
         type: 'risk-matrix',
         props: {
           title: 'Policy Risk Assessment',
-          items: [
-            { asset: 'China Trade Relations', risk: 'Tariff escalation', likelihood: 'medium', impact: 'high' },
-            { asset: 'EU AI Act', risk: 'Compliance cost for FSD', likelihood: 'high', impact: 'medium' },
-            { asset: 'US Policy', risk: 'EV subsidy changes', likelihood: 'low', impact: 'medium' },
+          risks: [
+            { label: 'China Trade', likelihood: 1, impact: 2 },
+            { label: 'EU AI Act', likelihood: 2, impact: 1 },
+            { label: 'US Policy', likelihood: 0, impact: 1 },
           ],
         },
       },
@@ -1818,10 +1820,10 @@ export const CERTIFIED_SCENES: Record<string, CertifiedScene> = {
         props: {
           title: 'Upcoming Races',
           events: [
-            { date: 'Mar 23', label: 'Australian Grand Prix — Melbourne' },
-            { date: 'Apr 6', label: 'Japanese Grand Prix — Suzuka' },
-            { date: 'Apr 20', label: 'Chinese Grand Prix — Shanghai' },
-            { date: 'May 4', label: 'Miami Grand Prix' },
+            { date: 'Mar 23', title: 'Australian Grand Prix — Melbourne' },
+            { date: 'Apr 6', title: 'Japanese Grand Prix — Suzuka' },
+            { date: 'Apr 20', title: 'Chinese Grand Prix — Shanghai' },
+            { date: 'May 4', title: 'Miami Grand Prix' },
           ],
         },
       },

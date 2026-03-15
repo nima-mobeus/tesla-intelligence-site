@@ -8,13 +8,21 @@ const CELL_CLR: Record<string, string> = { good: '#22c55e', bad: '#ff4040', watc
 
 interface ComparisonTableCardData {
     title?: string;
-    headers: string[];
-    rows: { cells: string[]; highlights?: number[] }[];
+    headers?: string[];
+    columns?: string[];        // LLM alias for headers
+    rows: ({ cells: string[]; highlights?: number[] } | string[])[];
     statusCols?: number[];
 }
 
 export default function ComparisonTableCard({ data, accentColor, onAction }: TeleComponentProps) {
-    const { title, headers = [], rows = [], statusCols = [] } = data as ComparisonTableCardData;
+    const raw = data as ComparisonTableCardData;
+    const title = raw.title;
+    const headers = raw.headers || raw.columns || [];
+    const statusCols = raw.statusCols || [];
+    // Normalize rows: accept both { cells: string[] } and plain string[]
+    const rows = (raw.rows || []).map((row: any) =>
+        Array.isArray(row) ? { cells: row } : { cells: row.cells || [], highlights: row.highlights }
+    );
     const { visible, overflow } = clampList(rows, 5);
     return (
         <div className="flex flex-col h-full overflow-hidden">

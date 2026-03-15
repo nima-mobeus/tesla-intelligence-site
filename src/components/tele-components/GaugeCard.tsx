@@ -3,7 +3,11 @@ import { getColor } from './utils';
 import type { TeleComponentProps } from './types';
 
 const C = 'var(--theme-chart-line)';
-const STATUS_CLR: Record<string, string> = { good: '#22c55e', bad: '#ff4040', watch: '#b45309' };
+const STATUS_CLR: Record<string, string> = {
+  good: '#22c55e', healthy: '#22c55e', ok: '#22c55e',
+  bad: '#ff4040', critical: '#ff4040', error: '#ff4040',
+  watch: '#b45309', degraded: '#b45309', warning: '#b45309', warn: '#b45309',
+};
 
 interface GaugeCardData {
   title?: string;

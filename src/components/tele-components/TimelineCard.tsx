@@ -9,11 +9,23 @@ const CAT_CLR: Record<string, string> = {
   market: '#0891b2', energy: '#059669', default: getColor(60),
 };
 
+interface RawTimelineEvent { date: string; title?: string; label?: string; name?: string; category?: string; impact?: string; description?: string; }
 interface TimelineEvent { date: string; title: string; category?: string; impact?: string; }
-interface TimelineCardData { title?: string; events: TimelineEvent[]; }
+interface TimelineCardData { title?: string; events: RawTimelineEvent[]; }
+
+function normalizeEvent(e: RawTimelineEvent): TimelineEvent {
+  return {
+    date: e.date,
+    title: e.title || e.label || e.name || '',
+    category: e.category,
+    impact: e.impact || e.description,
+  };
+}
 
 export default function TimelineCard({ data }: TeleComponentProps) {
-  const { title, events = [] } = data as TimelineCardData;
+  const raw = data as TimelineCardData;
+  const title = raw.title;
+  const events = (raw.events || []).map(normalizeEvent);
   const { visible, overflow } = clampList(events, 4);
 
   return (

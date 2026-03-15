@@ -5,15 +5,34 @@ import type { TeleComponentProps } from './types';
 const C = 'var(--theme-chart-line)';
 const RISK_CLR = ['#22c55e', '#b45309', '#ff4040'];
 
+interface RawRiskItem { label?: string; name?: string; asset?: string; risk?: string; likelihood: number | string; impact: number | string; }
 interface RiskItem { label: string; likelihood: number; impact: number; }
+
+const LEVEL_MAP: Record<string, number> = { low: 0, medium: 1, med: 1, high: 2, critical: 2 };
+
+function parseLevel(v: number | string): number {
+    if (typeof v === 'number') return Math.max(0, Math.min(2, v));
+    return LEVEL_MAP[String(v).toLowerCase()] ?? 1;
+}
+
+function normalizeRisk(r: RawRiskItem): RiskItem {
+    return {
+        label: r.label || r.name || r.asset || r.risk || '',
+        likelihood: parseLevel(r.likelihood),
+        impact: parseLevel(r.impact),
+    };
+}
 
 interface RiskMatrixCardData {
     title?: string;
-    risks: RiskItem[];
+    risks?: RawRiskItem[];
+    items?: RawRiskItem[];      // LLM alias for risks
 }
 
 export default function RiskMatrixCard({ data, accentColor, onAction }: TeleComponentProps) {
-    const { title, risks = [] } = data as RiskMatrixCardData;
+    const raw = data as RiskMatrixCardData;
+    const title = raw.title;
+    const risks = (raw.risks || raw.items || []).map(normalizeRisk);
     const labels = { y: ['High', 'Med', 'Low'], x: ['Low', 'Med', 'High'] };
 
     return (

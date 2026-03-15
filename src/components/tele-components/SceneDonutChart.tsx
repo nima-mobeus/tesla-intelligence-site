@@ -4,6 +4,16 @@ import type { TeleComponentProps } from './types';
 
 const C = 'var(--theme-chart-line)';
 
+interface RawSegment {
+    label?: string;
+    name?: string;
+    percent?: number;
+    value?: number;
+    share?: number;
+    previousPercent?: number;
+    color?: string;
+}
+
 interface Segment {
     label: string;
     percent: number;
@@ -13,15 +23,36 @@ interface Segment {
 
 interface SceneDonutChartData {
     title?: string;
-    segments: Segment[];
+    segments: RawSegment[];
     centerLabel?: string;
     centerValue?: string;
+}
+
+function normalizeSegment(seg: RawSegment): Segment {
+    return {
+        label: seg.label || seg.name || '',
+        percent: seg.percent ?? seg.value ?? seg.share ?? 0,
+        previousPercent: seg.previousPercent,
+        color: seg.color,
+    };
 }
 
 const defaultColors = [C, '#ef4444', '#6b7280', '#9ca3af', '#d1d5db'];
 
 export default function SceneDonutChart({ data, accentColor, onAction }: TeleComponentProps) {
-    const { title, segments = [], centerLabel, centerValue } = data as SceneDonutChartData;
+    const raw = data as SceneDonutChartData;
+    const title = raw.title;
+    const rawSegments = (raw.segments || []).map(normalizeSegment);
+    const centerLabel = raw.centerLabel;
+    const centerValue = raw.centerValue;
+
+    // Auto-scale: if values sum to > 110, treat as raw counts and convert to percentages
+    const total = rawSegments.reduce((s, seg) => s + seg.percent, 0);
+    const needsScale = total > 110;
+    const segments = needsScale && total > 0
+        ? rawSegments.map(seg => ({ ...seg, percent: +((seg.percent / total) * 100).toFixed(1) }))
+        : rawSegments;
+
     const r = 50, cx = 60, cy = 60, sw = 12;
     const circ = 2 * Math.PI * r;
     let offset = 0;

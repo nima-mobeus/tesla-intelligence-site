@@ -13,7 +13,12 @@ interface BulletListCardData {
 }
 
 export default function BulletListCard({ data, accentColor, onAction }: TeleComponentProps) {
-    const { title, items = [] } = data as BulletListCardData;
+    const raw = data as BulletListCardData;
+    const title = raw.title;
+    // Normalize: accept plain strings or {text, status} objects
+    const items: BulletItem[] = (raw.items || []).map((item: any) =>
+        typeof item === 'string' ? { text: item } : { text: item.text ?? item.label ?? item.name ?? String(item), status: item.status }
+    );
     const { visible, overflow } = clampList(items, 5);
     return (
         <div className="flex flex-col h-full overflow-hidden">
