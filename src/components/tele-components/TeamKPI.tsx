@@ -19,7 +19,7 @@ export default function TeamKPI({ data, accentColor, onAction }: TeleComponentPr
         <div className="flex flex-col h-full overflow-hidden">
             <div className="flex items-center gap-2 mb-2">
                 <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ backgroundColor: `${getColor(8)}` }}>
-                    <span className="font-data text-[11px] font-bold" style={{ color: `${getColor(90)}` }}>{teamName[0]}</span>
+                    <span className="font-data text-[11px] font-bold" style={{ color: `${getColor(90)}` }}>{teamName?.[0]}</span>
                 </div>
                 <div>
                     <div className="font-data text-sm md:text-sm font-bold" style={{ color: `${getColor(90)}` }}>{teamName}</div>

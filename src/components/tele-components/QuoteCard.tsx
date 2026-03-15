@@ -18,7 +18,7 @@ export default function QuoteCard({ data, accentColor, onAction }: TeleComponent
             <p className="font-voice text-sm md:text-sm leading-relaxed italic line-clamp-4 -mt-2" style={{ color: `${getColor(70)}` }}>{quote}</p>
             <div className="flex items-center gap-2">
                 <div className="w-6 h-6 rounded-full flex items-center justify-center" style={{ backgroundColor: `${getColor(8)}` }}>
-                    <span className="font-data text-sm font-bold" style={{ color: `${getColor(90)}` }}>{speaker[0]}</span>
+                    <span className="font-data text-sm font-bold" style={{ color: `${getColor(90)}` }}>{speaker?.[0]}</span>
                 </div>
                 <div>
                     <div className="font-data text-sm md:text-sm font-bold" style={{ color: `${getColor(90)}` }}>{speaker}</div>

@@ -20,8 +20,8 @@ export default function OrgRoster({ data, accentColor, onAction }: TeleComponent
             {title && <h3 className="font-data text-sm md:text-sm uppercase tracking-[0.12em] mb-2 shrink-0" style={{ color: `${getColor(90)}` }}>{title}</h3>}
             <div className="flex-1 grid grid-cols-3 gap-2 content-center overflow-hidden">
                 {visible.map((m, i) => {
-                    const firstName = m.name.split(' ')[0];
-                    const shortRole = m.role.length > 22 ? m.role.slice(0, 20) + '…' : m.role;
+                    const firstName = m.name?.split(' ')[0] ?? '';
+                    const shortRole = (m.role?.length ?? 0) > 22 ? m.role.slice(0, 20) + '…' : (m.role ?? '');
                     return (
                         <div key={i} className="flex flex-col items-center text-center gap-1 min-w-0 p-2 rounded-lg" style={{ backgroundColor: `${getColor(2)}` }}>
                             {/* First name as badge */}

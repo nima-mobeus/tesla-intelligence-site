@@ -20,7 +20,7 @@ export default function StakeholderMap({ data, accentColor, onAction }: TeleComp
                 {visible.map((s, i) => (
                     <div key={i} className="flex items-center gap-2 py-1 border-b" style={{ borderColor: `${getColor(6)}` }}>
                         <div className="w-6 h-6 rounded-full flex items-center justify-center shrink-0" style={{ backgroundColor: `${getColor(7)}` }}>
-                            <span className="font-data text-sm font-bold" style={{ color: `${getColor(90)}` }}>{s.name[0]}</span>
+                            <span className="font-data text-sm font-bold" style={{ color: `${getColor(90)}` }}>{s.name?.[0]}</span>
                         </div>
                         <div className="flex-1 min-w-0">
                             <div className="font-data text-sm md:text-sm font-bold truncate" style={{ color: `${getColor(90)}` }}>{s.name}</div>
@@ -28,7 +28,7 @@ export default function StakeholderMap({ data, accentColor, onAction }: TeleComp
                         </div>
                         {s.stake && <span className="font-data text-sm font-bold shrink-0" style={{ color: `${getColor(90)}` }}>{s.stake}</span>}
                         {s.change && (
-                            <span className="font-data text-sm font-bold shrink-0" style={{ color: s.change.startsWith('+') ? '#22c55e' : s.change.startsWith('-') ? '#ff4040' : `${getColor(60)}` }}>
+                            <span className="font-data text-sm font-bold shrink-0" style={{ color: s.change?.startsWith('+') ? '#22c55e' : s.change?.startsWith('-') ? '#ff4040' : `${getColor(60)}` }}>
                                 {s.change}
                             </span>
                         )}

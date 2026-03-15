@@ -20,7 +20,7 @@ export default function ComparisonProfile({ data, accentColor, onAction }: TeleC
                 {[left, right].map((side, si) => (
                     <div key={si} className="flex flex-col items-center gap-2 p-2 rounded-sm" style={{ backgroundColor: `${getColor(2)}` }}>
                         <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ backgroundColor: `${getColor(8)}` }}>
-                            <span className="font-data text-sm font-bold" style={{ color: `${getColor(90)}` }}>{side.name[0]}</span>
+                            <span className="font-data text-sm font-bold" style={{ color: `${getColor(90)}` }}>{side.name?.[0]}</span>
                         </div>
                         <div className="text-center">
                             <div className="font-data text-sm font-bold" style={{ color: `${getColor(90)}` }}>{side.name}</div>
