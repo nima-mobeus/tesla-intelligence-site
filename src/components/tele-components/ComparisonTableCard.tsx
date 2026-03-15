@@ -20,8 +20,8 @@ export default function ComparisonTableCard({ data, accentColor, onAction }: Tel
     const headers = raw.headers || raw.columns || [];
     const statusCols = raw.statusCols || [];
     // Normalize rows: accept both { cells: string[] } and plain string[]
-    const rows = (raw.rows || []).map((row: any) =>
-        Array.isArray(row) ? { cells: row } : { cells: row.cells || [], highlights: row.highlights }
+    const rows: { cells: string[]; highlights?: number[] }[] = (raw.rows || []).map((row: any) =>
+        Array.isArray(row) ? { cells: row as string[] } : { cells: (row.cells || []) as string[], highlights: row.highlights as number[] | undefined }
     );
     const { visible, overflow } = clampList(rows, 5);
     return (
