@@ -11,6 +11,7 @@ import {
   ParticipantKind
 } from 'livekit-client';
 import { ComponentTemplate, SceneData } from '@/types';
+import { CERTIFIED_SCENES } from '@/data/certified-scenes';
 
 // Agent state from LiveKit
 export type AgentState =
@@ -139,6 +140,7 @@ interface VoiceSessionState {
   submitForm: (templateId: string, formId: string, values: Record<string, unknown>) => Promise<void>;
 
   // Scene actions
+  applyScene: (payload: Record<string, any>) => void;
   clearScene: () => void;
   navigateSceneBack: () => void;
   tellAgent: (message: string) => Promise<void>;
@@ -738,6 +740,56 @@ export const useVoiceSessionStore = create<VoiceSessionState>((set, get) => ({
   },
 
   // Scene actions
+
+  // Apply a scene payload (from RPC or intercepted JSON speech).
+  // If the scene has a certified ID and empty/sparse cards, fill from
+  // the CERTIFIED_SCENES library.
+  applyScene: (payload: Record<string, any>) => {
+    let cards = payload.cards || [];
+    let layout = payload.layout;
+    let badge = payload.badge;
+    let title = payload.title;
+    let subtitle = payload.subtitle;
+    let footerLeft = payload.footerLeft;
+    let footerRight = payload.footerRight;
+
+    // Certified scene fallback: if agent sent an id we recognise and
+    // cards are empty or very sparse (≤1 card), use the pre-built scene.
+    const sceneId = payload.id;
+    if (sceneId && CERTIFIED_SCENES[sceneId]) {
+      const certified = CERTIFIED_SCENES[sceneId];
+      if (!cards.length || cards.length <= 1) {
+        console.log(`Certified scene fallback: ${sceneId} (agent sent ${cards.length} cards, using pre-built)`);
+        cards = certified.cards;
+        layout = layout || certified.layout;
+        badge = badge || certified.badge;
+        title = title || certified.title;
+        subtitle = subtitle || certified.subtitle;
+        footerLeft = footerLeft || certified.footerLeft;
+        footerRight = footerRight || certified.footerRight;
+      }
+    }
+
+    const sceneData: SceneData = {
+      id: sceneId || `scene-${Date.now()}`,
+      badge,
+      title,
+      subtitle,
+      layout,
+      cards,
+      maxRows: payload.maxRows,
+      footerLeft,
+      footerRight,
+      timestamp: new Date(),
+    };
+
+    set((state) => ({
+      currentScene: sceneData,
+      sceneActive: true,
+      sceneHistory: [...state.sceneHistory, sceneData],
+    }));
+  },
+
   clearScene: () => {
     set({ sceneActive: false, currentScene: null });
     get().setTheme('light');
@@ -996,6 +1048,34 @@ function setupRoomEventListeners(
         participant?.kind === ParticipantKind.AGENT ||
         participant?.identity === agentParticipant?.identity;
 
+      // --- Fix: Intercept JSON-like agent speech (Realtime API leak) ---
+      // The Realtime API sometimes echoes set_scene function call arguments
+      // as spoken text. Detect this, suppress from transcript, and route
+      // the data to setScene if no scene was already set for this content.
+      if (isAgent && segment.final) {
+        const trimmed = segment.text.trim();
+        if (trimmed.startsWith('{') && trimmed.endsWith('}')) {
+          try {
+            const parsed = JSON.parse(trimmed);
+            // Check if it looks like set_scene args (has scene_json key or cards array)
+            const scenePayload = parsed.scene_json
+              ? JSON.parse(parsed.scene_json)
+              : (Array.isArray(parsed.cards) ? parsed : null);
+
+            if (scenePayload && Array.isArray(scenePayload.cards)) {
+              console.log('Intercepted JSON speech → routing to setScene', scenePayload.id || '(dynamic)');
+              // Route to scene handler (acts as fallback if RPC didn't fire)
+              const { applyScene } = get();
+              applyScene(scenePayload);
+              // Suppress from transcript — don't add this segment
+              continue;
+            }
+          } catch {
+            // Not valid JSON or not a scene — fall through to normal transcript
+          }
+        }
+      }
+
       const entry: TranscriptEntry = {
         id: segment.id,
         text: segment.text,
@@ -1176,30 +1256,14 @@ function registerRpcHandlers(
     return JSON.stringify({ success: true });
   });
 
-  // Handler: Set full-screen scene
+  // Handler: Set full-screen scene (delegates to applyScene for certified-scene logic)
   localParticipant.registerRpcMethod('setScene', async (data) => {
     try {
       const payload = JSON.parse(data.payload);
       console.log('RPC: setScene', payload);
 
-      const sceneData: SceneData = {
-        id: payload.id || `scene-${Date.now()}`,
-        badge: payload.badge,
-        title: payload.title,
-        subtitle: payload.subtitle,
-        layout: payload.layout,
-        cards: payload.cards || [],
-        maxRows: payload.maxRows,
-        footerLeft: payload.footerLeft,
-        footerRight: payload.footerRight,
-        timestamp: new Date(),
-      };
-
-      set((state) => ({
-        currentScene: sceneData,
-        sceneActive: true,
-        sceneHistory: [...state.sceneHistory, sceneData],
-      }));
+      const { applyScene } = get();
+      applyScene(payload);
 
       return JSON.stringify({ success: true });
     } catch (error) {

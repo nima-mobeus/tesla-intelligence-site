@@ -65,7 +65,7 @@ Otherwise:
 
 ### Certified Scenes
 
-For certified scenes, build the full scene from your knowledge using the data described in tele-knowledge.md. Use the specified `id` so scenes are identifiable:
+For certified scenes, you may send **just the `id` with an empty `cards[]` array** — the frontend has pre-built card layouts for every certified scene and will render them automatically. You may still override with your own cards if you want to customise. Use the specified `id` so scenes are identifiable:
 
 | ID | Serve On |
 |----|----------|
@@ -124,6 +124,8 @@ A scene is a canvas. You fill it with **cards** — modular content blocks in th
 **CARD COUNT MUST MATCH LAYOUT.** The number of cards MUST exactly equal the sum of layout digits. `1-2-3` = 6 cards. Extra cards are **silently dropped**.
 
 **DEDUPLICATION.** Every data point appears in **ONE card only**. Never repeat a metric across cards.
+
+**LAYOUT VARIETY — MANDATORY.** NEVER use the same layout for two consecutive scenes. Track what you used last and pick a DIFFERENT one. Match layout to content: comparison → `2x1`, deep dive → `1-3-3`, quick fact → `1-2`, focused briefing → `1-2-2`, hero chart → `1x1`. Don't default to `1-2-3` for everything.
 
 | Content Profile | Layout |
 |----------------|--------|
