@@ -10,6 +10,8 @@ import { ChevronLeft, Sun, Moon, Camera, Download, Mail, Link2 } from 'lucide-re
 export function SceneManager() {
   const currentScene = useVoiceSessionStore((s) => s.currentScene);
   const sceneActive = useVoiceSessionStore((s) => s.sceneActive);
+  const sceneLoading = useVoiceSessionStore((s) => s.sceneLoading);
+  const sceneSkeletonLayout = useVoiceSessionStore((s) => s.sceneSkeletonLayout);
   const navigateSceneBack = useVoiceSessionStore((s) => s.navigateSceneBack);
   const sceneHistory = useVoiceSessionStore((s) => s.sceneHistory);
   const tellAgent = useVoiceSessionStore((s) => s.tellAgent);
@@ -37,7 +39,7 @@ export function SceneManager() {
     tellAgent('Create a Google Doc from this briefing.');
   }, [tellAgent]);
 
-  if (!sceneActive || !currentScene) return null;
+  if (!sceneActive || (!currentScene && !sceneLoading)) return null;
 
   const hasHistory = sceneHistory.length > 1;
   const isDark = theme === 'dark';
@@ -75,7 +77,7 @@ export function SceneManager() {
           className="h-5 md:h-6 w-auto"
           priority
         />
-        {currentScene.badge && (
+        {currentScene?.badge && (
           <span
             className="inline-block rounded-full px-3 py-1 text-[10px] font-data tracking-[0.15em] uppercase"
             style={{
@@ -91,9 +93,9 @@ export function SceneManager() {
       {/* Content row — title + GridView */}
       <main className="relative z-10 flex flex-col min-h-0 pt-4">
         {/* Title */}
-        {(currentScene.title || currentScene.subtitle) && (
+        {(currentScene?.title || currentScene?.subtitle) && (
           <div className="shrink-0 pb-4">
-            {currentScene.title && (
+            {currentScene?.title && (
               <h1
                 className="font-hero text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight"
                 style={{ color: 'var(--theme-scene-text)' }}
@@ -101,7 +103,7 @@ export function SceneManager() {
                 {currentScene.title}
               </h1>
             )}
-            {currentScene.subtitle && (
+            {currentScene?.subtitle && (
               <p
                 className="text-sm mt-1 font-voice"
                 style={{ color: 'var(--theme-scene-text-muted)' }}
@@ -114,7 +116,9 @@ export function SceneManager() {
 
         {/* Grid content */}
         <div className="flex-1 overflow-auto min-h-0">
-          {GridView && currentScene.cards && currentScene.cards.length > 0 ? (
+          {sceneLoading ? (
+            <SceneSkeleton layout={sceneSkeletonLayout || '1-2-3'} />
+          ) : GridView && currentScene?.cards && currentScene.cards.length > 0 ? (
             <Suspense
               fallback={
                 <div className="animate-pulse h-full rounded-xl" style={{ background: 'var(--theme-card-bg)' }} />
@@ -145,9 +149,74 @@ export function SceneManager() {
         className="relative z-10 flex items-center justify-between text-[10px] sm:text-xs font-data uppercase tracking-widest shrink-0 pt-2"
         style={{ color: 'var(--theme-scene-footer)' }}
       >
-        <span>{currentScene.footerLeft || ''}</span>
-        <span>{currentScene.footerRight || ''}</span>
+        <span>{currentScene?.footerLeft || ''}</span>
+        <span>{currentScene?.footerRight || ''}</span>
       </footer>
+    </div>
+  );
+}
+
+/** Skeleton loading grid — shows shimmer cards matching the layout */
+function SceneSkeleton({ layout }: { layout: string }) {
+  // Parse layout to get card count: "1-2-3" → 6, "2x3" → 6
+  const cardCount = layout.includes('x')
+    ? layout.split('x').reduce((a, b) => parseInt(a as unknown as string) * parseInt(b), 1 as unknown as number)
+    : layout.split('-').reduce((sum, n) => sum + parseInt(n), 0);
+
+  // Parse rows from layout
+  const rows = layout.includes('x')
+    ? (() => {
+        const [cols, rowCount] = layout.split('x').map(Number);
+        return Array(rowCount).fill(cols);
+      })()
+    : layout.split('-').map(Number);
+
+  return (
+    <div className="h-full flex flex-col gap-3">
+      {rows.map((colCount, rowIdx) => (
+        <div
+          key={rowIdx}
+          className="flex-1 grid gap-3"
+          style={{ gridTemplateColumns: `repeat(${colCount}, 1fr)` }}
+        >
+          {Array(colCount)
+            .fill(0)
+            .map((_, colIdx) => (
+              <div
+                key={colIdx}
+                className="rounded-xl animate-pulse"
+                style={{
+                  background: 'var(--theme-card-bg, rgba(255,255,255,0.05))',
+                  minHeight: rowIdx === 0 ? '60px' : '120px',
+                }}
+              >
+                {/* Shimmer lines inside card */}
+                <div className="p-4 space-y-3">
+                  <div
+                    className="h-3 rounded-full w-1/3 animate-pulse"
+                    style={{ background: 'var(--theme-scene-text-muted, rgba(255,255,255,0.1))', opacity: 0.3 }}
+                  />
+                  <div
+                    className="h-2 rounded-full w-2/3 animate-pulse"
+                    style={{ background: 'var(--theme-scene-text-muted, rgba(255,255,255,0.1))', opacity: 0.2, animationDelay: '150ms' }}
+                  />
+                  {rowIdx > 0 && (
+                    <>
+                      <div
+                        className="h-2 rounded-full w-1/2 animate-pulse"
+                        style={{ background: 'var(--theme-scene-text-muted, rgba(255,255,255,0.1))', opacity: 0.15, animationDelay: '300ms' }}
+                      />
+                      <div
+                        className="h-8 rounded-lg w-full animate-pulse mt-2"
+                        style={{ background: 'var(--theme-scene-text-muted, rgba(255,255,255,0.1))', opacity: 0.1, animationDelay: '450ms' }}
+                      />
+                    </>
+                  )}
+                </div>
+              </div>
+            ))}
+        </div>
+      ))}
     </div>
   );
 }

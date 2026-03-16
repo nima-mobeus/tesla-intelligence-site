@@ -108,6 +108,8 @@ interface VoiceSessionState {
   currentScene: SceneData | null;
   sceneHistory: SceneData[];
   sceneActive: boolean;
+  sceneLoading: boolean;        // True while skeleton is shown, waiting for full scene
+  sceneSkeletonLayout: string | null;  // Layout code for skeleton (e.g. "1-2-3")
 
   // Chat panel state
   isChatPanelOpen: boolean;
@@ -184,6 +186,8 @@ export const useVoiceSessionStore = create<VoiceSessionState>((set, get) => ({
   currentScene: null,
   sceneHistory: [],
   sceneActive: false,
+  sceneLoading: false,
+  sceneSkeletonLayout: null,
 
   isChatPanelOpen: false,
   theme: 'light',
@@ -308,6 +312,8 @@ export const useVoiceSessionStore = create<VoiceSessionState>((set, get) => ({
       currentScene: null,
       sceneHistory: [],
       sceneActive: false,
+      sceneLoading: false,
+      sceneSkeletonLayout: null,
       // Reset avatar state
       avatarEnabled: false,
       avatarVisible: true,
@@ -548,6 +554,8 @@ export const useVoiceSessionStore = create<VoiceSessionState>((set, get) => ({
         currentScene: null,
         sceneHistory: [],
         sceneActive: false,
+        sceneLoading: false,
+        sceneSkeletonLayout: null,
         theme: 'light',
         _preWarm: null,
         _preWarmState: 'idle',
@@ -918,6 +926,8 @@ function setupRoomEventListeners(
         currentScene: null,
         sceneHistory: [],
         sceneActive: false,
+        sceneLoading: false,
+        sceneSkeletonLayout: null,
       });
     }
   });
@@ -1095,6 +1105,35 @@ function setupRoomEventListeners(
         }
         return { transcripts: [...state.transcripts, entry] };
       });
+    }
+  });
+
+  // ── UI Engine: Data Channel listener ──────────────────────────
+  // The UI Engine publishes scene data (skeleton + full scenes) to the room
+  // via LiveKit Server SDK send_data(). This runs in parallel with the voice
+  // agent — both receive the same user transcript independently.
+  room.on(RoomEvent.DataReceived, (payload: Uint8Array, participant, kind, topic) => {
+    if (topic !== 'ui-engine:scene') return;
+
+    try {
+      const data = JSON.parse(new TextDecoder().decode(payload));
+      console.log('UI Engine data received:', data.type, data.id || '');
+
+      if (data.type === 'skeleton') {
+        // Show skeleton loading state with the given layout
+        set({
+          sceneLoading: true,
+          sceneSkeletonLayout: data.layout || '1-2-3',
+          sceneActive: true,
+        });
+      } else if (data.type === 'scene') {
+        // Full scene arrived — replace skeleton with real content
+        const { applyScene } = get();
+        applyScene(data);
+        set({ sceneLoading: false, sceneSkeletonLayout: null });
+      }
+    } catch (err) {
+      console.error('UI Engine data parse error:', err);
     }
   });
 
