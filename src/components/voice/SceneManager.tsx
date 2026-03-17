@@ -2,7 +2,7 @@
 
 import { useVoiceSessionStore } from '@/lib/stores/voice-session-store';
 import { getComponent } from '@/components/tele-components/component-registry';
-import { Suspense, useMemo, useCallback } from 'react';
+import { Suspense, useMemo, useCallback, useEffect } from 'react';
 import Image from 'next/image';
 import { teslaLogoWhite, teslaLogo } from '@/assets';
 import { ChevronLeft, Sun, Moon, Camera, Download, Mail, Link2 } from 'lucide-react';
@@ -19,6 +19,25 @@ export function SceneManager() {
   const toggleTheme = useVoiceSessionStore((s) => s.toggleTheme);
 
   const GridView = useMemo(() => getComponent('GridView'), []);
+
+  // Keyboard navigation: ←/Backspace = back, →/Shift+D = download
+  useEffect(() => {
+    if (!sceneActive) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Skip if user is typing in an input
+      const tag = (e.target as HTMLElement)?.tagName;
+      if (tag === 'INPUT' || tag === 'TEXTAREA' || (e.target as HTMLElement)?.isContentEditable) return;
+
+      if (e.key === 'ArrowLeft' || e.key === 'Backspace') {
+        e.preventDefault();
+        navigateSceneBack();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [sceneActive, navigateSceneBack]);
 
   const handleAction = useCallback(
     (phrase: string) => {

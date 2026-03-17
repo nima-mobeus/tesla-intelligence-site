@@ -35,7 +35,7 @@ export type SessionState =
 export interface TranscriptEntry {
   id: string;
   text: string;
-  participant: 'user' | 'agent';
+  participant: 'user' | 'agent' | 'tool';
   participantName: string;
   timestamp: Date;
   isFinal: boolean;
@@ -1249,6 +1249,28 @@ function updateAgentStateFromAttributes(
   }
 }
 
+// Helper: Add a tool call entry to transcripts
+function addToolCallTranscript(
+  set: (state: Partial<VoiceSessionState> | ((state: VoiceSessionState) => Partial<VoiceSessionState>)) => void,
+  toolName: string,
+  params: Record<string, unknown>
+) {
+  set((state) => ({
+    transcripts: [
+      ...state.transcripts,
+      {
+        id: `tool-${Date.now()}-${Math.random().toString(36).substr(2, 6)}`,
+        text: JSON.stringify(params),
+        participant: 'tool' as const,
+        participantName: toolName,
+        timestamp: new Date(),
+        isFinal: true,
+        isAgent: false,
+      },
+    ],
+  }));
+}
+
 // Helper: Register RPC handlers for agent UI control
 function registerRpcHandlers(
   room: Room,
@@ -1262,6 +1284,7 @@ function registerRpcHandlers(
     try {
       const payload = JSON.parse(data.payload);
       console.log('RPC: showComponent', payload);
+      addToolCallTranscript(set, 'show_component', { templateId: payload.templateId, id: payload.id });
       if (!payload.templateId) {
         return JSON.stringify({ success: false, error: 'templateId is required' });
       }
@@ -1309,6 +1332,7 @@ function registerRpcHandlers(
     try {
       const payload = JSON.parse(data.payload);
       console.log('RPC: hideComponent', payload);
+      addToolCallTranscript(set, 'hide_component', { id: payload.id });
 
       set((state) => ({
         uiComponents: state.uiComponents.filter((c) => c.id !== payload.id),
@@ -1351,6 +1375,7 @@ function registerRpcHandlers(
     try {
       const payload = JSON.parse(data.payload);
       console.log('RPC: setScene', payload);
+      addToolCallTranscript(set, 'generate_scene', { sceneId: payload.id, layout: payload.layout, cards: payload.cards?.length });
 
       const { applyScene } = get();
       applyScene(payload);

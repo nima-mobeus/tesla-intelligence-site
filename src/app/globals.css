@@ -220,6 +220,16 @@ body {
 }
 .start-button:hover { transform: translateY(-1px); }
 
+/* ── Connecting Pulse (ripple effect while connecting) ── */
+@keyframes connecting-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(26, 26, 46, 0.4); }
+  70% { box-shadow: 0 0 0 12px rgba(26, 26, 46, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(26, 26, 46, 0); }
+}
+.connecting-pulse {
+  animation: connecting-pulse 1.5s ease-in-out infinite;
+}
+
 /* ── Slide Action Icons Shift ── */
 .slide-action-icons {
   transition: right 0.5s ease-out, opacity 0.3s ease;

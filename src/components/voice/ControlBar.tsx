@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Mic, MicOff, MessageCircle, X, ArrowRight } from 'lucide-react';
 import { useVoiceSessionStore } from '@/lib/stores/voice-session-store';
 import { assets } from '@/assets';
+import { playUISound, playGlassSound } from '@/utils/soundGenerator';
 
 export function ControlBar() {
   const sessionState = useVoiceSessionStore((s) => s.sessionState);
@@ -23,8 +24,6 @@ export function ControlBar() {
   const isIdle = sessionState === 'idle' || sessionState === 'error';
 
   const isDark = theme === 'dark';
-  // On idle (landing page): always dark bg → white icons
-  // On scene: depends on theme
   const iconColor = (!sceneActive || isDark) ? 'text-white/70 hover:text-white' : 'text-gray-600 hover:text-gray-900';
   const iconBg = (!sceneActive || isDark) ? 'bg-white/10 hover:bg-white/20' : 'bg-black/5 hover:bg-black/10';
 
@@ -37,17 +36,36 @@ export function ControlBar() {
     setShowTalkButton(false);
   }, [isIdle]);
 
+  const handleConnect = () => {
+    playGlassSound();
+    connect();
+  };
+
+  const handleToggleChat = () => {
+    playUISound(isChatPanelOpen ? 'off' : 'on', 'chat');
+    toggleChatPanel();
+  };
+
+  const handleToggleMute = () => {
+    playUISound(isMuted ? 'on' : 'off', 'mic');
+    toggleMute();
+  };
+
+  const handleDisconnect = () => {
+    playUISound('off', 'avatar');
+    disconnect();
+  };
+
   // z-100 when chat open so icons float above chat panel (z-50)
-  // z-60 when closed (above slide action icons at z-40)
   const zIndex = isChatPanelOpen ? 'z-[100]' : 'z-[60]';
 
   return (
     <div className={`fixed top-4 right-4 md:top-6 md:right-8 ${zIndex} inline-flex items-center gap-2 sm:gap-3 transition-all duration-300 ease-in-out`}>
 
-      {/* ── Chat toggle (bare icon, no bg — red X when open) ── */}
+      {/* ── Chat toggle ── */}
       {isConnected && (
         <button
-          onClick={toggleChatPanel}
+          onClick={handleToggleChat}
           className={`transition-all duration-300 ${
             isChatPanelOpen
               ? 'text-red-500 hover:text-red-400'
@@ -62,7 +80,7 @@ export function ControlBar() {
       {/* ── Mic toggle ── */}
       {isConnected && (
         <button
-          onClick={toggleMute}
+          onClick={handleToggleMute}
           className={`p-2 rounded-full transition-all duration-200 ${
             isMuted
               ? 'text-red-500 hover:text-red-400'
@@ -77,17 +95,27 @@ export function ControlBar() {
       {/* ── TALK button (idle) ── */}
       {isIdle && showTalkButton && (
         <button
-          onClick={connect}
+          onClick={handleConnect}
           className="start-button inline-flex items-center gap-2 rounded-none text-sm"
         >
           TALK <ArrowRight className="w-3.5 h-3.5" />
         </button>
       )}
 
-      {/* ── Disconnect (red circle, only when connected) ── */}
+      {/* ── Connecting indicator (pulsing button) ── */}
+      {isConnecting && (
+        <button
+          disabled
+          className="start-button inline-flex items-center gap-2 rounded-none text-sm opacity-80 connecting-pulse"
+        >
+          CONNECTING...
+        </button>
+      )}
+
+      {/* ── Disconnect ── */}
       {isConnected && (
         <button
-          onClick={disconnect}
+          onClick={handleDisconnect}
           className="bg-red-600 text-white p-2.5 rounded-full hover:bg-red-500 transition-colors duration-300 shadow-lg shadow-red-600/30"
           title="Disconnect"
         >
@@ -95,7 +123,7 @@ export function ControlBar() {
         </button>
       )}
 
-      {/* ── Avatar thumbnail (always — pulsates on connecting) ── */}
+      {/* ── Avatar thumbnail ── */}
       <div
         className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full overflow-hidden border-2 transition-all cursor-pointer ${
           isConnecting
@@ -104,7 +132,7 @@ export function ControlBar() {
               ? 'border-[rgba(45,64,89,0.8)] shadow-lg'
               : 'border-white/30 shadow-lg'
         }`}
-        onClick={isIdle ? connect : undefined}
+        onClick={isIdle ? handleConnect : undefined}
       >
         <img
           src={assets.avatarProfile}
