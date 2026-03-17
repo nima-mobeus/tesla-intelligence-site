@@ -13,6 +13,9 @@ import {
 import { ComponentTemplate, SceneData } from '@/types';
 import { CERTIFIED_SCENES } from '@/data/certified-scenes';
 
+// Module-level timing anchor for click-to-speech measurement
+let _connectStartTime = 0;
+
 // Agent state from LiveKit
 export type AgentState =
   | 'initializing'
@@ -204,6 +207,8 @@ export const useVoiceSessionStore = create<VoiceSessionState>((set, get) => ({
     if (sessionState === 'connected' || sessionState === 'connecting') return;
 
     set({ _preWarmState: 'warming' });
+    const t0 = performance.now();
+    console.log('[TIMING] preWarm: started');
 
     try {
       const widgetHost = process.env.NEXT_PUBLIC_WIDGET_HOST || 'https://app.mobeus.ai';
@@ -220,6 +225,8 @@ export const useVoiceSessionStore = create<VoiceSessionState>((set, get) => ({
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ apiKey }),
       });
+
+      console.log(`[TIMING] preWarm: +${(performance.now() - t0).toFixed(0)}ms | prepare API responded (status=${response.status})`);
 
       if (!response.ok) {
         console.warn('Pre-warm prepare failed:', response.status);
@@ -248,10 +255,10 @@ export const useVoiceSessionStore = create<VoiceSessionState>((set, get) => ({
       // Connect to room — this is the WebRTC warm-up
       await room.connect(sessionData.wsUrl || sessionData.livekitUrl, sessionData.token);
 
+      console.log(`[TIMING] preWarm: +${(performance.now() - t0).toFixed(0)}ms | room.connect() done, WebRTC warm`);
+
       // Do NOT enable mic yet (avoids browser permission prompt)
       // Do NOT register RPC handlers yet (agent not present)
-
-      console.log('Pre-warm: room connected, WebRTC warm');
 
       // Handle the pre-warmed room being disconnected (e.g. timeout)
       room.once(RoomEvent.Disconnected, () => {
@@ -288,6 +295,9 @@ export const useVoiceSessionStore = create<VoiceSessionState>((set, get) => ({
   // Connect to voice session — uses pre-warmed room if available, otherwise falls back
   connect: async () => {
     const { sessionState, room: existingRoom, _preWarmState, _preWarm } = get();
+    const tConnect = performance.now();
+    _connectStartTime = tConnect;
+    console.log(`[TIMING] connect: started (preWarmState=${_preWarmState})`);
 
     if (sessionState !== 'idle' && sessionState !== 'error') {
       console.warn('Already connecting or connected');
@@ -338,7 +348,7 @@ export const useVoiceSessionStore = create<VoiceSessionState>((set, get) => ({
 
       // ── Fast path: pre-warmed room is ready ──
       if (_preWarmState === 'ready' && _preWarm && _preWarm.room.state === 'connected') {
-        console.log('Using pre-warmed room:', _preWarm.roomName);
+        console.log(`[TIMING] connect: +${(performance.now() - tConnect).toFixed(0)}ms | using pre-warmed room: ${_preWarm.roomName}`);
 
         const { room, roomName, sessionId, templates, defaults, agentName } = _preWarm;
 
@@ -368,6 +378,8 @@ export const useVoiceSessionStore = create<VoiceSessionState>((set, get) => ({
           }),
         });
 
+        console.log(`[TIMING] connect: +${(performance.now() - tConnect).toFixed(0)}ms | activate API responded (status=${activateResponse.status})`);
+
         if (!activateResponse.ok) {
           const errData = await activateResponse.json().catch(() => ({}));
           throw new Error(errData.error || 'Failed to activate session');
@@ -375,6 +387,7 @@ export const useVoiceSessionStore = create<VoiceSessionState>((set, get) => ({
 
         // Enable microphone (triggers browser permission prompt NOW)
         await room.localParticipant.setMicrophoneEnabled(!defaults.micMuted);
+        console.log(`[TIMING] connect: +${(performance.now() - tConnect).toFixed(0)}ms | mic enabled`);
 
         // Register RPC handlers (agent is about to join)
         registerRpcHandlers(room, set, get);
@@ -388,6 +401,7 @@ export const useVoiceSessionStore = create<VoiceSessionState>((set, get) => ({
           _preWarm: null,
           _preWarmState: 'idle',
         });
+        console.log(`[TIMING] connect: +${(performance.now() - tConnect).toFixed(0)}ms | CONNECTED (fast path, pre-warmed)`);
         if (typeof document !== 'undefined') {
           document.body.classList.add('chat-squeezed');
         }
@@ -397,7 +411,7 @@ export const useVoiceSessionStore = create<VoiceSessionState>((set, get) => ({
       }
 
       // ── Slow path: fallback (no pre-warm or pre-warm failed) ──
-      console.log('No pre-warm available, using standard flow');
+      console.log(`[TIMING] connect: +${(performance.now() - tConnect).toFixed(0)}ms | no pre-warm, using slow path`);
 
       // Clean up stale pre-warm if any
       if (_preWarm?.room) {
@@ -472,9 +486,11 @@ export const useVoiceSessionStore = create<VoiceSessionState>((set, get) => ({
 
       // Connect to the room
       await room.connect(sessionData.wsUrl || sessionData.livekitUrl, sessionData.token);
+      console.log(`[TIMING] connect: +${(performance.now() - tConnect).toFixed(0)}ms | room.connect() done`);
 
       // Enable microphone
       await room.localParticipant.setMicrophoneEnabled(!defaultMicMuted);
+      console.log(`[TIMING] connect: +${(performance.now() - tConnect).toFixed(0)}ms | mic enabled`);
 
       // Register RPC handlers for agent UI control
       registerRpcHandlers(room, set, get);
@@ -486,6 +502,7 @@ export const useVoiceSessionStore = create<VoiceSessionState>((set, get) => ({
         isChatPanelOpen: true,
         isOverlayExpanded: true,
       });
+      console.log(`[TIMING] connect: +${(performance.now() - tConnect).toFixed(0)}ms | CONNECTED (slow path)`);
       if (typeof document !== 'undefined') {
         document.body.classList.add('chat-squeezed');
       }
@@ -957,6 +974,9 @@ function setupRoomEventListeners(
       }
     } else if (track.kind === Track.Kind.Audio) {
       if (participant.kind === ParticipantKind.AGENT) {
+        if (_connectStartTime) {
+          console.log(`[TIMING] connect: +${(performance.now() - _connectStartTime).toFixed(0)}ms | AGENT AUDIO TRACK received`);
+        }
         const audioElement = track.attach() as HTMLAudioElement;
         audioElement.id = `audio-agent-${participant.identity}`;
         audioElement.autoplay = true;
@@ -1006,6 +1026,9 @@ function setupRoomEventListeners(
     }
 
     if (participant.kind === ParticipantKind.AGENT) {
+      if (_connectStartTime) {
+        console.log(`[TIMING] connect: +${(performance.now() - _connectStartTime).toFixed(0)}ms | AGENT JOINED: ${participant.identity}`);
+      }
       set({ agentParticipant: participant });
       updateAgentStateFromAttributes(participant, set);
 
@@ -1050,6 +1073,7 @@ function setupRoomEventListeners(
   });
 
   // Transcription received
+  let _firstAgentTranscriptLogged = false;
   room.on(RoomEvent.TranscriptionReceived, (segments, participant, publication) => {
     const { agentParticipant } = get();
 
@@ -1057,6 +1081,14 @@ function setupRoomEventListeners(
       const isAgent =
         participant?.kind === ParticipantKind.AGENT ||
         participant?.identity === agentParticipant?.identity;
+
+      // Log first agent speech for click-to-speech timing
+      if (isAgent && !_firstAgentTranscriptLogged && segment.text.trim()) {
+        _firstAgentTranscriptLogged = true;
+        if (_connectStartTime) {
+          console.log(`[TIMING] connect: +${(performance.now() - _connectStartTime).toFixed(0)}ms | FIRST AGENT SPEECH: "${segment.text.slice(0, 60)}"`);
+        }
+      }
 
       // --- Fix: Intercept JSON-like agent speech (Realtime API leak) ---
       // The Realtime API sometimes echoes set_scene function call arguments
