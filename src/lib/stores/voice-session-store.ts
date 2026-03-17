@@ -592,6 +592,10 @@ export const useVoiceSessionStore = create<VoiceSessionState>((set, get) => ({
         document.documentElement.removeAttribute('data-theme');
         document.body.classList.remove('chat-squeezed', 'chat-sleeping');
       }
+
+      // Re-trigger preWarm so next connect() is fast (no slow path)
+      console.log('[TIMING] disconnect: re-triggering preWarm for next session');
+      setTimeout(() => get().preWarm(), 100);
     }
   },
 
@@ -1206,7 +1210,12 @@ function setupRoomEventListeners(
       currentScene: null,
       sceneHistory: [],
       sceneActive: false,
+      _preWarm: null,
+      _preWarmState: 'idle',
     });
+    // Re-trigger preWarm for next session after unexpected disconnect
+    console.log('[TIMING] room disconnected event: re-triggering preWarm');
+    setTimeout(() => get().preWarm(), 100);
   });
 
   // Check for existing agent participants
