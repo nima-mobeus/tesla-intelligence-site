@@ -65,8 +65,7 @@ export function BackgroundLayer() {
               width: '100%',
               height: '100%',
               objectFit: 'cover',
-              objectPosition: 'center',
-              transform: 'scaleX(-1)',
+              objectPosition: 'right center',
               filter: `brightness(var(--theme-video-brightness)) saturate(var(--theme-video-saturate))`,
             }}
           />
