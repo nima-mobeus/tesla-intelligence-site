@@ -193,7 +193,7 @@ export const useVoiceSessionStore = create<VoiceSessionState>((set, get) => ({
   sceneSkeletonLayout: null,
 
   isChatPanelOpen: false,
-  theme: 'light',
+  theme: 'dark',
   isOverlayExpanded: false,
   isOverlayVisible: true,
 
@@ -583,13 +583,13 @@ export const useVoiceSessionStore = create<VoiceSessionState>((set, get) => ({
         sceneActive: false,
         sceneLoading: false,
         sceneSkeletonLayout: null,
-        theme: 'light',
+        theme: 'dark',
         _preWarm: null,
         _preWarmState: 'idle',
       });
-      // Reset body background to light
+      // Reset body to dark theme
       if (typeof document !== 'undefined') {
-        document.documentElement.removeAttribute('data-theme');
+        document.documentElement.setAttribute('data-theme', 'dark');
         document.body.classList.remove('chat-squeezed', 'chat-sleeping');
       }
 
@@ -831,7 +831,7 @@ export const useVoiceSessionStore = create<VoiceSessionState>((set, get) => ({
 
   clearScene: () => {
     set({ sceneActive: false, currentScene: null });
-    get().setTheme('light');
+    get().setTheme('dark');
   },
 
   navigateSceneBack: () => {
@@ -847,7 +847,7 @@ export const useVoiceSessionStore = create<VoiceSessionState>((set, get) => ({
       });
     } else {
       set({ sceneActive: false, currentScene: null, sceneHistory: [] });
-      get().setTheme('light');
+      get().setTheme('dark');
     }
   },
 
@@ -1392,7 +1392,7 @@ function registerRpcHandlers(
     console.log('RPC: clearScene');
     set({ sceneActive: false, currentScene: null });
     // Restore light theme when leaving scene
-    get().setTheme('light');
+    get().setTheme('dark');
     return JSON.stringify({ success: true });
   });
 

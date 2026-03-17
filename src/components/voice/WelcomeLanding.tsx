@@ -3,7 +3,7 @@
 import { useVoiceSessionStore } from '@/lib/stores/voice-session-store';
 import { ArrowRight } from 'lucide-react';
 import Image from 'next/image';
-import { teslaLogo } from '@/assets';
+import { teslaLogoWhite } from '@/assets';
 
 const agentName = process.env.NEXT_PUBLIC_AGENT_NAME || 'Tesla Intelligence';
 
@@ -18,7 +18,7 @@ export function WelcomeLanding() {
       {/* Header — logo top-left */}
       <header className="flex items-center">
         <Image
-          src={teslaLogo}
+          src={teslaLogoWhite}
           alt="Tesla"
           className="h-5 md:h-6 w-auto"
           priority
@@ -33,25 +33,25 @@ export function WelcomeLanding() {
             className="animate-slide-in-left"
             style={{ animationDelay: '0.1s' }}
           >
-            <span className="inline-block rounded-full bg-gray-900/80 px-4 py-1.5 text-xs font-data tracking-[0.15em] text-white uppercase">
+            <span className="inline-block rounded-full bg-white/10 px-4 py-1.5 text-xs font-data tracking-[0.15em] text-white/80 uppercase backdrop-blur-sm border border-white/10">
               {agentName} &middot; TESLA 2030
             </span>
           </div>
 
           {/* Title */}
           <h1
-            className="animate-slide-in-left font-hero text-5xl sm:text-6xl md:text-7xl lg:text-8xl leading-[0.95] tracking-tight text-gray-900"
+            className="animate-slide-in-left font-hero text-5xl sm:text-6xl md:text-7xl lg:text-8xl leading-[0.95] tracking-tight text-white"
             style={{ animationDelay: '0.25s' }}
           >
             The Command{' '}
-            <span className="bg-gradient-to-r from-gray-900 via-gray-600 to-gray-400 bg-clip-text text-transparent">
+            <span className="text-[#00e5ff]">
               Layer
             </span>
           </h1>
 
           {/* Subtitle */}
           <p
-            className="animate-slide-in-left text-base sm:text-lg md:text-xl text-gray-600 max-w-lg"
+            className="animate-slide-in-left text-base sm:text-lg md:text-xl text-white/60 max-w-lg"
             style={{ animationDelay: '0.4s' }}
           >
             48.2M vehicles &middot; 8 gigafactories &middot; 1.2M Optimus units &middot; 8.4M robotaxi rides/day
@@ -75,7 +75,7 @@ export function WelcomeLanding() {
       </main>
 
       {/* Footer */}
-      <footer className="flex items-center justify-between text-[10px] sm:text-xs font-data text-gray-400 uppercase tracking-widest">
+      <footer className="flex items-center justify-between text-[10px] sm:text-xs font-data text-white/40 uppercase tracking-widest">
         <span>43 MCP DOMAINS &middot; MAR 2030</span>
         <span>48.2M FLEET NODES &middot; 8.4M ROBOTAXI RIDES/DAY</span>
       </footer>

@@ -16,6 +16,11 @@ export function VoiceSessionProvider({ children }: VoiceSessionProviderProps) {
   const preWarm = useVoiceSessionStore((state) => state.preWarm);
   const pushToTalkRef = useRef(false);
 
+  // Initialize dark theme on mount
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', 'dark');
+  }, []);
+
   // Pre-warm the LiveKit room on page load.
   // This establishes the WebRTC connection in the background so that
   // when the user clicks "Start", we only need to dispatch the agent
