@@ -1396,6 +1396,19 @@ function registerRpcHandlers(
     return JSON.stringify({ success: true });
   });
 
+  // Handler: Tool call notification (agent-side tools like search_knowledge)
+  localParticipant.registerRpcMethod('toolCallNotification', async (data) => {
+    try {
+      const payload = JSON.parse(data.payload);
+      console.log('RPC: toolCallNotification', payload);
+      addToolCallTranscript(set, payload.toolName || 'unknown_tool', payload.params || {});
+      return JSON.stringify({ success: true });
+    } catch (error) {
+      console.error('RPC toolCallNotification error:', error);
+      return JSON.stringify({ success: false, error: String(error) });
+    }
+  });
+
   // Handler: Call site function
   localParticipant.registerRpcMethod('callSiteFunction', async (data) => {
     try {
