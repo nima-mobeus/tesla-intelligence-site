@@ -257,7 +257,17 @@ export const useVoiceSessionStore = create<VoiceSessionState>((set, get) => ({
 
       console.log(`[TIMING] preWarm: +${(performance.now() - t0).toFixed(0)}ms | room.connect() done, WebRTC warm`);
 
-      // Do NOT enable mic yet (avoids browser permission prompt)
+      // Pre-request mic permission so it's instant when user clicks TALK.
+      // This triggers the browser permission prompt during page load (invisible warm-up).
+      try {
+        const micStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        // Stop tracks immediately — we just needed the permission grant
+        micStream.getTracks().forEach(t => t.stop());
+        console.log(`[TIMING] preWarm: +${(performance.now() - t0).toFixed(0)}ms | mic permission granted`);
+      } catch (micErr) {
+        console.warn('Pre-warm: mic permission denied or failed (will retry on connect):', micErr);
+      }
+
       // Do NOT register RPC handlers yet (agent not present)
 
       // Handle the pre-warmed room being disconnected (e.g. timeout)
@@ -368,8 +378,8 @@ export const useVoiceSessionStore = create<VoiceSessionState>((set, get) => ({
           templates,
         });
 
-        // Dispatch agent to the pre-warmed room
-        const activateResponse = await fetch(`${widgetHost}/api/widget/session/activate`, {
+        // Dispatch agent AND enable mic in parallel (mic permission was pre-granted in preWarm)
+        const activatePromise = fetch(`${widgetHost}/api/widget/session/activate`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -378,16 +388,16 @@ export const useVoiceSessionStore = create<VoiceSessionState>((set, get) => ({
           }),
         });
 
-        console.log(`[TIMING] connect: +${(performance.now() - tConnect).toFixed(0)}ms | activate API responded (status=${activateResponse.status})`);
+        const micPromise = room.localParticipant.setMicrophoneEnabled(!defaults.micMuted);
+
+        const [activateResponse] = await Promise.all([activatePromise, micPromise]);
+
+        console.log(`[TIMING] connect: +${(performance.now() - tConnect).toFixed(0)}ms | activate API + mic enabled (parallel)`);
 
         if (!activateResponse.ok) {
           const errData = await activateResponse.json().catch(() => ({}));
           throw new Error(errData.error || 'Failed to activate session');
         }
-
-        // Enable microphone (triggers browser permission prompt NOW)
-        await room.localParticipant.setMicrophoneEnabled(!defaults.micMuted);
-        console.log(`[TIMING] connect: +${(performance.now() - tConnect).toFixed(0)}ms | mic enabled`);
 
         // Register RPC handlers (agent is about to join)
         registerRpcHandlers(room, set, get);
