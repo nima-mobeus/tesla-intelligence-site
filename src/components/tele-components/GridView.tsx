@@ -139,6 +139,7 @@ export default function GridView({ data, accentColor, onAction }: TeleComponentP
               key={`${rowIndex}-${cardIndex}`}
               card={card}
               index={rowIndex * 3 + cardIndex}
+              rowIndex={rowIndex}
               accentColor={accentColor}
               onAction={onAction}
             />
@@ -149,17 +150,19 @@ export default function GridView({ data, accentColor, onAction }: TeleComponentP
   );
 }
 
-function CardRenderer({ card, index = 0, accentColor, onAction }: {
+function CardRenderer({ card, index = 0, rowIndex = 0, accentColor, onAction }: {
   card: CardDef;
   index?: number;
+  rowIndex?: number;
   accentColor?: string;
   onAction?: (phrase: string) => void;
 }) {
   const Component = getComponent(card.type);
+  const isTopRow = rowIndex === 0;
 
   if (!Component) {
     return (
-      <div className="card-glass">
+      <div className={isTopRow ? '' : 'card-glass'}>
         <p className="text-sm" style={{ color: 'var(--theme-card-data)' }}>Unknown card type: {card.type}</p>
       </div>
     );
@@ -168,11 +171,13 @@ function CardRenderer({ card, index = 0, accentColor, onAction }: {
   return (
     <Suspense
       fallback={
-        <div className="card-glass animate-pulse h-full" />
+        <div className={`${isTopRow ? '' : 'card-glass'} animate-pulse h-full`} />
       }
     >
       <div
-        className={`card-glass animate-card-enter ${
+        className={`${
+          isTopRow ? 'h-full flex flex-col overflow-hidden' : 'card-glass'
+        } animate-card-enter ${
           card.span === 'full' ? 'col-span-full' : ''
         }`}
         style={{ animationDelay: `${index * 0.08}s` }}
