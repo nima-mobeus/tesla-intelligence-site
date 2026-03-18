@@ -11,7 +11,7 @@ import {
   ParticipantKind
 } from 'livekit-client';
 import { ComponentTemplate, SceneData } from '@/types';
-import { CERTIFIED_SCENES } from '@/data/certified-scenes';
+
 
 // Module-level timing anchor for click-to-speech measurement
 let _connectStartTime = 0;
@@ -793,9 +793,7 @@ export const useVoiceSessionStore = create<VoiceSessionState>((set, get) => ({
 
   // Scene actions
 
-  // Apply a scene payload (from RPC or intercepted JSON speech).
-  // If the scene has a certified ID and empty/sparse cards, fill from
-  // the CERTIFIED_SCENES library.
+  // Apply a scene payload (from RPC, data channel, or intercepted JSON speech).
   applyScene: (payload: Record<string, any>) => {
     let cards = payload.cards || [];
     let layout = payload.layout;
@@ -804,23 +802,7 @@ export const useVoiceSessionStore = create<VoiceSessionState>((set, get) => ({
     let subtitle = payload.subtitle;
     let footerLeft = payload.footerLeft;
     let footerRight = payload.footerRight;
-
-    // Certified scene fallback: if agent sent an id we recognise and
-    // cards are empty or very sparse (≤1 card), use the pre-built scene.
     const sceneId = payload.id;
-    if (sceneId && CERTIFIED_SCENES[sceneId]) {
-      const certified = CERTIFIED_SCENES[sceneId];
-      if (!cards.length || cards.length <= 1) {
-        console.log(`Certified scene fallback: ${sceneId} (agent sent ${cards.length} cards, using pre-built)`);
-        cards = certified.cards;
-        layout = layout || certified.layout;
-        badge = badge || certified.badge;
-        title = title || certified.title;
-        subtitle = subtitle || certified.subtitle;
-        footerLeft = footerLeft || certified.footerLeft;
-        footerRight = footerRight || certified.footerRight;
-      }
-    }
 
     const sceneData: SceneData = {
       id: sceneId || `scene-${Date.now()}`,
@@ -1379,7 +1361,7 @@ function registerRpcHandlers(
     }
   });
 
-  // Handler: Set full-screen scene (delegates to applyScene for certified-scene logic)
+  // Handler: Set full-screen scene (delegates to applyScene)
   localParticipant.registerRpcMethod('setScene', async (data) => {
     try {
       const payload = JSON.parse(data.payload);
