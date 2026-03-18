@@ -64,7 +64,7 @@
   --theme-card-title: #ffffff;
 
   /* Scene page-level */
-  --theme-scene-bg: rgba(5, 5, 8, 0.95);
+  --theme-scene-bg: rgba(5, 5, 8, 0.75);
   --theme-scene-text: #ffffff;
   --theme-scene-text-muted: #94a3b8;
   --theme-scene-badge-bg: rgba(255, 255, 255, 0.1);
@@ -291,13 +291,7 @@ body {
   container-type: inline-size;
 }
 
-/* ── Scene overlay gradient (avatar shows on right) ── */
+/* ── Scene overlay tint (flat, semi-transparent) ── */
 .scene-gradient-overlay {
-  background: linear-gradient(
-    to right,
-    var(--theme-scene-bg) 0%,
-    var(--theme-scene-bg) 60%,
-    color-mix(in srgb, var(--theme-scene-bg) 70%, transparent) 80%,
-    color-mix(in srgb, var(--theme-scene-bg) 40%, transparent) 100%
-  );
+  background: var(--theme-scene-bg);
 }
