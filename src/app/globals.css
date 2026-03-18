@@ -297,14 +297,87 @@ body {
   background: var(--theme-card-bg);
   border: 1px solid var(--theme-card-border);
   backdrop-filter: blur(var(--theme-card-blur));
-  border-radius: 0.75rem;
+  -webkit-backdrop-filter: blur(var(--theme-card-blur));
+  border-radius: 1.25rem;
   padding: 1rem 1.25rem;
   height: 100%;
   display: flex;
   flex-direction: column;
   overflow: hidden;
   container-type: inline-size;
+  container-name: card;
+  color: rgba(255, 255, 255, 0.85);
+  transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  animation: card-enter 0.5s ease both;
 }
+
+/* ── Card Typography — titles & font classes get theme colors ── */
+.card-glass h3,
+.card-glass h4 {
+  color: var(--theme-card-title);
+}
+
+.card-glass .font-data {
+  color: var(--theme-card-data);
+}
+
+.card-glass .font-voice {
+  color: var(--theme-card-voice);
+}
+
+/* ── Card Legibility Floor — enforce 16px min inside cards ── */
+.card-glass.card-glass .text-xs,
+.card-glass.card-glass .text-sm,
+.card-glass.card-glass [class*="text-[11px]"],
+.card-glass.card-glass [class*="text-[10px]"],
+.card-glass.card-glass [class*="text-[9px]"],
+.card-glass.card-glass [class*="text-[12px]"],
+.card-glass.card-glass [class*="text-[13px]"] {
+  font-size: 16px !important;
+}
+
+.card-glass.card-glass .font-voice,
+.card-glass.card-glass .font-data {
+  font-size: 16px !important;
+}
+
+/* ── Fluid Card Typography — scales with card width, not viewport ── */
+@container card (max-width: 250px) {
+  h3 { font-size: 16px !important; letter-spacing: 0.1em !important; }
+  .font-data { font-size: 16px !important; }
+  .font-voice { font-size: 16px !important; }
+}
+@container card (min-width: 251px) and (max-width: 400px) {
+  h3 { font-size: 16px !important; }
+  .font-data { font-size: 16px !important; }
+  .font-voice { font-size: 16px !important; }
+}
+@container card (min-width: 401px) {
+  h3 { font-size: 16px !important; }
+  .font-data { font-size: 16px !important; }
+  .font-voice { font-size: 16px !important; }
+}
+
+/* ── Card Hover ── */
+.card-glass:hover {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.18);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+}
+
+/* ── Pill-ification — soft-rounded bars, badges, radius ── */
+.card-glass .rounded-sm { border-radius: 0.75rem !important; }
+.card-glass .h-2,
+.card-glass .h-3,
+.card-glass .h-4,
+.card-glass .h-5 { border-radius: 9999px !important; }
+.card-glass .h-2 > *,
+.card-glass .h-3 > *,
+.card-glass .h-4 > *,
+.card-glass .h-5 > * { border-radius: 9999px !important; }
+.card-glass [class*="tracking-wider"],
+.card-glass [class*="uppercase"][class*="px-"] { border-radius: 9999px !important; }
+.card-glass .rounded-full { border-radius: 9999px !important; }
 
 /* ── Scene overlay tint (flat, semi-transparent) ── */
 .scene-gradient-overlay {
