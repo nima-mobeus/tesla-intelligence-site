@@ -44,12 +44,12 @@ export default function ApprovalCard({ data, accentColor, onAction }: TeleCompon
             {/* Header */}
             <div className="flex items-center justify-between mb-2">
                 {title && (
-                    <h3 className="font-data text-sm md:text-sm uppercase tracking-[0.12em]" style={{ color: `${getColor(90)}` }}>
+                    <h3 className="font-data text-body uppercase tracking-[0.12em]" style={{ color: `${getColor(90)}` }}>
                         {title}
                     </h3>
                 )}
                 {pending > 0 && (
-                    <span className="font-data text-sm md:text-sm bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded-full font-bold">
+                    <span className="font-data text-body bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded-full font-bold">
                         {pending} pending
                     </span>
                 )}
@@ -68,23 +68,23 @@ export default function ApprovalCard({ data, accentColor, onAction }: TeleCompon
                                     ...(item.priority === 'critical' ? { animation: 'blink-dot 1.2s ease-in-out infinite' } : {}),
                                 }} />
                             <div className="flex-1 min-w-0">
-                                <div className="font-data text-sm md:text-sm font-bold leading-tight" style={{ color: C }}>
+                                <div className="font-data text-body font-bold leading-tight" style={{ color: C }}>
                                     {item.subject}
                                 </div>
                                 <div className="flex items-center gap-2 mt-0.5">
                                     {item.from && (
-                                        <span className="font-voice text-sm" style={{ color: `${getColor(70)}` }}>
+                                        <span className="font-voice text-body" style={{ color: `${getColor(70)}` }}>
                                             From: {item.from}{item.fromTitle ? ` (${item.fromTitle})` : ''}
                                         </span>
                                     )}
                                     {item.deadline && (
-                                        <span className="font-data text-sm" style={{ color: `${getColor(60)}` }}>
+                                        <span className="font-data text-body" style={{ color: `${getColor(60)}` }}>
                                             ⏰ {item.deadline}
                                         </span>
                                     )}
                                 </div>
                             </div>
-                            <span className={`font-data text-sm md:text-sm uppercase tracking-wider px-1.5 py-0.5 rounded shrink-0 ${st.bg} ${st.text}`}>
+                            <span className={`font-data text-body uppercase tracking-wider px-1.5 py-0.5 rounded shrink-0 ${st.bg} ${st.text}`}>
                                 {st.label}
                             </span>
                         </div>

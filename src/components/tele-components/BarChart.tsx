@@ -24,14 +24,14 @@ export default function BarChart({ data, accentColor = '#2563eb' }: TeleComponen
 
   return (
     <div className="w-full space-y-3">
-      {title && <h3 className="text-base font-semibold">{title}</h3>}
+      {title && <h3 className="text-body font-semibold">{title}</h3>}
       <div className="space-y-2">
         {bars.map((bar, i) => {
           const pct = Math.min((bar.value / maxValue) * 100, 100);
           const color = bar.color || accentColor;
           return (
             <div key={`${bar.label}-${i}`} className="space-y-1">
-              <div className="flex items-center justify-between text-sm">
+              <div className="flex items-center justify-between text-body">
                 <span className="font-medium">{bar.label}</span>
                 {showValues && (
                   <span className="text-muted-foreground tabular-nums">

@@ -23,8 +23,8 @@ export default function Checklist({ data, accentColor = '#2563eb' }: TeleCompone
     <div className="w-full space-y-3">
       {title && (
         <div className="flex items-center justify-between">
-          <h3 className="text-base font-semibold">{title}</h3>
-          <span className="text-xs text-muted-foreground">
+          <h3 className="text-body font-semibold">{title}</h3>
+          <span className="text-caption text-muted-foreground">
             {doneCount}/{items.length} done
           </span>
         </div>
@@ -33,17 +33,17 @@ export default function Checklist({ data, accentColor = '#2563eb' }: TeleCompone
         {items.map((item, i) => (
           <div key={i} className="flex items-start gap-3 rounded-md border px-3 py-2">
             <div
-              className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded border text-xs text-white"
+              className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded border text-caption text-white"
               style={{ backgroundColor: item.checked ? accentColor : 'transparent', borderColor: item.checked ? accentColor : '#d1d5db' }}
             >
               {item.checked && '✓'}
             </div>
             <div className="min-w-0">
-              <div className={`text-sm ${item.checked ? 'text-muted-foreground line-through' : 'font-medium'}`}>
+              <div className={`text-body ${item.checked ? 'text-muted-foreground line-through' : 'font-medium'}`}>
                 {item.text}
               </div>
               {item.description && (
-                <div className="mt-0.5 text-xs text-muted-foreground">{item.description}</div>
+                <div className="mt-0.5 text-caption text-muted-foreground">{item.description}</div>
               )}
             </div>
           </div>

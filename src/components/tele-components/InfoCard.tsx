@@ -24,7 +24,7 @@ const ICON_PATHS: Record<string, string> = {
 
 function renderIcon(icon: string, clr: string) {
     const path = ICON_PATHS[icon];
-    if (!path) return <span className="font-data text-sm font-bold" style={{ color: clr }}>{icon[0]?.toUpperCase()}</span>;
+    if (!path) return <span className="font-data text-body font-bold" style={{ color: clr }}>{icon[0]?.toUpperCase()}</span>;
     return (
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={clr} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
             <path d={path} />
@@ -45,11 +45,11 @@ export default function InfoCard({ data, accentColor, onAction }: TeleComponentP
     return (
         <div className="flex flex-col h-full justify-start gap-1.5">
             {icon && renderIcon(icon, C)}
-            <h3 className="font-data text-sm md:text-sm font-bold" style={{ color: `${getColor(90)}` }}>{title}</h3>
-            <p className="font-voice text-sm md:text-sm leading-relaxed line-clamp-3" style={{ color: `${getColor(85)}` }}>{body}</p>
+            <h3 className="font-data text-body font-bold" style={{ color: `${getColor(90)}` }}>{title}</h3>
+            <p className="font-voice text-body leading-relaxed line-clamp-3" style={{ color: `${getColor(85)}` }}>{body}</p>
             {cta && (
                 <button
-                    className="self-start font-data text-sm md:text-sm uppercase tracking-wider px-3 py-1.5 rounded-sm transition-colors"
+                    className="self-start font-data text-body uppercase tracking-wider px-3 py-1.5 rounded-sm transition-colors"
                     style={{ backgroundColor: `${getColor(3)}`, color: C, border: `1px solid ${getColor(13)}` }}
                     onClick={() => onAction?.(ctaPhrase || cta)}
                 >

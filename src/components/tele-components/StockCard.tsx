@@ -40,16 +40,16 @@ export default function StockCard({ data, accentColor, onAction }: TeleComponent
 
     return (
         <div className="flex flex-col h-full overflow-hidden">
-            {title && <h3 className="font-data text-sm md:text-sm uppercase tracking-[0.12em] mb-2" style={{ color: `${getColor(90)}` }}>{title}</h3>}
+            {title && <h3 className="font-data text-body uppercase tracking-[0.12em] mb-2" style={{ color: `${getColor(90)}` }}>{title}</h3>}
             <div className="flex-1 flex flex-col justify-start min-h-0 overflow-hidden gap-1.5">
                 {/* Ticker + price */}
                 <div className="flex items-baseline gap-2">
-                    <span className="font-data text-sm font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-sm" style={{ backgroundColor: `${getColor(3)}`, color: `${getColor(88)}` }}>{ticker}</span>
-                    <span className="font-data text-lg md:text-xl font-bold" style={{ color: `${getColor(90)}` }}>{price}</span>
+                    <span className="font-data text-body font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-sm" style={{ backgroundColor: `${getColor(3)}`, color: `${getColor(88)}` }}>{ticker}</span>
+                    <span className="font-data text-title font-bold" style={{ color: `${getColor(90)}` }}>{price}</span>
                 </div>
                 {/* Change */}
                 <div className="flex items-center gap-2">
-                    <span className="font-data text-sm font-bold" style={{ color: trendClr }}>{arrow} {change} ({changePercent})</span>
+                    <span className="font-data text-body font-bold" style={{ color: trendClr }}>{arrow} {change} ({changePercent})</span>
                 </div>
                 {/* Sparkline */}
                 {sparkPath && (
@@ -60,20 +60,20 @@ export default function StockCard({ data, accentColor, onAction }: TeleComponent
                 {/* Metadata grid */}
                 <div className="grid grid-cols-2 gap-x-3 gap-y-0.5 mt-auto">
                     {marketCap && (
-                        <div><span className="font-data text-sm uppercase" style={{ color: `${getColor(60)}` }}>Mkt Cap</span>
-                            <span className="font-data text-sm font-bold ml-1" style={{ color: `${getColor(70)}` }}>{marketCap}</span></div>
+                        <div><span className="font-data text-body uppercase" style={{ color: `${getColor(60)}` }}>Mkt Cap</span>
+                            <span className="font-data text-body font-bold ml-1" style={{ color: `${getColor(70)}` }}>{marketCap}</span></div>
                     )}
                     {volume && (
-                        <div><span className="font-data text-sm uppercase" style={{ color: `${getColor(60)}` }}>Vol</span>
-                            <span className="font-data text-sm font-bold ml-1" style={{ color: `${getColor(70)}` }}>{volume}</span></div>
+                        <div><span className="font-data text-body uppercase" style={{ color: `${getColor(60)}` }}>Vol</span>
+                            <span className="font-data text-body font-bold ml-1" style={{ color: `${getColor(70)}` }}>{volume}</span></div>
                     )}
                     {dayHigh && (
-                        <div><span className="font-data text-sm uppercase" style={{ color: `${getColor(60)}` }}>High</span>
-                            <span className="font-data text-sm font-bold ml-1" style={{ color: `${getColor(70)}` }}>{dayHigh}</span></div>
+                        <div><span className="font-data text-body uppercase" style={{ color: `${getColor(60)}` }}>High</span>
+                            <span className="font-data text-body font-bold ml-1" style={{ color: `${getColor(70)}` }}>{dayHigh}</span></div>
                     )}
                     {dayLow && (
-                        <div><span className="font-data text-sm uppercase" style={{ color: `${getColor(60)}` }}>Low</span>
-                            <span className="font-data text-sm font-bold ml-1" style={{ color: `${getColor(70)}` }}>{dayLow}</span></div>
+                        <div><span className="font-data text-body uppercase" style={{ color: `${getColor(60)}` }}>Low</span>
+                            <span className="font-data text-body font-bold ml-1" style={{ color: `${getColor(70)}` }}>{dayLow}</span></div>
                     )}
                 </div>
             </div>

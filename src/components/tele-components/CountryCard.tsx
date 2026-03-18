@@ -50,11 +50,11 @@ export default function CountryCard({ data, accentColor, onAction }: TeleCompone
         <div className="flex flex-col h-full overflow-hidden">
             {/* Header: Flag + Country + Risk */}
             <div className="flex items-center gap-2 mb-2">
-                {flag && <span className="text-xl shrink-0">{flag}</span>}
-                <h3 className="font-data text-sm md:text-sm font-bold uppercase tracking-[0.12em] flex-1" style={{ color: `${getColor(90)}` }}>
+                {flag && <span className="text-title shrink-0">{flag}</span>}
+                <h3 className="font-data text-body font-bold uppercase tracking-[0.12em] flex-1" style={{ color: `${getColor(90)}` }}>
                     {country}
                 </h3>
-                <span className="font-data text-sm uppercase tracking-wider px-1.5 py-0.5 rounded font-bold"
+                <span className="font-data text-body uppercase tracking-wider px-1.5 py-0.5 rounded font-bold"
                     style={{ backgroundColor: risk.bg, color: risk.text }}>
                     {politicalRisk} risk
                 </span>
@@ -64,23 +64,23 @@ export default function CountryCard({ data, accentColor, onAction }: TeleCompone
             <div className="grid grid-cols-2 gap-x-4 gap-y-1 mb-2">
                 {revenue && (
                     <div>
-                        <div className="font-data text-sm uppercase tracking-wider" style={{ color: `${getColor(45)}` }}>Revenue</div>
-                        <div className="font-data text-sm font-bold" style={{ color: `${getColor(90)}` }}>{revenue}</div>
+                        <div className="font-data text-body uppercase tracking-wider" style={{ color: `${getColor(45)}` }}>Revenue</div>
+                        <div className="font-data text-body font-bold" style={{ color: `${getColor(90)}` }}>{revenue}</div>
                     </div>
                 )}
                 {employees && (
                     <div>
-                        <div className="font-data text-sm uppercase tracking-wider" style={{ color: `${getColor(45)}` }}>Employees</div>
-                        <div className="font-data text-sm font-bold" style={{ color: `${getColor(90)}` }}>{employees}</div>
+                        <div className="font-data text-body uppercase tracking-wider" style={{ color: `${getColor(45)}` }}>Employees</div>
+                        <div className="font-data text-body font-bold" style={{ color: `${getColor(90)}` }}>{employees}</div>
                     </div>
                 )}
                 {currency && (
                     <div>
-                        <div className="font-data text-sm uppercase tracking-wider" style={{ color: `${getColor(45)}` }}>Currency</div>
-                        <div className="font-data text-sm font-bold" style={{ color: `${getColor(90)}` }}>
+                        <div className="font-data text-body uppercase tracking-wider" style={{ color: `${getColor(45)}` }}>Currency</div>
+                        <div className="font-data text-body font-bold" style={{ color: `${getColor(90)}` }}>
                             {currency}
                             {hedgedPercent !== undefined && (
-                                <span className="font-data text-sm font-normal ml-1" style={{ color: `${getColor(55)}` }}>
+                                <span className="font-data text-body font-normal ml-1" style={{ color: `${getColor(55)}` }}>
                                     ({hedgedPercent}% hedged)
                                 </span>
                             )}
@@ -89,10 +89,10 @@ export default function CountryCard({ data, accentColor, onAction }: TeleCompone
                 )}
                 {/* Relationship Health */}
                 <div>
-                    <div className="font-data text-sm uppercase tracking-wider" style={{ color: `${getColor(45)}` }}>Relationship</div>
+                    <div className="font-data text-body uppercase tracking-wider" style={{ color: `${getColor(45)}` }}>Relationship</div>
                     <div className="flex items-center gap-1">
                         <span className="w-2 h-2 rounded-full" style={{ backgroundColor: healthColor }} />
-                        <span className="font-data text-sm font-bold capitalize" style={{ color: healthColor }}>
+                        <span className="font-data text-body font-bold capitalize" style={{ color: healthColor }}>
                             {relationshipHealth?.replace('-', ' ')}
                         </span>
                     </div>
@@ -102,10 +102,10 @@ export default function CountryCard({ data, accentColor, onAction }: TeleCompone
             {/* Factories */}
             {factories.length > 0 && (
                 <div className="mb-1">
-                    <div className="font-data text-sm uppercase tracking-wider mb-0.5" style={{ color: `${getColor(45)}` }}>Factories</div>
+                    <div className="font-data text-body uppercase tracking-wider mb-0.5" style={{ color: `${getColor(45)}` }}>Factories</div>
                     <div className="flex flex-wrap gap-1">
                         {factories.slice(0, 3).map((f, i) => (
-                            <span key={i} className="font-data text-sm px-1.5 py-0.5 rounded-sm" style={{ backgroundColor: `${getColor(5)}`, color: `${getColor(75)}` }}>
+                            <span key={i} className="font-data text-body px-1.5 py-0.5 rounded-sm" style={{ backgroundColor: `${getColor(5)}`, color: `${getColor(75)}` }}>
                                 {f}
                             </span>
                         ))}
@@ -115,7 +115,7 @@ export default function CountryCard({ data, accentColor, onAction }: TeleCompone
 
             {/* Trade Exposure */}
             {tradeExposure && (
-                <div className="font-voice text-sm leading-tight mt-auto pt-1 border-t" style={{ color: `${getColor(60)}`, borderColor: `${getColor(8)}` }}>
+                <div className="font-voice text-body leading-tight mt-auto pt-1 border-t" style={{ color: `${getColor(60)}`, borderColor: `${getColor(8)}` }}>
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="inline -mt-0.5 mr-0.5"><circle cx="12" cy="12" r="10" /><line x1="2" y1="12" x2="22" y2="12" /><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" /></svg>
                     {tradeExposure}
                 </div>
@@ -123,7 +123,7 @@ export default function CountryCard({ data, accentColor, onAction }: TeleCompone
 
             {/* Key Contact */}
             {keyContact && (
-                <div className="font-data text-sm mt-1" style={{ color: `${getColor(40)}` }}>
+                <div className="font-data text-body mt-1" style={{ color: `${getColor(40)}` }}>
                     Key contact: {keyContact}
                 </div>
             )}

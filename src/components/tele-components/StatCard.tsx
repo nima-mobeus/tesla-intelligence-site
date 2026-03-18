@@ -29,20 +29,20 @@ export default function StatCard({ data, accentColor, onAction }: TeleComponentP
                             ...(status === 'bad' ? { animation: 'blink-dot 1.2s ease-in-out infinite' } : {}),
                         }} />
                 )}
-                <span className="font-data text-sm md:text-sm uppercase tracking-[0.15em]" style={{ color: `${getColor(70)}` }}>
+                <span className="font-data text-body uppercase tracking-[0.15em]" style={{ color: `${getColor(70)}` }}>
                     {label}
                 </span>
             </div>
-            <div className="font-hero text-3xl md:text-4xl lg:text-5xl leading-none" style={{ color: `${getColor(90)}` }}>
+            <div className="font-hero text-title leading-none" style={{ color: `${getColor(90)}` }}>
                 {value}
             </div>
             {subtitle && (
-                <p className="font-voice text-sm md:text-sm leading-tight mt-1 line-clamp-2" style={{ color: `${getColor(70)}` }}>
+                <p className="font-voice text-body leading-tight mt-1 line-clamp-2" style={{ color: `${getColor(70)}` }}>
                     {subtitle}
                 </p>
             )}
             {trend && change && (
-                <div className="font-data text-sm font-semibold mt-0.5" style={{ color: TREND_CLR[trend] }}>
+                <div className="font-data text-body font-semibold mt-0.5" style={{ color: TREND_CLR[trend] }}>
                     {TREND_ARROW[trend]} {change}
                 </div>
             )}

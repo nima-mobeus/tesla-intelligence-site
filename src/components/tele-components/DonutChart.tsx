@@ -89,7 +89,7 @@ export default function DonutChart({ data, accentColor = '#2563eb', onAction }: 
       className="flex flex-col items-center h-full select-none"
       onClick={cta ? () => onAction?.(cta) : undefined}
     >
-      {title && <h4 className="text-xs text-gray-400 uppercase tracking-wider mb-2 self-start">{title}</h4>}
+      {title && <h4 className="text-caption text-gray-400 uppercase tracking-wider mb-2 self-start">{title}</h4>}
 
       <div className="flex items-center gap-4 flex-1">
         {/* SVG donut */}
@@ -103,12 +103,12 @@ export default function DonutChart({ data, accentColor = '#2563eb', onAction }: 
           {(centerValue !== undefined || centerLabel) && (
             <div className="absolute inset-0 flex flex-col items-center justify-center">
               {centerValue !== undefined && (
-                <span className="text-lg font-bold text-white leading-tight">
+                <span className="text-title font-bold text-white leading-tight">
                   {typeof centerValue === 'number' ? centerValue.toLocaleString() : centerValue}
                 </span>
               )}
               {centerLabel && (
-                <span className="text-[10px] text-gray-400">{centerLabel}</span>
+                <span className="text-micro text-gray-400">{centerLabel}</span>
               )}
             </div>
           )}
@@ -117,7 +117,7 @@ export default function DonutChart({ data, accentColor = '#2563eb', onAction }: 
         {/* Legend */}
         <div className="flex flex-col gap-1.5 min-w-0">
           {segments.map((seg, i) => (
-            <div key={i} className="flex items-center gap-2 text-xs">
+            <div key={i} className="flex items-center gap-2 text-caption">
               <div
                 className="w-2.5 h-2.5 rounded-sm flex-shrink-0"
                 style={{ backgroundColor: seg.color || PALETTE[i % PALETTE.length] }}

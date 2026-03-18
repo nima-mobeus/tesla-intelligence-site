@@ -15,7 +15,7 @@ export const OverflowPill: React.FC<OverflowPillProps> = ({ count, label = 'more
   return (
     <div className="flex justify-center mt-1 shrink-0">
       <span
-        className="font-data text-sm uppercase tracking-wider px-2.5 py-0.5 rounded-full"
+        className="font-data text-body uppercase tracking-wider px-2.5 py-0.5 rounded-full"
         style={{
           backgroundColor: getColor(3),
           color: getColor(70),

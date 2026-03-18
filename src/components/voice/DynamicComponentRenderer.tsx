@@ -45,10 +45,10 @@ function GenericFallback({ template, data }: { template: ComponentTemplate; data
 
   return (
     <div className="w-full rounded-lg border p-4 space-y-2">
-      <div className="text-xs font-medium text-muted-foreground">{template.name || template.type}</div>
+      <div className="text-caption font-medium text-muted-foreground">{template.name || template.type}</div>
       <div className="space-y-1.5">
         {displayEntries.map(([key, value]) => (
-          <div key={key} className="text-sm">
+          <div key={key} className="text-body">
             <span className="font-medium capitalize">{key.replace(/([A-Z])/g, ' $1').trim()}: </span>
             <span className="text-muted-foreground">
               {value === null || value === undefined
@@ -135,7 +135,7 @@ export function DynamicComponentRenderer({ template, data }: DynamicComponentRen
   return (
     <div className="space-y-2">
       {missingFields.length > 0 && (
-        <div className="text-xs text-red-600">
+        <div className="text-caption text-red-600">
           Missing required fields: {missingFields.join(', ')}
         </div>
       )}

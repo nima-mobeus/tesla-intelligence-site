@@ -56,12 +56,12 @@ export default function PieChart({ data }: TeleComponentProps) {
 
   return (
     <div className="w-full space-y-3">
-      {title && <h3 className="text-base font-semibold">{title}</h3>}
+      {title && <h3 className="text-body font-semibold">{title}</h3>}
       <div className="flex flex-col items-center gap-4 sm:flex-row">
         <svg viewBox="0 0 200 200" className="h-40 w-40 shrink-0">
           {paths}
         </svg>
-        <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm">
+        <div className="flex flex-wrap gap-x-4 gap-y-1 text-body">
           {slices.map((slice, i) => (
             <div key={i} className="flex items-center gap-2">
               <span

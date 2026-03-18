@@ -25,13 +25,13 @@ export default function ImageGallery({ data }: TeleComponentProps) {
 
   return (
     <div className="w-full space-y-3">
-      {title && <h3 className="text-base font-semibold">{title}</h3>}
+      {title && <h3 className="text-body font-semibold">{title}</h3>}
       {layout === 'grid' ? (
         <div className="grid gap-3" style={{ gridTemplateColumns: `repeat(${columns}, 1fr)` }}>
           {images.map((img, i) => (
             <div key={i} className="space-y-1.5">
               <img src={img.url} alt={img.alt || 'Image'} className="h-32 w-full rounded-md object-cover" />
-              {showCaptions && img.caption && <p className="text-xs text-muted-foreground">{img.caption}</p>}
+              {showCaptions && img.caption && <p className="text-caption text-muted-foreground">{img.caption}</p>}
             </div>
           ))}
         </div>
@@ -40,7 +40,7 @@ export default function ImageGallery({ data }: TeleComponentProps) {
           {images.map((img, i) => (
             <div key={i} className="min-w-[200px] shrink-0 space-y-1.5">
               <img src={img.url} alt={img.alt || 'Image'} className="h-32 w-full rounded-md object-cover" />
-              {showCaptions && img.caption && <p className="text-xs text-muted-foreground">{img.caption}</p>}
+              {showCaptions && img.caption && <p className="text-caption text-muted-foreground">{img.caption}</p>}
             </div>
           ))}
         </div>

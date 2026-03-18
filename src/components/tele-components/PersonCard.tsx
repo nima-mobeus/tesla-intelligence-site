@@ -32,12 +32,12 @@ export default function PersonCard({ data, accentColor, onAction }: TeleComponen
                     </svg>
                 </div>
                 <div className="text-center">
-                    <div className="font-data text-sm md:text-sm font-bold leading-tight" style={{ color: `${getColor(90)}` }}>{name}</div>
-                    {title && <div className="font-data text-sm md:text-sm uppercase tracking-wider" style={{ color: `${getColor(70)}` }}>{title}</div>}
+                    <div className="font-data text-body font-bold leading-tight" style={{ color: `${getColor(90)}` }}>{name}</div>
+                    {title && <div className="font-data text-body uppercase tracking-wider" style={{ color: `${getColor(70)}` }}>{title}</div>}
                     {company && (
                         <div className="flex items-center justify-center gap-1 mt-0.5">
                             <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: `${getColor(38)}` }} />
-                            <span className="font-data text-sm md:text-sm font-bold" style={{ color: `${getColor(88)}` }}>{company}</span>
+                            <span className="font-data text-body font-bold" style={{ color: `${getColor(88)}` }}>{company}</span>
                         </div>
                     )}
                 </div>
@@ -48,16 +48,16 @@ export default function PersonCard({ data, accentColor, onAction }: TeleComponen
                 {metric && (
                     <div className="flex items-center gap-2">
                         {status && <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: STATUS_DOT[status] }} />}
-                        <span className="font-hero text-xl md:text-2xl" style={{ color: `${getColor(90)}` }}>{metric}</span>
-                        {metricLabel && <span className="font-data text-sm uppercase tracking-wider" style={{ color: `${getColor(70)}` }}>{metricLabel}</span>}
+                        <span className="font-hero text-title" style={{ color: `${getColor(90)}` }}>{metric}</span>
+                        {metricLabel && <span className="font-data text-body uppercase tracking-wider" style={{ color: `${getColor(70)}` }}>{metricLabel}</span>}
                     </div>
                 )}
-                {detail && <p className="font-voice text-sm md:text-sm leading-relaxed line-clamp-2" style={{ color: `${getColor(70)}` }}>{detail}</p>}
-                {bio && <p className="font-voice text-sm md:text-sm leading-relaxed line-clamp-2" style={{ color: `${getColor(70)}` }}>{bio}</p>}
+                {detail && <p className="font-voice text-body leading-relaxed line-clamp-2" style={{ color: `${getColor(70)}` }}>{detail}</p>}
+                {bio && <p className="font-voice text-body leading-relaxed line-clamp-2" style={{ color: `${getColor(70)}` }}>{bio}</p>}
                 {traits.length > 0 && (
                     <div className="flex flex-wrap gap-1 mt-0.5 overflow-hidden">
                         {traits.slice(0, 4).map((t, i) => (
-                            <span key={i} className="font-data text-sm uppercase px-1.5 py-0.5 rounded-sm" style={{ backgroundColor: `${getColor(3)}`, color: `${getColor(70)}` }}>{t}</span>
+                            <span key={i} className="font-data text-body uppercase px-1.5 py-0.5 rounded-sm" style={{ backgroundColor: `${getColor(3)}`, color: `${getColor(70)}` }}>{t}</span>
                         ))}
                     </div>
                 )}

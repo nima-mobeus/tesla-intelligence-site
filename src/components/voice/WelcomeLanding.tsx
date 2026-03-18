@@ -33,14 +33,14 @@ export function WelcomeLanding() {
             className="animate-slide-in-left"
             style={{ animationDelay: '0.1s' }}
           >
-            <span className="inline-block rounded-full bg-white/10 px-4 py-1.5 text-xs font-data tracking-[0.15em] text-white/80 uppercase backdrop-blur-sm border border-white/10">
+            <span className="inline-block rounded-full bg-white/10 px-4 py-1.5 text-micro font-data tracking-[0.15em] text-white/80 uppercase backdrop-blur-sm border border-white/10">
               {agentName} &middot; TESLA 2030
             </span>
           </div>
 
           {/* Title */}
           <h1
-            className="animate-slide-in-left font-hero text-5xl sm:text-6xl md:text-7xl lg:text-8xl leading-[0.95] tracking-tight text-white"
+            className="animate-slide-in-left font-hero text-display leading-[0.95] tracking-tight text-white"
             style={{ animationDelay: '0.25s' }}
           >
             The Command{' '}
@@ -51,7 +51,7 @@ export function WelcomeLanding() {
 
           {/* Subtitle */}
           <p
-            className="animate-slide-in-left text-base sm:text-lg md:text-xl text-white/60 max-w-lg"
+            className="animate-slide-in-left text-body text-white/60 max-w-lg"
             style={{ animationDelay: '0.4s' }}
           >
             48.2M vehicles &middot; 8 gigafactories &middot; 1.2M Optimus units &middot; 8.4M robotaxi rides/day
@@ -75,7 +75,7 @@ export function WelcomeLanding() {
       </main>
 
       {/* Footer */}
-      <footer className="flex items-center justify-between text-[10px] sm:text-xs font-data text-white/40 uppercase tracking-widest">
+      <footer className="flex items-center justify-between text-micro font-data text-white/40 uppercase tracking-widest">
         <span>43 MCP DOMAINS &middot; MAR 2030</span>
         <span>48.2M FLEET NODES &middot; 8.4M ROBOTAXI RIDES/DAY</span>
       </footer>

@@ -21,9 +21,9 @@ export default function ComparisonTable({ data, accentColor = '#2563eb' }: TeleC
 
   return (
     <div className="w-full space-y-3">
-      {title && <h3 className="text-base font-semibold">{title}</h3>}
+      {title && <h3 className="text-body font-semibold">{title}</h3>}
       <div className="overflow-x-auto rounded-lg border">
-        <table className="w-full text-sm">
+        <table className="w-full text-body">
           <thead>
             <tr className="border-b bg-gray-50">
               {columns.map((col, ci) => (

@@ -38,7 +38,7 @@ export default function AlertCard({ data, accentColor, onAction }: TeleComponent
         <div className="flex flex-col h-full overflow-hidden relative">
             {/* Severity badge — top-0 right-0 is the actual card corner since we render flush (no card-glass padding) */}
             <span
-                className="absolute top-0 right-0 font-data text-sm font-bold uppercase tracking-wider text-white px-2 py-0.5 z-10"
+                className="absolute top-0 right-0 font-data text-body font-bold uppercase tracking-wider text-white px-2 py-0.5 z-10"
                 style={{
                     backgroundColor: badgeBg,
                     borderRadius: '0 0.75rem 0 0.5rem',
@@ -50,7 +50,7 @@ export default function AlertCard({ data, accentColor, onAction }: TeleComponent
             {/* Content with its own padding */}
             <div className="flex flex-col flex-1 min-h-0 overflow-hidden p-4">
                 {title && (
-                    <h3 className="font-data text-sm md:text-sm uppercase tracking-[0.12em] mb-2 pr-16" style={{ color: `${getColor(90)}` }}>{title}</h3>
+                    <h3 className="font-data text-body uppercase tracking-[0.12em] mb-2 pr-16" style={{ color: `${getColor(90)}` }}>{title}</h3>
                 )}
                 <div className="flex flex-col gap-1 flex-1 justify-start min-h-0 overflow-hidden">
                     {visible.map((a, i) => {
@@ -65,10 +65,10 @@ export default function AlertCard({ data, accentColor, onAction }: TeleComponent
                                         ...(a.severity === 'critical' ? { animation: 'blink-dot 1.2s ease-in-out infinite' } : {}),
                                     }} />
                                 <div className="min-w-0">
-                                    <div className="font-data text-sm md:text-sm font-bold uppercase tracking-wider leading-tight" style={{ color: sev.dot }}>
+                                    <div className="font-data text-body font-bold uppercase tracking-wider leading-tight" style={{ color: sev.dot }}>
                                         {a.title}
                                     </div>
-                                    <div className="font-voice text-sm md:text-[11px] leading-tight mt-0.5 line-clamp-2" style={{ color: 'var(--theme-card-data)' }}>
+                                    <div className="font-voice text-body md:text-micro leading-tight mt-0.5 line-clamp-2" style={{ color: 'var(--theme-card-data)' }}>
                                         {a.detail}
                                     </div>
                                 </div>

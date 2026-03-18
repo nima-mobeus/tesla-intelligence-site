@@ -19,15 +19,15 @@ export default function StatsRow({ data, accentColor = '#2563eb' }: TeleComponen
 
   return (
     <div className="w-full space-y-3">
-      {title && <h3 className="text-base font-semibold">{title}</h3>}
+      {title && <h3 className="text-body font-semibold">{title}</h3>}
       <div className="grid gap-4" style={{ gridTemplateColumns: `repeat(${Math.min(stats.length, 4)}, 1fr)` }}>
         {stats.map((stat, i) => (
           <div key={i} className="rounded-lg border p-4 text-center">
-            <div className="text-2xl font-bold" style={{ color: accentColor }}>
+            <div className="text-title font-bold" style={{ color: accentColor }}>
               {typeof stat.value === 'number' ? stat.value.toLocaleString() : stat.value}
-              {stat.unit && <span className="ml-1 text-sm font-normal text-muted-foreground">{stat.unit}</span>}
+              {stat.unit && <span className="ml-1 text-body font-normal text-muted-foreground">{stat.unit}</span>}
             </div>
-            <div className="mt-1 text-xs text-muted-foreground">{stat.label}</div>
+            <div className="mt-1 text-caption text-muted-foreground">{stat.label}</div>
           </div>
         ))}
       </div>

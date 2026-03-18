@@ -16,18 +16,18 @@ export default function DominoCard({ data }: TeleComponentProps) {
   return (
     <div className="flex flex-col h-full overflow-hidden">
       {title && (
-        <h3 className="font-data text-sm md:text-sm uppercase tracking-[0.12em] font-bold mb-1" style={{ color: getColor(90) }}>{title}</h3>
+        <h3 className="font-data text-body uppercase tracking-[0.12em] font-bold mb-1" style={{ color: getColor(90) }}>{title}</h3>
       )}
 
       <div className="flex items-center gap-2 mb-2">
         {probability !== undefined && (
-          <span className="font-data text-sm uppercase tracking-wider px-1.5 py-0.5 rounded font-bold"
+          <span className="font-data text-body uppercase tracking-wider px-1.5 py-0.5 rounded font-bold"
             style={{ backgroundColor: `${probColor}18`, color: probColor }}>
             {probability}% probability
           </span>
         )}
         {exposure && (
-          <span className="font-data text-sm font-bold" style={{ color: getColor(80) }}>{exposure}</span>
+          <span className="font-data text-body font-bold" style={{ color: getColor(80) }}>{exposure}</span>
         )}
       </div>
 
@@ -45,9 +45,9 @@ export default function DominoCard({ data }: TeleComponentProps) {
                   {!isLast && <div className="flex-1 w-px" style={{ backgroundColor: getColor(15) }} />}
                 </div>
                 <div className="pb-1.5 flex-1 min-w-0">
-                  <div className="font-data text-sm leading-tight" style={{ color: C }}>{step.event}</div>
+                  <div className="font-data text-body leading-tight" style={{ color: C }}>{step.event}</div>
                   {step.impact && (
-                    <div className="font-voice text-sm italic leading-tight" style={{ color: stepColor }}>{step.impact}</div>
+                    <div className="font-voice text-body italic leading-tight" style={{ color: stepColor }}>{step.impact}</div>
                   )}
                 </div>
               </div>

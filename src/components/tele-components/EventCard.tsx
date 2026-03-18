@@ -61,37 +61,37 @@ export default function EventCard({ data, accentColor, onAction }: TeleComponent
         <div className={`flex flex-col h-full justify-start gap-1.5 ${isCancelled ? 'opacity-40' : ''}`}>
             <div className="flex items-center gap-2">
                 <IconComp size={14} color={`${getColor(40)}`} />
-                <span className="font-data text-sm md:text-sm tracking-wider uppercase" style={{ color: `${getColor(40)}` }}>{type}</span>
+                <span className="font-data text-body tracking-wider uppercase" style={{ color: `${getColor(40)}` }}>{type}</span>
                 {status === 'tentative' && (
-                    <span className="font-data text-sm tracking-wider uppercase px-1.5 py-0.5 rounded-full" style={{ color: '#d97706', border: '1px solid #d9770633' }}>Tentative</span>
+                    <span className="font-data text-body tracking-wider uppercase px-1.5 py-0.5 rounded-full" style={{ color: '#d97706', border: '1px solid #d9770633' }}>Tentative</span>
                 )}
             </div>
-            <h3 className={`font-data text-sm md:text-sm font-bold leading-tight ${isCancelled ? 'line-through' : ''}`} style={{ color: `${getColor(90)}` }}>{title}</h3>
+            <h3 className={`font-data text-body font-bold leading-tight ${isCancelled ? 'line-through' : ''}`} style={{ color: `${getColor(90)}` }}>{title}</h3>
             <div className="flex items-center gap-2 flex-wrap">
                 {date && (
-                    <span className="flex items-center gap-1 font-data text-sm md:text-[11px] tracking-wider" style={{ color: `${getColor(60)}` }}>
+                    <span className="flex items-center gap-1 font-data text-body md:text-micro tracking-wider" style={{ color: `${getColor(60)}` }}>
                         <CalendarDays size={10} /> {date}
                     </span>
                 )}
                 {time && (
-                    <span className="flex items-center gap-1 font-data text-sm md:text-[11px] tracking-wider" style={{ color: `${getColor(60)}` }}>
+                    <span className="flex items-center gap-1 font-data text-body md:text-micro tracking-wider" style={{ color: `${getColor(60)}` }}>
                         <Clock size={10} /> {time}{endTime ? ` – ${endTime}` : ''}
                     </span>
                 )}
             </div>
             {(venue || location) && (
-                <div className="flex items-center gap-1 font-voice text-sm md:text-sm leading-snug" style={{ color: `${getColor(40)}` }}>
+                <div className="flex items-center gap-1 font-voice text-body leading-snug" style={{ color: `${getColor(40)}` }}>
                     <MapPin size={10} />
                     {venue || location}{venue && location && ` · ${location}`}
                 </div>
             )}
             {attendees && (
-                <div className="flex items-center gap-1 font-data text-sm tracking-wider" style={{ color: `${getColor(31)}` }}>
+                <div className="flex items-center gap-1 font-data text-body tracking-wider" style={{ color: `${getColor(31)}` }}>
                     <Users size={10} /> {attendees}
                 </div>
             )}
             {note && (
-                <div className="font-voice text-sm md:text-sm italic leading-snug mt-auto" style={{ color: `${getColor(25)}` }}>{note}</div>
+                <div className="font-voice text-body italic leading-snug mt-auto" style={{ color: `${getColor(25)}` }}>{note}</div>
             )}
         </div>
     );

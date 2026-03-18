@@ -22,12 +22,12 @@ export default function BulletListCard({ data, accentColor, onAction }: TeleComp
     const { visible, overflow } = clampList(items, 5);
     return (
         <div className="flex flex-col h-full overflow-hidden">
-            {title && <h3 className="font-data text-sm md:text-sm uppercase tracking-[0.12em] mb-2" style={{ color: `${getColor(90)}` }}>{title}</h3>}
+            {title && <h3 className="font-data text-body uppercase tracking-[0.12em] mb-2" style={{ color: `${getColor(90)}` }}>{title}</h3>}
             <ul className="flex-1 flex flex-col justify-start min-h-0 overflow-hidden space-y-1.5 overflow-auto">
                 {visible.map((item, i) => (
                     <li key={i} className="flex items-start gap-2">
                         <span className="w-2 h-2 rounded-full shrink-0 mt-1" style={{ backgroundColor: item.status ? (STATUS_DOT[item.status] || `${getColor(25)}`) : `${getColor(25)}` }} />
-                        <span className="font-voice text-sm md:text-sm leading-relaxed" style={{ color: `${getColor(85)}` }}>{item.text}</span>
+                        <span className="font-voice text-body leading-relaxed" style={{ color: `${getColor(85)}` }}>{item.text}</span>
                     </li>
                 ))}
             </ul>

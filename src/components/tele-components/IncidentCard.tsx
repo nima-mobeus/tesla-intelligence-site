@@ -30,27 +30,27 @@ export default function IncidentCard({ data, accentColor, onAction }: TeleCompon
         <div className="flex flex-col h-full gap-2 rounded-sm p-2 border-l-2" style={{ backgroundColor: sev.bg, borderColor: sev.border }}>
             <div className="flex items-center gap-2">
                 <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: sev.border, ...(severity === 'critical' ? { animation: 'blink-dot 1.2s ease-in-out infinite' } : {}) }} />
-                <span className="font-data text-sm uppercase tracking-wider font-bold" style={{ color: sev.text }}>{severity}</span>
+                <span className="font-data text-body uppercase tracking-wider font-bold" style={{ color: sev.text }}>{severity}</span>
             </div>
-            <h3 className="font-data text-sm md:text-sm font-bold" style={{ color: `${getColor(90)}` }}>{title}</h3>
-            {summary && <p className="font-voice text-sm md:text-sm leading-relaxed" style={{ color: `${getColor(85)}` }}>{summary}</p>}
+            <h3 className="font-data text-body font-bold" style={{ color: `${getColor(90)}` }}>{title}</h3>
+            {summary && <p className="font-voice text-body leading-relaxed" style={{ color: `${getColor(85)}` }}>{summary}</p>}
             {visibleTimeline.length > 0 && (
                 <div className="space-y-1 ml-1">
                     {visibleTimeline.map((t, i) => (
                         <div key={i} className="flex items-start gap-2">
-                            <span className="font-data text-sm md:text-sm shrink-0 mt-0.5 font-bold" style={{ color: sev.text }}>{t.time}</span>
-                            <span className="font-voice text-sm md:text-sm leading-tight" style={{ color: `${getColor(85)}` }}>{t.description}</span>
+                            <span className="font-data text-body shrink-0 mt-0.5 font-bold" style={{ color: sev.text }}>{t.time}</span>
+                            <span className="font-voice text-body leading-tight" style={{ color: `${getColor(85)}` }}>{t.description}</span>
                         </div>
                     ))}
                 </div>
             )}
             <OverflowPill count={overflow} label="more" />
             {impact && (
-                <div className="font-data text-sm md:text-sm px-2 py-1 rounded-sm" style={{ backgroundColor: `${getColor(2)}`, color: `${getColor(85)}` }}>
+                <div className="font-data text-body px-2 py-1 rounded-sm" style={{ backgroundColor: `${getColor(2)}`, color: `${getColor(85)}` }}>
                     Impact: {impact}
                 </div>
             )}
-            {resolution && <div className="font-data text-sm italic" style={{ color: sev.text }}>Resolution: {resolution}</div>}
+            {resolution && <div className="font-data text-body italic" style={{ color: sev.text }}>Resolution: {resolution}</div>}
         </div>
     );
 }

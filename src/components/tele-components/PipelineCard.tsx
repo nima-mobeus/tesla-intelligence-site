@@ -18,7 +18,7 @@ export default function PipelineCard({ data, accentColor, onAction }: TeleCompon
     const { visible, overflow } = clampList(stages, 5);
     return (
         <div className="flex flex-col h-full overflow-hidden">
-            {title && <h3 className="font-data text-sm md:text-sm uppercase tracking-[0.12em] mb-2" style={{ color: `${getColor(90)}` }}>{title}</h3>}
+            {title && <h3 className="font-data text-body uppercase tracking-[0.12em] mb-2" style={{ color: `${getColor(90)}` }}>{title}</h3>}
             <div className="flex-1 flex flex-col justify-start min-h-0 overflow-hidden space-y-0">
                 {visible.map((s, i) => {
                     const clr = STAGE_STATUS_CLR[s.status] || STAGE_STATUS_CLR.pending;
@@ -37,9 +37,9 @@ export default function PipelineCard({ data, accentColor, onAction }: TeleCompon
                                 {!isLast && <span className="w-px flex-1 min-h-[12px]" style={{ backgroundColor: `${getColor(13)}` }} />}
                             </div>
                             <div className="pb-1.5 min-w-0">
-                                <div className="font-data text-sm md:text-sm font-bold" style={{ color: s.status === 'pending' ? `${getColor(60)}` : C }}>{s.label}</div>
-                                {s.detail && <div className="font-voice text-sm md:text-sm leading-tight" style={{ color: `${getColor(70)}` }}>{s.detail}</div>}
-                                {s.duration && <span className="font-data text-sm px-1 py-0.5 rounded-sm" style={{ backgroundColor: `${clr}15`, color: clr }}>{s.duration}</span>}
+                                <div className="font-data text-body font-bold" style={{ color: s.status === 'pending' ? `${getColor(60)}` : C }}>{s.label}</div>
+                                {s.detail && <div className="font-voice text-body leading-tight" style={{ color: `${getColor(70)}` }}>{s.detail}</div>}
+                                {s.duration && <span className="font-data text-body px-1 py-0.5 rounded-sm" style={{ backgroundColor: `${clr}15`, color: clr }}>{s.duration}</span>}
                             </div>
                         </div>
                     );

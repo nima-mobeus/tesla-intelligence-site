@@ -31,21 +31,21 @@ export default function StatusList({ data }: TeleComponentProps) {
 
   return (
     <div className="w-full space-y-3">
-      {title && <h3 className="text-base font-semibold">{title}</h3>}
+      {title && <h3 className="text-body font-semibold">{title}</h3>}
       <div className="space-y-2">
         {items.map((item, i) => {
           const cfg = STATUS_CONFIG[item.status] || STATUS_CONFIG.info;
           return (
             <div key={i} className="flex items-start gap-3 rounded-lg border px-4 py-3" style={{ backgroundColor: cfg.bg }}>
               <span
-                className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-xs font-bold text-white"
+                className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-caption font-bold text-white"
                 style={{ backgroundColor: cfg.color }}
               >
                 {cfg.icon}
               </span>
               <div className="min-w-0">
-                <div className="text-sm font-medium">{item.title}</div>
-                {item.description && <p className="mt-0.5 text-xs text-muted-foreground">{item.description}</p>}
+                <div className="text-body font-medium">{item.title}</div>
+                {item.description && <p className="mt-0.5 text-caption text-muted-foreground">{item.description}</p>}
               </div>
             </div>
           );

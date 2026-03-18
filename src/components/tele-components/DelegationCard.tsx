@@ -37,12 +37,12 @@ export default function DelegationCard({ data, accentColor, onAction }: TeleComp
             {/* Header */}
             <div className="flex items-center justify-between mb-2">
                 {title && (
-                    <h3 className="font-data text-sm md:text-sm uppercase tracking-[0.12em]" style={{ color: `${getColor(90)}` }}>
+                    <h3 className="font-data text-body uppercase tracking-[0.12em]" style={{ color: `${getColor(90)}` }}>
                         {title}
                     </h3>
                 )}
                 {active > 0 && (
-                    <span className="font-data text-sm md:text-sm bg-blue-50 text-blue-800 px-1.5 py-0.5 rounded-full font-bold">
+                    <span className="font-data text-body bg-blue-50 text-blue-800 px-1.5 py-0.5 rounded-full font-bold">
                         {active} active
                     </span>
                 )}
@@ -62,7 +62,7 @@ export default function DelegationCard({ data, accentColor, onAction }: TeleComp
                                 }} />
                             <div className="flex-1 min-w-0">
                                 {/* Task */}
-                                <div className="font-data text-sm md:text-sm leading-tight" style={{
+                                <div className="font-data text-body leading-tight" style={{
                                     color: item.status === 'complete' ? `${getColor(38)}` : C,
                                     textDecoration: item.status === 'complete' ? 'line-through' : 'none',
                                 }}>
@@ -70,21 +70,21 @@ export default function DelegationCard({ data, accentColor, onAction }: TeleComp
                                 </div>
                                 {/* Owner + ETA row */}
                                 <div className="flex items-center gap-2 mt-0.5">
-                                    <span className="font-voice text-sm" style={{ color: `${getColor(70)}` }}>
+                                    <span className="font-voice text-body" style={{ color: `${getColor(70)}` }}>
                                         → {item.owner}{item.ownerTitle ? ` (${item.ownerTitle})` : ''}
                                     </span>
                                     {item.eta && (
-                                        <span className="font-data text-sm" style={{ color: `${getColor(60)}` }}>
+                                        <span className="font-data text-body" style={{ color: `${getColor(60)}` }}>
                                             ETA: {item.eta}
                                         </span>
                                     )}
-                                    <span className="font-data text-sm uppercase" style={{ color: st.dot }}>
+                                    <span className="font-data text-body uppercase" style={{ color: st.dot }}>
                                         {st.label}
                                     </span>
                                 </div>
                                 {/* Optional detail */}
                                 {item.detail && (
-                                    <div className="font-voice text-sm leading-tight mt-0.5 line-clamp-1" style={{ color: `${getColor(60)}` }}>
+                                    <div className="font-voice text-body leading-tight mt-0.5 line-clamp-1" style={{ color: `${getColor(60)}` }}>
                                         {item.detail}
                                     </div>
                                 )}
@@ -96,7 +96,7 @@ export default function DelegationCard({ data, accentColor, onAction }: TeleComp
             <OverflowPill count={overflow} label="more" />
 
             {/* Footer summary */}
-            <div className="font-data text-sm mt-2" style={{ color: `${getColor(70)}` }}>
+            <div className="font-data text-body mt-2" style={{ color: `${getColor(70)}` }}>
                 {items.filter(i => i.status === 'complete').length}/{items.length} complete
             </div>
         </div>

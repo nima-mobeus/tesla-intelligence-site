@@ -19,20 +19,20 @@ export default function ProcessFlow({ data, accentColor = '#2563eb' }: TeleCompo
 
   return (
     <div className="w-full space-y-3">
-      {title && <h3 className="text-base font-semibold">{title}</h3>}
+      {title && <h3 className="text-body font-semibold">{title}</h3>}
       <div className="flex items-start gap-2 overflow-x-auto pb-2">
         {steps.map((step, i) => (
           <div key={i} className="flex items-start">
             <div className="flex min-w-[120px] flex-col items-center text-center">
               <div
-                className="flex h-10 w-10 items-center justify-center rounded-full text-sm font-bold text-white"
+                className="flex h-10 w-10 items-center justify-center rounded-full text-body font-bold text-white"
                 style={{ backgroundColor: accentColor }}
               >
                 {step.icon || (i + 1)}
               </div>
-              <div className="mt-2 text-xs font-semibold">{step.title}</div>
+              <div className="mt-2 text-caption font-semibold">{step.title}</div>
               {step.description && (
-                <p className="mt-0.5 max-w-[120px] text-[10px] text-muted-foreground">{step.description}</p>
+                <p className="mt-0.5 max-w-[120px] text-micro text-muted-foreground">{step.description}</p>
               )}
             </div>
             {i < steps.length - 1 && (

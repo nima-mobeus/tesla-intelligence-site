@@ -47,9 +47,9 @@ export default function MetricCard({ data, accentColor = '#2563eb', onAction }: 
     >
       {/* Header */}
       <div className="flex items-center justify-between mb-2">
-        <span className="text-xs text-gray-400 uppercase tracking-wider font-medium">{title}</span>
+        <span className="text-caption text-gray-400 uppercase tracking-wider font-medium">{title}</span>
         {st && (
-          <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded-full text-white ${st.color}`}>
+          <span className={`text-micro font-semibold px-1.5 py-0.5 rounded-full text-white ${st.color}`}>
             {st.label}
           </span>
         )}
@@ -57,11 +57,11 @@ export default function MetricCard({ data, accentColor = '#2563eb', onAction }: 
 
       {/* Value */}
       <div className="flex items-baseline gap-2">
-        <span className="text-2xl font-bold text-white">
+        <span className="text-title font-bold text-white">
           {typeof value === 'number' ? value.toLocaleString() : value}
         </span>
         {target && (
-          <span className="text-sm text-gray-500">
+          <span className="text-body text-gray-500">
             / {typeof target === 'number' ? target.toLocaleString() : target}
           </span>
         )}
@@ -69,7 +69,7 @@ export default function MetricCard({ data, accentColor = '#2563eb', onAction }: 
 
       {/* Trend */}
       {trend && (
-        <span className={`text-xs mt-1 ${trendColor}`}>{trend}</span>
+        <span className={`text-caption mt-1 ${trendColor}`}>{trend}</span>
       )}
 
       {/* Progress bar */}
@@ -89,7 +89,7 @@ export default function MetricCard({ data, accentColor = '#2563eb', onAction }: 
 
       {/* Description */}
       {description && (
-        <p className="text-[11px] text-gray-500 mt-2 leading-snug">{description}</p>
+        <p className="text-micro text-gray-500 mt-2 leading-snug">{description}</p>
       )}
     </div>
   );

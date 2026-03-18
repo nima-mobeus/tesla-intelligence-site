@@ -37,14 +37,14 @@ export default function RiskMatrixCard({ data, accentColor, onAction }: TeleComp
 
     return (
         <div className="flex flex-col h-full overflow-hidden">
-            {title && <h3 className="font-data text-sm md:text-sm uppercase tracking-[0.12em] mb-2" style={{ color: `${getColor(90)}` }}>{title}</h3>}
+            {title && <h3 className="font-data text-body uppercase tracking-[0.12em] mb-2" style={{ color: `${getColor(90)}` }}>{title}</h3>}
             <div className="flex-1 flex items-center min-h-0 overflow-hidden justify-center min-h-0 overflow-hidden">
                 <div className="flex gap-1 w-full h-full max-h-full">
                     {/* Y-axis labels */}
                     <div className="flex flex-col justify-around items-end pr-0.5 shrink-0">
-                        <span className="font-data text-sm uppercase" style={{ color: `${getColor(70)}` }}>High</span>
-                        <span className="font-data text-sm uppercase" style={{ color: `${getColor(70)}` }}>Med</span>
-                        <span className="font-data text-sm uppercase" style={{ color: `${getColor(70)}` }}>Low</span>
+                        <span className="font-data text-body uppercase" style={{ color: `${getColor(70)}` }}>High</span>
+                        <span className="font-data text-body uppercase" style={{ color: `${getColor(70)}` }}>Med</span>
+                        <span className="font-data text-body uppercase" style={{ color: `${getColor(70)}` }}>Low</span>
                     </div>
                     <div className="flex-1 flex flex-col min-w-0">
                         <div className="grid grid-cols-3 gap-0.5 flex-1">
@@ -57,7 +57,7 @@ export default function RiskMatrixCard({ data, accentColor, onAction }: TeleComp
                                     return (
                                         <div key={`${row}-${col}`} className="rounded-sm flex flex-col items-center justify-center gap-0.5 p-1 border" style={{ backgroundColor: bg, borderColor: borderClr }}>
                                             {cellRisks.map((r, i) => (
-                                                <span key={i} className="font-data text-sm md:text-sm text-center leading-tight truncate w-full font-bold" style={{ color: `${getColor(90)}` }}>{r.label}</span>
+                                                <span key={i} className="font-data text-body text-center leading-tight truncate w-full font-bold" style={{ color: `${getColor(90)}` }}>{r.label}</span>
                                             ))}
                                         </div>
                                     );
@@ -66,12 +66,12 @@ export default function RiskMatrixCard({ data, accentColor, onAction }: TeleComp
                         </div>
                         {/* X-axis labels */}
                         <div className="flex justify-between mt-0.5 px-1 shrink-0">
-                            <span className="font-data text-sm uppercase" style={{ color: `${getColor(70)}` }}>Low</span>
-                            <span className="font-data text-sm uppercase" style={{ color: `${getColor(70)}` }}>Med</span>
-                            <span className="font-data text-sm uppercase" style={{ color: `${getColor(70)}` }}>High</span>
+                            <span className="font-data text-body uppercase" style={{ color: `${getColor(70)}` }}>Low</span>
+                            <span className="font-data text-body uppercase" style={{ color: `${getColor(70)}` }}>Med</span>
+                            <span className="font-data text-body uppercase" style={{ color: `${getColor(70)}` }}>High</span>
                         </div>
                         <div className="text-center shrink-0">
-                            <span className="font-data text-sm uppercase tracking-wider" style={{ color: `${getColor(70)}` }}>Impact →</span>
+                            <span className="font-data text-body uppercase tracking-wider" style={{ color: `${getColor(70)}` }}>Impact →</span>
                         </div>
                     </div>
                 </div>

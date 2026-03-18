@@ -20,7 +20,7 @@ export default function ChecklistCard({ data }: TeleComponentProps) {
 
   return (
     <div className="flex flex-col h-full overflow-hidden">
-      {title && <h3 className="font-data text-sm md:text-sm uppercase tracking-[0.12em] mb-2" style={{ color: getColor(90) }}>{title}</h3>}
+      {title && <h3 className="font-data text-body uppercase tracking-[0.12em] mb-2" style={{ color: getColor(90) }}>{title}</h3>}
       <div className="flex-1 flex flex-col justify-start min-h-0 overflow-hidden overflow-auto space-y-1">
         {visible.map((item, i) => {
           const st = STATUS_SVG[item.status] || STATUS_SVG.pending;
@@ -30,17 +30,17 @@ export default function ChecklistCard({ data }: TeleComponentProps) {
                 <path d={st.path} />
               </svg>
               <div className="min-w-0">
-                <div className="font-data text-sm md:text-sm leading-tight" style={{ color: item.status === 'done' ? getColor(60) : C, textDecoration: item.status === 'done' ? 'line-through' : 'none' }}>
+                <div className="font-data text-body leading-tight" style={{ color: item.status === 'done' ? getColor(60) : C, textDecoration: item.status === 'done' ? 'line-through' : 'none' }}>
                   {item.text}
                 </div>
-                {item.detail && <div className="font-voice text-sm leading-tight mt-0.5" style={{ color: getColor(85) }}>{item.detail}</div>}
+                {item.detail && <div className="font-voice text-body leading-tight mt-0.5" style={{ color: getColor(85) }}>{item.detail}</div>}
               </div>
             </div>
           );
         })}
       </div>
       <OverflowPill count={overflow} label="more" />
-      <div className="font-data text-sm mt-2" style={{ color: getColor(70) }}>
+      <div className="font-data text-body mt-2" style={{ color: getColor(70) }}>
         {items.filter(i => i.status === 'done').length}/{items.length} complete
       </div>
     </div>

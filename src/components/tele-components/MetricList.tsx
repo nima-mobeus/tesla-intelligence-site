@@ -25,7 +25,7 @@ export default function MetricList({ data, accentColor, onAction }: TeleComponen
     return (
         <div className="flex flex-col h-full overflow-hidden">
             {title && (
-                <h3 className="font-data text-sm md:text-sm uppercase tracking-[0.12em] mb-2" style={{ color: `${getColor(90)}` }}>
+                <h3 className="font-data text-body uppercase tracking-[0.12em] mb-2" style={{ color: `${getColor(90)}` }}>
                     {title}
                 </h3>
             )}
@@ -40,16 +40,16 @@ export default function MetricList({ data, accentColor, onAction }: TeleComponen
                                         ...(m.status === 'bad' ? { animation: 'blink-dot 1.2s ease-in-out infinite' } : {}),
                                     }} />
                             )}
-                            <span className="font-data text-sm md:text-sm uppercase tracking-wider font-bold truncate" style={{ color: `${getColor(88)}` }}>
+                            <span className="font-data text-body uppercase tracking-wider font-bold truncate" style={{ color: `${getColor(88)}` }}>
                                 {m.label}
                             </span>
                         </div>
                         <div className="flex items-center gap-2 shrink-0">
-                            <span className="font-data text-sm md:text-base font-bold" style={{ color: `${getColor(90)}` }}>
+                            <span className="font-data text-body  font-bold" style={{ color: `${getColor(90)}` }}>
                                 {m.value}
                             </span>
                             {m.change && (
-                                <span className="font-data text-sm font-bold" style={{ color: `${getColor(85)}` }}>
+                                <span className="font-data text-body font-bold" style={{ color: `${getColor(85)}` }}>
                                     {m.change}
                                 </span>
                             )}

@@ -101,7 +101,7 @@ export function ChatPanel() {
         {transcripts.length === 0 && isConnected && (
           <div className="flex-1 flex items-center justify-center">
             <p
-              className="text-sm font-voice"
+              className="text-body font-voice"
               style={{ color: 'var(--theme-chat-placeholder)' }}
             >
               Conversation will appear here...
@@ -150,7 +150,7 @@ export function ChatPanel() {
               {/* Bubble */}
               <div
                 className={`chat-message-bubble max-w-[75%] sm:max-w-[70%] rounded-2xl px-3.5 py-2.5
-                  text-sm leading-relaxed transition-all duration-500
+                  text-body leading-relaxed transition-all duration-500
                   hover:brightness-110 hover:shadow-lg
                   ${t.participant === 'user' ? 'ml-auto' : ''}`}
                 style={{
@@ -196,7 +196,7 @@ export function ChatPanel() {
             }}
             onFocus={resetSleep}
             placeholder="Type a message..."
-            className="flex-1 min-w-0 bg-transparent text-white text-sm placeholder:text-white/30 focus:outline-none font-voice"
+            className="flex-1 min-w-0 bg-transparent text-white text-body placeholder:text-white/30 focus:outline-none font-voice"
             disabled={!isConnected}
           />
           <button

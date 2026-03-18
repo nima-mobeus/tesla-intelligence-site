@@ -17,7 +17,7 @@ export default function OrgRoster({ data, accentColor, onAction }: TeleComponent
     const { visible, overflow } = clampList(items, 6);
     return (
         <div className="flex flex-col h-full overflow-hidden">
-            {title && <h3 className="font-data text-sm md:text-sm uppercase tracking-[0.12em] mb-2 shrink-0" style={{ color: `${getColor(90)}` }}>{title}</h3>}
+            {title && <h3 className="font-data text-body uppercase tracking-[0.12em] mb-2 shrink-0" style={{ color: `${getColor(90)}` }}>{title}</h3>}
             <div className="flex-1 grid grid-cols-3 gap-2 content-center overflow-hidden">
                 {visible.map((m, i) => {
                     const firstName = m.name?.split(' ')[0] ?? '';
@@ -25,16 +25,16 @@ export default function OrgRoster({ data, accentColor, onAction }: TeleComponent
                     return (
                         <div key={i} className="flex flex-col items-center text-center gap-1 min-w-0 p-2 rounded-lg" style={{ backgroundColor: `${getColor(2)}` }}>
                             {/* First name as badge */}
-                            <span className="font-data text-sm font-bold px-2 py-0.5 rounded-full whitespace-nowrap" style={{ backgroundColor: `${getColor(6)}`, color: `${getColor(90)}` }}>
+                            <span className="font-data text-body font-bold px-2 py-0.5 rounded-full whitespace-nowrap" style={{ backgroundColor: `${getColor(6)}`, color: `${getColor(90)}` }}>
                                 {firstName}
                             </span>
                             {/* Role */}
-                            <div className="font-data text-sm leading-tight truncate w-full" style={{ color: `${getColor(50)}` }}>
+                            <div className="font-data text-body leading-tight truncate w-full" style={{ color: `${getColor(50)}` }}>
                                 {shortRole}
                             </div>
                             {/* Badge (metric) */}
                             {m.badge && (
-                                <span className="font-data text-sm whitespace-nowrap" style={{ color: `${getColor(40)}` }}>
+                                <span className="font-data text-body whitespace-nowrap" style={{ color: `${getColor(40)}` }}>
                                     {m.badge}
                                 </span>
                             )}

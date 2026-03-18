@@ -48,7 +48,7 @@ export default function WaterfallCard({ data, accentColor, onAction }: TeleCompo
     return (
         <div className="flex flex-col h-full overflow-hidden">
             {title && (
-                <h3 className="font-data text-sm md:text-sm uppercase tracking-[0.12em] mb-2" style={{ color: `${getColor(90)}` }}>{title}</h3>
+                <h3 className="font-data text-body uppercase tracking-[0.12em] mb-2" style={{ color: `${getColor(90)}` }}>{title}</h3>
             )}
             <div className="flex-1 flex items-end gap-1 min-h-0">
                 {items.map((item, i) => {
@@ -67,10 +67,10 @@ export default function WaterfallCard({ data, accentColor, onAction }: TeleCompo
                                 }}
                             />
                             <div className="absolute -bottom-4 w-full text-center">
-                                <span className="font-data text-sm md:text-sm uppercase" style={{ color: `${getColor(70)}` }}>{item.label}</span>
+                                <span className="font-data text-body uppercase" style={{ color: `${getColor(70)}` }}>{item.label}</span>
                             </div>
                             <div className="absolute w-full text-center" style={{ bottom: bottom + barH + 2 }}>
-                                <span className="font-data text-sm font-bold" style={{ color: item.isTotal ? C : isPositive ? '#22c55e' : '#ff4040' }}>
+                                <span className="font-data text-body font-bold" style={{ color: item.isTotal ? C : isPositive ? '#22c55e' : '#ff4040' }}>
                                     {unit}{fmt(item.height)}
                                 </span>
                             </div>

@@ -46,7 +46,7 @@ export default function LineChart({ data, accentColor = '#2563eb' }: TeleCompone
 
   return (
     <div className="w-full space-y-2">
-      {title && <h3 className="text-base font-semibold">{title}</h3>}
+      {title && <h3 className="text-body font-semibold">{title}</h3>}
       <svg viewBox={`0 0 ${W} ${H}`} className="w-full" style={{ maxHeight: 260 }}>
         {/* Grid */}
         {showGrid &&

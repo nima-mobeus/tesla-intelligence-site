@@ -70,7 +70,7 @@ export default function SceneCard({ data, accentColor = '#2563eb', onAction }: T
         {badge && (
           <div className="absolute top-0 right-0">
             <span
-              className="text-[10px] font-semibold px-1.5 py-0.5 rounded-bl-lg text-white"
+              className="text-micro font-semibold px-1.5 py-0.5 rounded-bl-lg text-white"
               style={{ backgroundColor: accentColor }}
             >
               {badge}
@@ -80,17 +80,17 @@ export default function SceneCard({ data, accentColor = '#2563eb', onAction }: T
 
         {/* Icon + Title */}
         <div className="flex-1">
-          {icon && <span className="text-2xl mb-2 block">{icon}</span>}
-          <h4 className="text-sm font-semibold text-white leading-snug">{title}</h4>
+          {icon && <span className="text-title mb-2 block">{icon}</span>}
+          <h4 className="text-body font-semibold text-white leading-snug">{title}</h4>
           {description && (
-            <p className="text-xs text-gray-400 mt-1.5 leading-relaxed line-clamp-3">{description}</p>
+            <p className="text-caption text-gray-400 mt-1.5 leading-relaxed line-clamp-3">{description}</p>
           )}
         </div>
 
         {/* CTA button */}
         {cta && ctaLabel && (
           <div className="mt-3 pt-2 border-t border-white/5">
-            <span className="text-xs font-medium" style={{ color: accentColor }}>
+            <span className="text-caption font-medium" style={{ color: accentColor }}>
               {ctaLabel} →
             </span>
           </div>

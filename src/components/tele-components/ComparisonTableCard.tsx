@@ -26,13 +26,13 @@ export default function ComparisonTableCard({ data, accentColor, onAction }: Tel
     const { visible, overflow } = clampList(rows, 5);
     return (
         <div className="flex flex-col h-full overflow-hidden">
-            {title && <h3 className="font-data text-sm md:text-sm uppercase tracking-[0.12em] mb-2" style={{ color: `${getColor(90)}` }}>{title}</h3>}
+            {title && <h3 className="font-data text-body uppercase tracking-[0.12em] mb-2" style={{ color: `${getColor(90)}` }}>{title}</h3>}
             <div className="flex-1 overflow-auto table-scroll-container">
                 <table className="w-full border-collapse">
                     <thead>
                         <tr>
                             {headers.map((h, i) => (
-                                <th key={i} className="font-data text-sm md:text-sm uppercase tracking-wider px-2 py-1.5 text-left border-b" style={{ color: `${getColor(85)}`, borderColor: `${getColor(8)}` }}>{h}</th>
+                                <th key={i} className="font-data text-body uppercase tracking-wider px-2 py-1.5 text-left border-b" style={{ color: `${getColor(85)}`, borderColor: `${getColor(8)}` }}>{h}</th>
                             ))}
                         </tr>
                     </thead>
@@ -42,7 +42,7 @@ export default function ComparisonTableCard({ data, accentColor, onAction }: Tel
                                 {(row.cells || []).map((cell, ci) => {
                                     const isHighlight = row.highlights?.includes(ci);
                                     return (
-                                        <td key={ci} className="font-data text-sm md:text-sm px-2 py-1.5 border-b" style={{
+                                        <td key={ci} className="font-data text-body px-2 py-1.5 border-b" style={{
                                             color: isHighlight ? C : `${getColor(88)}`,
                                             fontWeight: ci === 0 || isHighlight ? 700 : 400,
                                             borderColor: `${getColor(3)}`,

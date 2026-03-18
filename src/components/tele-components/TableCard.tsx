@@ -20,7 +20,7 @@ export default function TableCard({ data, accentColor, onAction }: TeleComponent
     return (
         <div className="flex flex-col h-full overflow-hidden">
             {title && (
-                <h3 className="font-data text-sm md:text-sm uppercase tracking-[0.12em] mb-2" style={{ color: `${getColor(90)}` }}>
+                <h3 className="font-data text-body uppercase tracking-[0.12em] mb-2" style={{ color: `${getColor(90)}` }}>
                     {title}
                 </h3>
             )}
@@ -29,7 +29,7 @@ export default function TableCard({ data, accentColor, onAction }: TeleComponent
                     <thead>
                         <tr>
                             {headers.map((h, i) => (
-                                <th key={i} className="font-data text-sm md:text-sm uppercase tracking-wider py-1.5 pr-2 border-b font-bold"
+                                <th key={i} className="font-data text-body uppercase tracking-wider py-1.5 pr-2 border-b font-bold"
                                     style={{ color: `${getColor(70)}`, borderColor: `${getColor(10)}` }}>
                                     {h}
                                 </th>
@@ -41,7 +41,7 @@ export default function TableCard({ data, accentColor, onAction }: TeleComponent
                             <tr key={ri} style={highlightSet.has(ri) ? { backgroundColor: `${getColor(3)}` } : {}}>
                                 {row.map((cell, ci) => (
                                     <td key={ci}
-                                        className={`font-data text-sm md:text-sm py-1.5 pr-2 border-b ${ci === 0 ? 'font-bold' : 'font-medium'}`}
+                                        className={`font-data text-body py-1.5 pr-2 border-b ${ci === 0 ? 'font-bold' : 'font-medium'}`}
                                         style={{ color: ci === 0 ? C : `${getColor(88)}`, borderColor: `${getColor(4)}` }}>
                                         {cell}
                                     </td>

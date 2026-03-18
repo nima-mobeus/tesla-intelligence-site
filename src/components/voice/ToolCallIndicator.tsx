@@ -83,7 +83,7 @@ export function ToolCallIndicator({
         <div className="flex items-center gap-2 min-w-0 pr-2">
           <DisplayIcon className="w-4 h-4 text-emerald-400 shrink-0" />
           <span
-            className="text-xs font-mono font-medium truncate"
+            className="text-caption font-mono font-medium truncate"
             style={{ color: 'rgba(255,255,255,0.5)' }}
           >
             Called{' '}
@@ -125,7 +125,7 @@ export function ToolCallIndicator({
           {Object.keys(parameters).length > 0 && (
             <div className="pt-2">
               <span
-                className="text-xs uppercase font-bold tracking-wider mb-1.5 block"
+                className="text-caption uppercase font-bold tracking-wider mb-1.5 block"
                 style={{ color: 'rgba(255,255,255,0.30)' }}
               >
                 Parameters
@@ -138,7 +138,7 @@ export function ToolCallIndicator({
                 }}
               >
                 {Object.entries(parameters).map(([key, value]) => (
-                  <li key={key} className="text-[11px] font-mono flex items-start">
+                  <li key={key} className="text-micro font-mono flex items-start">
                     <span
                       className="mr-2 w-24 shrink-0"
                       style={{ color: 'rgba(255,255,255,0.40)' }}
@@ -158,7 +158,7 @@ export function ToolCallIndicator({
           )}
 
           <div
-            className="flex justify-between items-center text-xs font-mono mt-2"
+            className="flex justify-between items-center text-caption font-mono mt-2"
             style={{ color: 'rgba(255,255,255,0.30)' }}
           >
             <span>Status: <span className="text-emerald-400">Success</span></span>

@@ -45,7 +45,7 @@ export default function MeetingScheduler({ data, accentColor = '#2563eb', onActi
             <img src={photoUrl} alt={personName} className="h-12 w-12 rounded-full object-cover" />
           ) : (
             <div
-              className="flex h-12 w-12 items-center justify-center rounded-full text-lg font-bold text-white"
+              className="flex h-12 w-12 items-center justify-center rounded-full text-title font-bold text-white"
               style={{ backgroundColor: accentColor }}
             >
               {personName.charAt(0)}
@@ -53,29 +53,29 @@ export default function MeetingScheduler({ data, accentColor = '#2563eb', onActi
           )}
           <div>
             <div className="font-semibold">{personName}</div>
-            {personTitle && <div className="text-xs text-muted-foreground">{personTitle}</div>}
+            {personTitle && <div className="text-caption text-muted-foreground">{personTitle}</div>}
           </div>
         </div>
 
         {/* Topic */}
         <div className="rounded-md bg-gray-50 px-3 py-2">
-          <div className="text-xs font-medium text-muted-foreground">Topic</div>
-          <div className="text-sm">{topic}</div>
+          <div className="text-caption font-medium text-muted-foreground">Topic</div>
+          <div className="text-body">{topic}</div>
         </div>
 
         {/* Message */}
-        {message && <p className="text-sm text-muted-foreground">{message}</p>}
+        {message && <p className="text-body text-muted-foreground">{message}</p>}
 
         {/* Times */}
         {times.length > 0 && !confirmed && (
           <div className="space-y-2">
-            <div className="text-xs font-medium text-muted-foreground">Suggested times</div>
+            <div className="text-caption font-medium text-muted-foreground">Suggested times</div>
             <div className="flex flex-wrap gap-2">
               {times.map((t) => (
                 <button
                   key={t}
                   onClick={() => setSelectedTime(t)}
-                  className="rounded-md border px-3 py-1.5 text-xs transition-colors"
+                  className="rounded-md border px-3 py-1.5 text-caption transition-colors"
                   style={
                     selectedTime === t
                       ? { backgroundColor: accentColor, color: 'white', borderColor: accentColor }
@@ -91,12 +91,12 @@ export default function MeetingScheduler({ data, accentColor = '#2563eb', onActi
 
         {/* CTA */}
         {confirmed ? (
-          <div className="rounded-md bg-green-50 px-4 py-3 text-center text-sm font-medium text-green-700">
+          <div className="rounded-md bg-green-50 px-4 py-3 text-center text-body font-medium text-green-700">
             ✓ Meeting confirmed{selectedTime ? ` for ${selectedTime}` : ''}
           </div>
         ) : (
           <button
-            className="w-full rounded-md px-4 py-2 text-sm font-medium text-white"
+            className="w-full rounded-md px-4 py-2 text-body font-medium text-white"
             style={{ backgroundColor: accentColor }}
             onClick={handleConfirm}
           >

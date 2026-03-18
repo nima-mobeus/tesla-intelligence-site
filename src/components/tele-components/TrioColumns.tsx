@@ -33,21 +33,21 @@ export default function TrioColumns({ data, accentColor = '#2563eb', onAction }:
 
   return (
     <div className="w-full space-y-3">
-      {title && <h3 className="text-base font-semibold">{title}</h3>}
-      {subtitle && <p className="text-sm text-muted-foreground">{subtitle}</p>}
+      {title && <h3 className="text-body font-semibold">{title}</h3>}
+      {subtitle && <p className="text-body text-muted-foreground">{subtitle}</p>}
       <div className="grid gap-4" style={{ gridTemplateColumns: `repeat(${colCount}, 1fr)` }}>
         {columns.map((col, i) => (
           <div key={i} className="rounded-lg border-l-4 p-4" style={{ borderColor: accentColor }}>
             {col.stat ? (
-              <div className="mb-2 text-2xl font-bold" style={{ color: accentColor }}>{col.stat}</div>
+              <div className="mb-2 text-title font-bold" style={{ color: accentColor }}>{col.stat}</div>
             ) : col.icon ? (
-              <div className="mb-2 text-2xl">{col.icon}</div>
+              <div className="mb-2 text-title">{col.icon}</div>
             ) : null}
-            <h4 className="text-sm font-semibold">{col.title}</h4>
-            <p className="mt-1 text-xs text-muted-foreground">{col.description}</p>
+            <h4 className="text-body font-semibold">{col.title}</h4>
+            <p className="mt-1 text-caption text-muted-foreground">{col.description}</p>
             {col.ctaLabel && (
               <button
-                className="mt-2 text-xs font-medium"
+                className="mt-2 text-caption font-medium"
                 style={{ color: accentColor }}
                 onClick={() => onAction?.(col.ctaLabel!)}
               >

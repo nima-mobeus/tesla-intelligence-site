@@ -96,7 +96,7 @@ export function ControlBar() {
       {isIdle && showTalkButton && (
         <button
           onClick={handleConnect}
-          className="start-button inline-flex items-center gap-2 rounded-none text-sm"
+          className="start-button inline-flex items-center gap-2 rounded-none text-caption"
         >
           TALK <ArrowRight className="w-3.5 h-3.5" />
         </button>
@@ -106,7 +106,7 @@ export function ControlBar() {
       {isConnecting && (
         <button
           disabled
-          className="start-button inline-flex items-center gap-2 rounded-none text-sm opacity-80 connecting-pulse"
+          className="start-button inline-flex items-center gap-2 rounded-none text-caption opacity-80 connecting-pulse"
         >
           CONNECTING...
         </button>

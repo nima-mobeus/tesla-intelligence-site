@@ -17,8 +17,8 @@ export default function QuoteCallout({ data, accentColor = '#2563eb' }: TeleComp
 
   return (
     <div className="w-full rounded-lg border-l-4 bg-gray-50 p-5" style={{ borderColor: accentColor }}>
-      <div className="mb-2 text-2xl leading-none" style={{ color: accentColor }}>&ldquo;</div>
-      <blockquote className="text-base italic text-gray-700">{quote}</blockquote>
+      <div className="mb-2 text-title leading-none" style={{ color: accentColor }}>&ldquo;</div>
+      <blockquote className="text-body italic text-gray-700">{quote}</blockquote>
       {(data.author || data.authorTitle) && (
         <div className="mt-3 flex items-center gap-3">
           {data.authorImage && (
@@ -29,8 +29,8 @@ export default function QuoteCallout({ data, accentColor = '#2563eb' }: TeleComp
             />
           )}
           <div>
-            {data.author && <div className="text-sm font-medium">{data.author as string}</div>}
-            {data.authorTitle && <div className="text-xs text-muted-foreground">{data.authorTitle as string}</div>}
+            {data.author && <div className="text-body font-medium">{data.author as string}</div>}
+            {data.authorTitle && <div className="text-caption text-muted-foreground">{data.authorTitle as string}</div>}
           </div>
         </div>
       )}

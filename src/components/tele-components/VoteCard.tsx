@@ -65,7 +65,7 @@ export default function VoteCard({ data, accentColor, onAction }: TeleComponentP
         <div className="flex flex-col h-full overflow-hidden">
             {/* Header */}
             {title && (
-                <h3 className="font-data text-sm md:text-sm uppercase tracking-[0.12em] mb-0.5" style={{ color: `${getColor(90)}` }}>
+                <h3 className="font-data text-body uppercase tracking-[0.12em] mb-0.5" style={{ color: `${getColor(90)}` }}>
                     {title}
                 </h3>
             )}
@@ -73,7 +73,7 @@ export default function VoteCard({ data, accentColor, onAction }: TeleComponentP
             {/* Resolution ID */}
             {resolution && (
                 <div className="flex items-center gap-2 mb-1">
-                    <span className="font-data text-sm uppercase tracking-wider px-1.5 py-0.5 rounded font-bold"
+                    <span className="font-data text-body uppercase tracking-wider px-1.5 py-0.5 rounded font-bold"
                         style={{ backgroundColor: `${getColor(8)}`, color: `${getColor(70)}` }}>
                         {resolution}
                     </span>
@@ -82,7 +82,7 @@ export default function VoteCard({ data, accentColor, onAction }: TeleComponentP
 
             {/* Description */}
             {description && (
-                <p className="font-voice text-sm md:text-sm leading-tight mb-2 line-clamp-2" style={{ color: `${getColor(70)}` }}>
+                <p className="font-voice text-body leading-tight mb-2 line-clamp-2" style={{ color: `${getColor(70)}` }}>
                     {description}
                 </p>
             )}
@@ -97,7 +97,7 @@ export default function VoteCard({ data, accentColor, onAction }: TeleComponentP
                         }}
                     />
                 </div>
-                <span className="font-data text-sm font-bold shrink-0" style={{ color: VOTE_CLR.yes }}>
+                <span className="font-data text-body font-bold shrink-0" style={{ color: VOTE_CLR.yes }}>
                     {tally.yes + tally.conditional}–{tally.no}
                 </span>
             </div>
@@ -111,11 +111,11 @@ export default function VoteCard({ data, accentColor, onAction }: TeleComponentP
                                 style={{ backgroundColor: VOTE_CLR[pos.vote] || VOTE_CLR.unknown, fontSize: '9px' }}>
                                 {VOTE_ICON[pos.vote] || '?'}
                             </span>
-                            <span className="font-data text-sm leading-tight truncate" style={{ color: C }}>
+                            <span className="font-data text-body leading-tight truncate" style={{ color: C }}>
                                 {pos.director}
                             </span>
                             {pos.condition && (
-                                <span className="font-voice text-sm italic truncate" style={{ color: `${getColor(50)}` }}>
+                                <span className="font-voice text-body italic truncate" style={{ color: `${getColor(50)}` }}>
                                     — {pos.condition}
                                 </span>
                             )}
@@ -127,7 +127,7 @@ export default function VoteCard({ data, accentColor, onAction }: TeleComponentP
 
             {/* Predicted Outcome */}
             {predictedOutcome && (
-                <div className="font-data text-sm md:text-sm px-2 py-1 rounded-sm mt-auto" style={{ backgroundColor: `${getColor(3)}`, color: `${getColor(85)}` }}>
+                <div className="font-data text-body px-2 py-1 rounded-sm mt-auto" style={{ backgroundColor: `${getColor(3)}`, color: `${getColor(85)}` }}>
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="inline -mt-0.5 mr-0.5"><path d="M12 22V12M12 12l4 4M12 12l-4 4M20 6H4" /></svg>
                     {predictedOutcome}
                 </div>
@@ -137,7 +137,7 @@ export default function VoteCard({ data, accentColor, onAction }: TeleComponentP
             {prepActions.length > 0 && (
                 <div className="mt-1 pt-1 border-t" style={{ borderColor: `${getColor(8)}` }}>
                     {prepActions.slice(0, 2).map((action, i) => (
-                        <div key={i} className="font-voice text-sm leading-tight" style={{ color: `${getColor(60)}` }}>
+                        <div key={i} className="font-voice text-body leading-tight" style={{ color: `${getColor(60)}` }}>
                             → {action}
                         </div>
                     ))}

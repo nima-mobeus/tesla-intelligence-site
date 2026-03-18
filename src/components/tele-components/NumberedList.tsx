@@ -21,27 +21,27 @@ export default function NumberedList({ data, accentColor = '#2563eb' }: TeleComp
 
   return (
     <div className="w-full space-y-3">
-      {title && <h3 className="text-base font-semibold">{title}</h3>}
-      {subtitle && <p className="text-sm text-muted-foreground">{subtitle}</p>}
+      {title && <h3 className="text-body font-semibold">{title}</h3>}
+      {subtitle && <p className="text-body text-muted-foreground">{subtitle}</p>}
       <div className="space-y-3">
         {items.map((item, i) => (
           <div key={i} className="flex gap-3">
             <div
-              className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-bold text-white"
+              className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-caption font-bold text-white"
               style={{ backgroundColor: accentColor }}
             >
               {i + 1}
             </div>
             <div className="min-w-0 pt-0.5">
               <div className="flex items-center gap-2">
-                <span className="text-sm font-semibold">{item.title}</span>
+                <span className="text-body font-semibold">{item.title}</span>
                 {item.badge && (
-                  <span className="rounded-full bg-gray-100 px-2 py-0.5 text-[10px] font-medium text-gray-600">
+                  <span className="rounded-full bg-gray-100 px-2 py-0.5 text-micro font-medium text-gray-600">
                     {item.badge}
                   </span>
                 )}
               </div>
-              {item.description && <p className="mt-0.5 text-xs text-muted-foreground">{item.description}</p>}
+              {item.description && <p className="mt-0.5 text-caption text-muted-foreground">{item.description}</p>}
             </div>
           </div>
         ))}

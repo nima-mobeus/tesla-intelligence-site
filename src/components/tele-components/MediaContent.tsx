@@ -34,8 +34,8 @@ export default function MediaContent({ data }: TeleComponentProps) {
 
   return (
     <div className="w-full space-y-2">
-      {title && <h3 className="text-base font-semibold">{title}</h3>}
-      {description && <p className="text-sm text-muted-foreground">{description}</p>}
+      {title && <h3 className="text-body font-semibold">{title}</h3>}
+      {description && <p className="text-body text-muted-foreground">{description}</p>}
       <div className="relative w-full overflow-hidden rounded-lg" style={{ paddingBottom: aspect }}>
         {mediaType === 'video' ? (
           <video src={mediaUrl} controls className="absolute inset-0 h-full w-full object-cover" />
@@ -51,7 +51,7 @@ export default function MediaContent({ data }: TeleComponentProps) {
           <img src={mediaUrl} alt={title || 'Media'} className="absolute inset-0 h-full w-full object-cover" />
         )}
       </div>
-      {caption && <p className="text-xs text-center text-muted-foreground">{caption}</p>}
+      {caption && <p className="text-caption text-center text-muted-foreground">{caption}</p>}
     </div>
   );
 }

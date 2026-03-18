@@ -28,17 +28,17 @@ export default function MiniDashboardCard({ data, accentColor, onAction }: TeleC
 
     return (
         <div className="flex flex-col h-full overflow-hidden">
-            {title && <h3 className="font-data text-sm md:text-sm uppercase tracking-[0.12em] mb-2" style={{ color: `${getColor(90)}` }}>{title}</h3>}
+            {title && <h3 className="font-data text-body uppercase tracking-[0.12em] mb-2" style={{ color: `${getColor(90)}` }}>{title}</h3>}
             <div className="flex-1 flex flex-col gap-1 justify-start">
                 <div className="grid grid-cols-2 gap-1.5">
                     {metrics.map((m, i) => (
                         <div key={i} className="flex items-center gap-1.5">
                             {m.status && <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ backgroundColor: STATUS_DOT[m.status] || `${getColor(25)}` }} />}
                             <div className="min-w-0">
-                                <div className="font-data text-sm uppercase truncate" style={{ color: `${getColor(85)}` }}>{m.label}</div>
-                                <div className="font-data text-[11px] md:text-sm font-bold" style={{ color: `${getColor(90)}` }}>
+                                <div className="font-data text-body uppercase truncate" style={{ color: `${getColor(85)}` }}>{m.label}</div>
+                                <div className="font-data text-micro font-bold" style={{ color: `${getColor(90)}` }}>
                                     {m.value}
-                                    {m.trend && <span className="text-sm ml-0.5" style={{ color: m.trend === 'up' ? '#22c55e' : '#ff4040' }}>{m.trend === 'up' ? '▲' : '▼'}</span>}
+                                    {m.trend && <span className="text-body ml-0.5" style={{ color: m.trend === 'up' ? '#22c55e' : '#ff4040' }}>{m.trend === 'up' ? '▲' : '▼'}</span>}
                                 </div>
                             </div>
                         </div>

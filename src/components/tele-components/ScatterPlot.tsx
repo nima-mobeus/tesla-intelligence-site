@@ -34,7 +34,7 @@ export default function ScatterPlot({ data }: TeleComponentProps) {
   return (
     <div className="flex flex-col h-full overflow-hidden">
       {title && (
-        <h3 className="font-data text-sm md:text-sm uppercase tracking-[0.12em] mb-2" style={{ color: getColor(90) }}>{title}</h3>
+        <h3 className="font-data text-body uppercase tracking-[0.12em] mb-2" style={{ color: getColor(90) }}>{title}</h3>
       )}
       <div className="flex-1 flex items-center min-h-0 overflow-hidden justify-center">
         <svg viewBox={`0 0 ${W + PAD * 2} ${H + PAD * 2}`} className="w-full h-full max-h-full" preserveAspectRatio="xMidYMid meet">

@@ -16,7 +16,7 @@ export function AgentComponentSlot() {
 
   return (
     <section className="mx-auto w-full max-w-5xl px-6 pb-10">
-      <div className="mb-4 text-sm font-medium text-muted-foreground">
+      <div className="mb-4 text-body font-medium text-muted-foreground">
         Agent recommendations
       </div>
       <div className="space-y-4">

@@ -163,7 +163,7 @@ function CardRenderer({ card, index = 0, rowIndex = 0, accentColor, onAction }: 
   if (!Component) {
     return (
       <div className={isTopRow ? '' : 'card-glass'}>
-        <p className="text-sm" style={{ color: 'var(--theme-card-data)' }}>Unknown card type: {card.type}</p>
+        <p className="text-body" style={{ color: 'var(--theme-card-data)' }}>Unknown card type: {card.type}</p>
       </div>
     );
   }

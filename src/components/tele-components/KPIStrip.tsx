@@ -39,15 +39,15 @@ export default function KPIStrip({ data, accentColor, onAction }: TeleComponentP
                                     }}
                                 />
                             )}
-                            <span className="font-data text-sm md:text-sm uppercase tracking-[0.12em] truncate" style={{ color: `${getColor(85)}` }}>
+                            <span className="font-data text-body uppercase tracking-[0.12em] truncate" style={{ color: `${getColor(85)}` }}>
                                 {kpi.label}
                             </span>
                         </div>
-                        <div className="font-hero text-xl md:text-2xl lg:text-3xl leading-none truncate" style={{ color: `${getColor(90)}` }}>
+                        <div className="font-hero text-title leading-none truncate" style={{ color: `${getColor(90)}` }}>
                             {kpi.value}
                         </div>
                         {kpi.trend && kpi.change && (
-                            <div className="font-data text-sm leading-tight font-semibold truncate" style={{ color: TREND_CLR[kpi.trend] }}>
+                            <div className="font-data text-body leading-tight font-semibold truncate" style={{ color: TREND_CLR[kpi.trend] }}>
                                 {TREND_ARROW[kpi.trend]} {kpi.change}
                             </div>
                         )}

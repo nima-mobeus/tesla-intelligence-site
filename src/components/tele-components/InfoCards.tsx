@@ -29,16 +29,16 @@ export default function InfoCards({ data }: TeleComponentProps) {
 
   return (
     <div className="w-full space-y-3">
-      {title && <h3 className="text-base font-semibold">{title}</h3>}
-      {subtitle && <p className="text-sm text-muted-foreground">{subtitle}</p>}
+      {title && <h3 className="text-body font-semibold">{title}</h3>}
+      {subtitle && <p className="text-body text-muted-foreground">{subtitle}</p>}
       <div className="grid gap-3" style={{ gridTemplateColumns: `repeat(${columns}, 1fr)` }}>
         {cards.map((card, i) => {
           const v = VARIANT_STYLES[card.variant || ''];
           return (
             <div key={i} className={`rounded-lg border p-4 ${v ? `${v.bg} ${v.border}` : 'bg-white'}`}>
-              {card.icon && <div className="mb-2 text-2xl">{card.icon}</div>}
-              <h4 className="text-sm font-semibold">{card.title}</h4>
-              <p className="mt-1 text-xs text-muted-foreground">{card.description}</p>
+              {card.icon && <div className="mb-2 text-title">{card.icon}</div>}
+              <h4 className="text-body font-semibold">{card.title}</h4>
+              <p className="mt-1 text-caption text-muted-foreground">{card.description}</p>
             </div>
           );
         })}

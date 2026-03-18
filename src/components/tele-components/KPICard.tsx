@@ -54,12 +54,12 @@ export default function KPICard({ data, accentColor = '#2563eb', onAction }: Tel
     >
       <div className="flex items-start justify-between">
         <div className="flex-1">
-          {icon && <span className="text-lg mb-1 block">{icon}</span>}
+          {icon && <span className="text-title mb-1 block">{icon}</span>}
           <div className="flex items-baseline gap-1.5">
-            <span className="text-3xl font-bold text-white tracking-tight">
+            <span className="text-title font-bold text-white tracking-tight">
               {typeof value === 'number' ? value.toLocaleString() : value}
             </span>
-            {unit && <span className="text-lg text-gray-400 font-medium">{unit}</span>}
+            {unit && <span className="text-title text-gray-400 font-medium">{unit}</span>}
           </div>
         </div>
         {sparklinePath && (
@@ -70,9 +70,9 @@ export default function KPICard({ data, accentColor = '#2563eb', onAction }: Tel
       </div>
 
       <div className="mt-2 flex items-center justify-between">
-        <span className="text-xs text-gray-400 uppercase tracking-wider">{label}</span>
+        <span className="text-caption text-gray-400 uppercase tracking-wider">{label}</span>
         {change && (
-          <span className={`text-xs font-medium ${changeColor}`}>
+          <span className={`text-caption font-medium ${changeColor}`}>
             {changeArrow} {change}
           </span>
         )}

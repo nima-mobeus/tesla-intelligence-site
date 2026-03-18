@@ -72,7 +72,7 @@ export function SceneManager() {
         {hasHistory && (
           <button
             onClick={navigateSceneBack}
-            className="flex items-center gap-1 text-sm transition-colors"
+            className="flex items-center gap-1 text-caption transition-colors"
             style={{ color: 'var(--theme-scene-text-muted)' }}
           >
             <ChevronLeft className="w-4 h-4" />
@@ -87,7 +87,7 @@ export function SceneManager() {
         />
         {currentScene?.badge && (
           <span
-            className="inline-block rounded-full px-3 py-1 text-[10px] font-data tracking-[0.15em] uppercase"
+            className="inline-block rounded-full px-3 py-1 text-micro font-data tracking-[0.15em] uppercase"
             style={{
               background: 'var(--theme-scene-badge-bg)',
               color: 'var(--theme-scene-badge-text)',
@@ -105,7 +105,7 @@ export function SceneManager() {
           <div className="shrink-0 pb-4">
             {currentScene?.title && (
               <h1
-                className="font-hero text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight"
+                className="font-hero text-title font-bold tracking-tight"
                 style={{ color: 'var(--theme-scene-text)' }}
               >
                 {currentScene.title}
@@ -113,7 +113,7 @@ export function SceneManager() {
             )}
             {currentScene?.subtitle && (
               <p
-                className="text-sm mt-1 font-voice"
+                className="text-body mt-1 font-voice"
                 style={{ color: 'var(--theme-scene-text-muted)' }}
               >
                 {currentScene.subtitle}
@@ -154,7 +154,7 @@ export function SceneManager() {
 
       {/* Footer row */}
       <footer
-        className="relative z-10 flex items-center justify-between text-[10px] sm:text-xs font-data uppercase tracking-widest shrink-0"
+        className="relative z-10 flex items-center justify-between text-micro font-data uppercase tracking-widest shrink-0"
         style={{ color: 'var(--theme-scene-footer)' }}
       >
         <span>{currentScene?.footerLeft || ''}</span>

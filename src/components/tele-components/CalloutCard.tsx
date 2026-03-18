@@ -17,7 +17,7 @@ const ICON_PATHS: Record<string, string> = {
 
 function renderIcon(icon: string, clr: string) {
     const path = ICON_PATHS[icon];
-    if (!path) return <span className="font-data text-xl" style={{ color: clr }}>{icon[0]?.toUpperCase()}</span>;
+    if (!path) return <span className="font-data text-title" style={{ color: clr }}>{icon[0]?.toUpperCase()}</span>;
     return (
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={clr} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"
             className="shrink-0" style={{ maxWidth: 28, maxHeight: 28 }}>
@@ -40,9 +40,9 @@ export default function CalloutCard({ data, accentColor, onAction }: TeleCompone
     return (
         <div className="flex flex-col items-center justify-center h-full text-center gap-1.5 px-4">
             {icon && renderIcon(icon, color)}
-            {value && <div className="font-hero text-2xl md:text-3xl lg:text-4xl leading-tight" style={{ color }}>{value}</div>}
-            {label && <div className="font-data text-sm md:text-sm uppercase tracking-[0.15em]" style={{ color: `${getColor(85)}` }}>{label}</div>}
-            {body && <p className="font-voice text-sm md:text-sm leading-relaxed max-w-md line-clamp-3" style={{ color: `${getColor(88)}` }}>{body}</p>}
+            {value && <div className="font-hero text-title leading-tight" style={{ color }}>{value}</div>}
+            {label && <div className="font-data text-body uppercase tracking-[0.15em]" style={{ color: `${getColor(85)}` }}>{label}</div>}
+            {body && <p className="font-voice text-body leading-relaxed max-w-md line-clamp-3" style={{ color: `${getColor(88)}` }}>{body}</p>}
         </div>
     );
 }

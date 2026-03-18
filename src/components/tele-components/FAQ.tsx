@@ -30,14 +30,14 @@ export default function FAQ({ data, accentColor = '#2563eb' }: TeleComponentProp
 
   return (
     <div className="w-full space-y-3">
-      {title && <h3 className="text-base font-semibold">{title}</h3>}
+      {title && <h3 className="text-body font-semibold">{title}</h3>}
       <div className="divide-y rounded-lg border">
         {items.map((item, i) => {
           const isOpen = open.has(i);
           return (
             <div key={i}>
               <button
-                className="flex w-full items-center justify-between px-4 py-3 text-left text-sm font-medium hover:bg-gray-50"
+                className="flex w-full items-center justify-between px-4 py-3 text-left text-body font-medium hover:bg-gray-50"
                 onClick={() => toggle(i)}
               >
                 {item.question}
@@ -46,7 +46,7 @@ export default function FAQ({ data, accentColor = '#2563eb' }: TeleComponentProp
                 </span>
               </button>
               {isOpen && (
-                <div className="px-4 pb-3 text-sm text-muted-foreground">{item.answer}</div>
+                <div className="px-4 pb-3 text-body text-muted-foreground">{item.answer}</div>
               )}
             </div>
           );

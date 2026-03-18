@@ -46,7 +46,7 @@ export default function CarouselCards({ data, accentColor = '#2563eb', onAction 
 
   return (
     <div className="w-full space-y-3" onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
-      {title && <h3 className="text-base font-semibold">{title}</h3>}
+      {title && <h3 className="text-body font-semibold">{title}</h3>}
       <div className="overflow-hidden rounded-lg border">
         {cards.map((card, i) => (
           <div
@@ -59,17 +59,17 @@ export default function CarouselCards({ data, accentColor = '#2563eb', onAction 
             )}
             <div className="space-y-2 p-4">
               <div className="flex items-center gap-2">
-                <h4 className="text-sm font-semibold">{card.title}</h4>
+                <h4 className="text-body font-semibold">{card.title}</h4>
                 {card.badge && (
-                  <span className="rounded-full px-2 py-0.5 text-[10px] font-medium text-white" style={{ backgroundColor: accentColor }}>
+                  <span className="rounded-full px-2 py-0.5 text-micro font-medium text-white" style={{ backgroundColor: accentColor }}>
                     {card.badge}
                   </span>
                 )}
               </div>
-              {card.description && <p className="text-xs text-muted-foreground">{card.description}</p>}
+              {card.description && <p className="text-caption text-muted-foreground">{card.description}</p>}
               {card.ctaLabel && (
                 <button
-                  className="text-xs font-medium"
+                  className="text-caption font-medium"
                   style={{ color: accentColor }}
                   onClick={() => onAction?.(card.ctaLabel!)}
                 >

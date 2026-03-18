@@ -29,7 +29,7 @@ export default function Timeline({ data, accentColor = '#2563eb' }: TeleComponen
 
   return (
     <div className="w-full space-y-3">
-      {title && <h3 className="text-base font-semibold">{title}</h3>}
+      {title && <h3 className="text-body font-semibold">{title}</h3>}
       <div className="relative ml-3 space-y-0">
         {/* Vertical line */}
         <div className="absolute left-2.5 top-1 bottom-1 w-px bg-gray-200" />
@@ -43,20 +43,20 @@ export default function Timeline({ data, accentColor = '#2563eb' }: TeleComponen
           return (
             <div key={i} className="relative flex gap-4 pb-4 last:pb-0">
               <div
-                className={`relative z-10 flex ${dotSize} shrink-0 items-center justify-center rounded-full border-2 bg-white text-[10px] font-bold`}
+                className={`relative z-10 flex ${dotSize} shrink-0 items-center justify-center rounded-full border-2 bg-white text-micro font-bold`}
                 style={{ borderColor: dotColor, color: isDone ? 'white' : dotColor, backgroundColor: isDone ? dotColor : 'white' }}
               >
                 {isDone ? '✓' : entry.icon || (i + 1)}
               </div>
               <div className="min-w-0 pt-0.5">
                 <div className="flex items-center gap-2">
-                  <span className={`text-sm ${isActive ? 'font-semibold' : isDone ? 'font-medium' : 'text-muted-foreground'}`}>
+                  <span className={`text-body ${isActive ? 'font-semibold' : isDone ? 'font-medium' : 'text-muted-foreground'}`}>
                     {entry.label}
                   </span>
-                  {entry.date && <span className="text-xs text-muted-foreground">{entry.date}</span>}
+                  {entry.date && <span className="text-caption text-muted-foreground">{entry.date}</span>}
                 </div>
                 {entry.description && (
-                  <p className="mt-0.5 text-xs text-muted-foreground">{entry.description}</p>
+                  <p className="mt-0.5 text-caption text-muted-foreground">{entry.description}</p>
                 )}
               </div>
             </div>

@@ -28,15 +28,15 @@ export default function HeroSplit({ data, accentColor = '#2563eb', onAction }: T
   const content = (
     <div className="flex flex-col justify-center space-y-3 p-6">
       {badge && (
-        <span className="inline-block w-fit rounded-full px-3 py-1 text-xs font-medium text-white" style={{ backgroundColor: accentColor }}>
+        <span className="inline-block w-fit rounded-full px-3 py-1 text-caption font-medium text-white" style={{ backgroundColor: accentColor }}>
           {badge}
         </span>
       )}
-      <h3 className="text-xl font-bold">{title}</h3>
-      {subtitle && <p className="text-sm text-muted-foreground">{subtitle}</p>}
+      <h3 className="text-title font-bold">{title}</h3>
+      {subtitle && <p className="text-body text-muted-foreground">{subtitle}</p>}
       {ctaLabel && (
         <button
-          className="w-fit rounded-md px-4 py-2 text-sm font-medium text-white"
+          className="w-fit rounded-md px-4 py-2 text-body font-medium text-white"
           style={{ backgroundColor: accentColor }}
           onClick={() => onAction?.(ctaLabel)}
         >

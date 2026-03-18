@@ -23,7 +23,7 @@ export default function ProgressTracker({ data, accentColor = '#2563eb' }: TeleC
 
   return (
     <div className="w-full space-y-3">
-      {title && <h3 className="text-base font-semibold">{title}</h3>}
+      {title && <h3 className="text-body font-semibold">{title}</h3>}
       <div className="flex items-center gap-2">
         <div className="h-2 flex-1 overflow-hidden rounded-full bg-gray-100">
           <div
@@ -31,15 +31,15 @@ export default function ProgressTracker({ data, accentColor = '#2563eb' }: TeleC
             style={{ width: `${pct}%`, backgroundColor: accentColor }}
           />
         </div>
-        {showPercent && <span className="text-sm font-medium text-muted-foreground">{pct}%</span>}
+        {showPercent && <span className="text-body font-medium text-muted-foreground">{pct}%</span>}
       </div>
-      <div className="flex justify-between text-xs">
+      <div className="flex justify-between text-caption">
         {steps.map((step, i) => {
           const done = i + 1 <= currentStep;
           return (
             <div key={i} className="flex flex-col items-center gap-1">
               <div
-                className="flex h-6 w-6 items-center justify-center rounded-full text-[10px] font-bold text-white"
+                className="flex h-6 w-6 items-center justify-center rounded-full text-micro font-bold text-white"
                 style={{ backgroundColor: done ? accentColor : '#d1d5db' }}
               >
                 {done ? '✓' : i + 1}

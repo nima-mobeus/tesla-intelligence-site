@@ -33,7 +33,7 @@ export default function GaugeCard({ data }: TeleComponentProps) {
   return (
     <div className="flex flex-col items-center justify-center h-full">
       {title && (
-        <h3 className="font-data text-sm md:text-sm uppercase tracking-[0.12em] mb-1" style={{ color: getColor(90) }}>{title}</h3>
+        <h3 className="font-data text-body uppercase tracking-[0.12em] mb-1" style={{ color: getColor(90) }}>{title}</h3>
       )}
       <svg viewBox="0 0 160 90" className="w-full max-w-[200px]">
         <path d={`M ${cx - R} ${cy} A ${R} ${R} 0 0 1 ${cx + R} ${cy}`} fill="none" stroke={getColor(8)} strokeWidth={10} strokeLinecap="round" />
