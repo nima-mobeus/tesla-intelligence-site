@@ -128,7 +128,10 @@ export function SceneManager() {
   const logoSrc = isDark ? teslaLogoWhite : teslaLogo;
 
   return (
-    <div className="relative w-full lg:h-dvh overflow-hidden grid grid-rows-[auto_1fr_auto] p-3 md:p-6 lg:p-8">
+    <div
+      className="relative w-full lg:h-dvh overflow-hidden grid grid-rows-[auto_1fr_auto]"
+      style={{ padding: 'var(--scene-pad)', gap: 'var(--scene-pad)', '--scene-pad': 'clamp(0.75rem, 2vw, 2rem)' } as React.CSSProperties}
+    >
       {/* Semi-transparent background overlay with gradient for avatar peek-through */}
       <div className="absolute inset-0 z-0 scene-gradient-overlay" />
 
@@ -173,7 +176,7 @@ export function SceneManager() {
       </header>
 
       {/* Content row — title + GridView */}
-      <main className="relative z-10 flex flex-col min-h-0 pt-4">
+      <main className="relative z-10 flex flex-col min-h-0">
         {/* Title */}
         {(currentScene?.title || currentScene?.subtitle) && (
           <div className="shrink-0 pb-4">
@@ -228,7 +231,7 @@ export function SceneManager() {
 
       {/* Footer row */}
       <footer
-        className="relative z-10 flex items-center justify-between text-[10px] sm:text-xs font-data uppercase tracking-widest shrink-0 pt-2"
+        className="relative z-10 flex items-center justify-between text-[10px] sm:text-xs font-data uppercase tracking-widest shrink-0"
         style={{ color: 'var(--theme-scene-footer)' }}
       >
         <span>{currentScene?.footerLeft || ''}</span>
