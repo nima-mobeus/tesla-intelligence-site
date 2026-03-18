@@ -18,44 +18,81 @@ export function SceneManager() {
   const theme = useVoiceSessionStore((s) => s.theme);
   const toggleTheme = useVoiceSessionStore((s) => s.toggleTheme);
 
-  // ── Hold-back mechanism ──
-  // When skeleton arrives, freeze the *displayed* scene (old grid) for 500ms.
-  // If the new full scene arrives before the timer fires, swap grid → grid
-  // with no skeleton flash. Only show skeleton if the hold period expires.
+  // ── Hold-back mechanism (1000ms) ──
+  // When a skeleton arrives, the old grid stays visible for 1000ms.
+  // If the full scene arrives within that window, we buffer it and swap
+  // after the remainder of the hold. Skeleton shimmer only appears if
+  // the full scene hasn't arrived by the time the hold expires.
+  const HOLD_MS = 1000;
+
   const [displayScene, setDisplayScene] = useState(storeScene);
   const [showSkeleton, setShowSkeleton] = useState(false);
+  const holdStartRef = useRef<number | null>(null);
   const holdTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const holdingRef = useRef(false);
+  const pendingSceneRef = useRef<typeof storeScene>(null);
 
   useEffect(() => {
-    if (sceneLoading && !holdingRef.current) {
-      // Skeleton arrived — start 500ms hold, keep old scene visible
-      holdingRef.current = true;
+    // ── Skeleton arrived: start the hold period
+    if (sceneLoading && holdStartRef.current === null) {
+      holdStartRef.current = Date.now();
+      pendingSceneRef.current = null;
+
       holdTimerRef.current = setTimeout(() => {
-        // Hold expired and still loading → show skeleton now
-        if (useVoiceSessionStore.getState().sceneLoading) {
+        // Hold expired — if a scene arrived during the hold, show it now
+        if (pendingSceneRef.current) {
+          setDisplayScene(pendingSceneRef.current);
+          pendingSceneRef.current = null;
+          setShowSkeleton(false);
+        } else {
+          // No scene yet — show skeleton shimmer
           setShowSkeleton(true);
         }
-        holdingRef.current = false;
-      }, 500);
-    } else if (!sceneLoading) {
-      // Full scene arrived — cancel hold timer, show new scene immediately
-      if (holdTimerRef.current) {
-        clearTimeout(holdTimerRef.current);
-        holdTimerRef.current = null;
+        holdStartRef.current = null;
+      }, HOLD_MS);
+
+    // ── Full scene arrived
+    } else if (!sceneLoading && storeScene) {
+      const holdStart = holdStartRef.current;
+
+      if (holdStart !== null) {
+        // Still in the hold period — buffer the scene
+        const elapsed = Date.now() - holdStart;
+        const remaining = HOLD_MS - elapsed;
+
+        if (remaining > 0) {
+          // Buffer it; the existing hold timer will pick it up
+          pendingSceneRef.current = storeScene;
+          // Replace the hold timer with one that fires after the remainder
+          if (holdTimerRef.current) clearTimeout(holdTimerRef.current);
+          holdTimerRef.current = setTimeout(() => {
+            setDisplayScene(pendingSceneRef.current ?? storeScene);
+            pendingSceneRef.current = null;
+            setShowSkeleton(false);
+            holdStartRef.current = null;
+          }, remaining);
+        } else {
+          // Hold already expired — swap immediately
+          if (holdTimerRef.current) clearTimeout(holdTimerRef.current);
+          setDisplayScene(storeScene);
+          setShowSkeleton(false);
+          holdStartRef.current = null;
+          pendingSceneRef.current = null;
+        }
+      } else {
+        // No hold in progress — immediate swap (e.g., RPC setScene, back nav)
+        setDisplayScene(storeScene);
+        setShowSkeleton(false);
       }
-      holdingRef.current = false;
-      setShowSkeleton(false);
-      setDisplayScene(storeScene);
     }
+
     return () => {
       if (holdTimerRef.current) clearTimeout(holdTimerRef.current);
     };
   }, [sceneLoading, storeScene]);
 
-  // When scene updates outside of loading (e.g. RPC setScene, back nav), sync immediately
+  // When scene updates outside of loading (RPC setScene, back nav), sync immediately
   useEffect(() => {
-    if (!sceneLoading && !holdingRef.current) {
+    if (!sceneLoading && holdStartRef.current === null) {
       setDisplayScene(storeScene);
     }
   }, [storeScene, sceneLoading]);
