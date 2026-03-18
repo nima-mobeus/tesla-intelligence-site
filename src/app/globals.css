@@ -177,15 +177,67 @@ body {
   animation: chat-bubble-enter 0.4s ease-out forwards;
 }
 
+/* ── Typing Indicator Pulse ── */
+@keyframes typing-indicator-pulse {
+  0%, 100% { opacity: 0.3; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+.animate-typing-pulse {
+  animation: typing-indicator-pulse 1.4s ease-in-out infinite;
+}
+
+/* ── Chat Stagger Delays ── */
+.chat-delay-1 { animation-delay: 0.1s; }
+.chat-delay-2 { animation-delay: 0.2s; }
+.chat-delay-3 { animation-delay: 0.3s; }
+.chat-delay-4 { animation-delay: 0.4s; }
+.chat-delay-5 { animation-delay: 0.5s; }
+
+/* ── Thinking Pulse (tele thinking state) ── */
+@keyframes tele-thinking-pulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.8; }
+}
+
+/* ── Emoji Celebration Rain ── */
+@keyframes emoji-fall {
+  0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
+  70% { opacity: 1; }
+  100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+}
+.animate-emoji-fall {
+  animation: emoji-fall linear forwards;
+  will-change: transform, opacity;
+}
+
 /* ── Sleep Mode (dim after mouse idle) ── */
 .telelabor-panel .chat-message-bubble,
 .telelabor-panel .chat-avatar,
-.telelabor-panel .chat-icon { transition: opacity 800ms ease; }
+.telelabor-panel .chat-icon,
+.tele-icon { transition: opacity 800ms ease; }
 .chat-sleeping .chat-message-bubble { opacity: 0.2 !important; }
 .chat-sleeping .chat-avatar,
-.chat-sleeping .chat-icon { opacity: 0.4 !important; }
+.chat-sleeping .chat-icon,
+.chat-sleeping .tele-icon { opacity: 0.4 !important; }
 .chat-sleeping .telelabor-panel > :last-child { opacity: 0.2 !important; transition: opacity 800ms ease; }
 .telelabor-panel > :last-child { transition: opacity 800ms ease; }
+
+/* ── Responsive Chat Message Sizing ── */
+@media (max-width: 767px) {
+  .chat-messages-container .chat-message-bubble {
+    max-width: 85%;
+    padding: 0.75rem;
+    font-size: 0.875rem;
+  }
+  .chat-messages-container .chat-avatar {
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+  .chat-messages-container .chat-icon {
+    width: 0.875rem;
+    height: 0.875rem;
+  }
+}
 
 /* ── Chat Messages Scroll + Fade ── */
 .chat-messages-container {
