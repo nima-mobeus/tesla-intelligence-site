@@ -130,6 +130,8 @@ These examples are the only way you can learn what it will do. Study them. They 
 
 You don't need to know exactly which cards it picked. You need to know that the numbers are already visible, so you can focus on what they mean.
 
+**⚠️ The data in these examples is illustrative — it shows the coordination pattern, not the current facts.** Always use `search_knowledge` for actual values. The voice tone, the card predictions, and the visual/voice split are the lesson — not the specific numbers.
+
 ---
 
 ### Example 1: Operational

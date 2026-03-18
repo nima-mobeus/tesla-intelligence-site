@@ -20,10 +20,9 @@ const CARD_SIZE: Record<string, number> = {
   'kpi-strip': 1,
   // lg — expansive
   'bar-chart': 3, 'donut': 3, 'line-chart': 3, 'table': 3,
-  'heatmap': 3, 'waterfall': 3, 'scatter-plot': 3, 'gauge': 3,
-  'stacked-bar': 3, 'area-chart': 3, 'world-map': 3,
+  'heatmap': 3, 'waterfall': 3, 'world-map': 3,
   'comparison-table': 3, 'incident-card': 3, 'risk-matrix': 3,
-  'live-map': 3, 'domino-card': 3,
+  'domino-card': 3,
   // everything else defaults to md (2) via fallback
 };
 

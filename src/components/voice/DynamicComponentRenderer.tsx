@@ -29,7 +29,7 @@ function getMissingRequiredFields(
 }
 
 function getAccentColor(uiConfig: Record<string, any> | undefined) {
-  return uiConfig?.accentColor || '#2563eb';
+  return uiConfig?.accentColor || '#003DAA';
 }
 
 /**
@@ -123,7 +123,7 @@ export function DynamicComponentRenderer({ template, data }: DynamicComponentRen
 
   if (Component) {
     rendered = (
-      <Suspense fallback={<div className="h-24 w-full animate-pulse rounded-lg bg-gray-100" />}>
+      <Suspense fallback={<div className="h-24 w-full animate-pulse rounded-lg bg-white/10" />}>
         <Component data={dataWithMeta} accentColor={accentColor} onAction={handleAction} />
       </Suspense>
     );

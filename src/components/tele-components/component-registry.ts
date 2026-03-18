@@ -1,7 +1,7 @@
 /**
- * Component Registry — 30-card tele-component library.
+ * Component Registry — 29 cards + GridView infrastructure.
  *
- * v2.0 — Reduced from 55 unique components to 30.
+ * v2.1 — Reduced from 55 unique components to 29 cards.
  * Every removed type is aliased to its surviving counterpart below,
  * ensuring zero runtime breakage for existing prompts.
  *
