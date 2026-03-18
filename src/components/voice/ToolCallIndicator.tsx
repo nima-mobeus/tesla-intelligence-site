@@ -28,7 +28,7 @@ interface ToolCallIndicatorProps {
 }
 
 const TOOL_DISPLAY_CONFIG: Record<string, { label: string; Icon: React.ElementType }> = {
-  navigateToSection: { label: 'generate_glass', Icon: LayoutTemplate },
+  setScene: { label: 'set_scene', Icon: LayoutTemplate },
   search_conversation_history: { label: 'search_history', Icon: History },
   save_visitor_info: { label: 'save_cloud', Icon: Cloud },
   bringIn: { label: 'start_beam', Icon: Radio },

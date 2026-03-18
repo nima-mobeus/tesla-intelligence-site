@@ -12,8 +12,7 @@
  *                          domino-card, vote-card, approval-card, person-card,
  *                          incident-card, pipeline-card, event-card
  *  Tier 3 (Versatile):     risk-matrix, comparison-table, news-feed, checklist,
- *                          waterfall, heatmap, world-map, journal-entry, stock,
- *                          image-card
+ *                          waterfall, heatmap, world-map, journal-entry, stock
  */
 
 import { ComponentType, lazy } from 'react';
@@ -63,7 +62,6 @@ reg('heatmap',           () => import('./HeatmapCard'));
 reg('world-map',         () => import('./WorldMapCard'));
 reg('journal-entry',     () => import('./JournalEntryCard'));
 reg('stock',             () => import('./StockCard'));
-reg('image-card',        () => import('./ImageCard'));
 
 // ─── Infrastructure ─────────────────────────────────────────────────────────
 reg('GridView', () => import('./GridView'));
@@ -112,9 +110,9 @@ reg('Timeline',         () => import('./TimelineCard'));
 reg('PieChart',         () => import('./SceneDonutChart'));
 reg('ProgressTracker',  () => import('./SceneBarChart'));
 reg('ProductCard',      () => import('./TextCard'));
-reg('ImageGallery',     () => import('./ImageCard'));
+reg('ImageGallery',     () => import('./TextCard'));
 reg('FAQ',              () => import('./TextCard'));
-reg('MediaContent',     () => import('./ImageCard'));
+reg('MediaContent',     () => import('./TextCard'));
 reg('Form',             () => import('./TextCard'));
 reg('Quiz',             () => import('./TextCard'));
 reg('HeroSplit',        () => import('./TextCard'));
