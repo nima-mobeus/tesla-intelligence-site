@@ -65,11 +65,20 @@
   --ring: oklch(0.75 0.15 195);
   --radius: 0.625rem;
 
-  /* ── Color Palette ── */
+  /* ── Core Color Palette (from project-elon) ── */
   --color-midnight: #0a0e14;
+  --color-starlight: #e8ecf0;
   --amber: #00b4d8;
 
+  /* ── Glass Panel ── */
+  --glass-bg: rgba(255, 255, 255, 0.6);
+  --glass-border: rgba(4, 30, 66, 0.1);
+  --glass-highlight: rgba(4, 30, 66, 0.05);
+
   /* ── Scene Card Theme — Studio (frosted glass, blue accent) ── */
+  --theme-page-bg: #0a0e14;
+  --theme-text: #e0e0e0;
+  --theme-heading: #ffffff;
   --theme-chart-line: #ffffff;
   --theme-card-data: rgba(255, 255, 255, 0.92);
   --theme-card-voice: rgba(255, 255, 255, 0.80);
@@ -98,6 +107,9 @@
   /* Video filter */
   --theme-video-brightness: 1;
   --theme-video-saturate: 1;
+  --theme-video-contrast: 1;
+  --theme-video-grayscale: 0;
+  --theme-video-sepia: 0;
 
   /* KPI & badges */
   --theme-kpi-text: #ffffff;
