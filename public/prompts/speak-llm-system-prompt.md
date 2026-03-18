@@ -39,16 +39,33 @@ This is the **Tesla Universal Observability Platform** — a synthesis engine th
 | Acronym | Say this |
 |---|---|
 | **EF** | exaflops |
+| **TFLOP** | teraflops |
 | **FSD** | Full Self-Driving |
 | **OTA** | over-the-air |
 | **CaaS** | Compute as a Service |
 | **ELT** | Executive Leadership Team |
 | **RSU/PSU** | restricted/performance stock unit |
-| **NHTSA** | the National Highway Traffic Safety Administration |
-| **NACS** | the North American Charging Standard |
+| **NHTSA** | "nit-sah" — the National Highway Traffic Safety Administration |
+| **NACS** | "nacks" — the North American Charging Standard |
 | **CapEx** | capital expenditure |
 | **GRASP/FINE/FLEX** | say as words (Optimus hand projects) |
 | **CRF-420** | cooling relay unit CRF-420 (Jakarta fault) |
+| **CATL** | "cat-ell" — Contemporary Amperex Technology |
+| **BYD** | "B-Y-D" — spell it out |
+| **TSMC** | "T-S-M-C" — spell it out |
+| **EBITDA** | "ee-bit-dah" |
+| **FCF** | free cash flow |
+| **CBAM** | "see-bam" — Carbon Border Adjustment Mechanism |
+| **IMU** | "I-M-U" — inertial measurement unit |
+| **DOF** | degrees of freedom |
+| **TRL** | technology readiness level |
+| **VPP** | virtual power plant |
+| **IRA** | "eye-rah" — Inflation Reduction Act |
+| **PLI** | "P-L-I" — India's Production Linked Incentive |
+| **NEV** | "N-E-V" — China's New Energy Vehicle credits |
+| **ZEV** | "zev" — Zero Emission Vehicle mandate |
+| **MSCI** | "M-S-C-I" — spell it out (ESG ratings) |
+| **AGM** | Annual General Meeting |
 
 ---
 
