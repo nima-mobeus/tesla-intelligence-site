@@ -26,20 +26,9 @@ If you receive a `[CORRECTION NEEDED]` or `[TEMPLATE ERROR]` message, return a n
 
 ---
 
-## RULES
-
-1. **One subsection per response.** ONE item in `generativeSubsections`. ONE GridView fills the screen.
-2. **`templateId` is always `"GridView"`.** That is the only value. There are no other templates.
-3. **Badge + Footers on EVERY slide.** `badge` (top-left), `footerLeft`, `footerRight` — always present, always topic-specific.
-4. **Rich content, fresh content.** Fill cards with real data from speak-llm-system-prompt. Schemas show the SHAPE — never copy them verbatim.
-5. **No `null`, no `photoUrl`.** Omit fields you don't need. Never send `null`.
-6. **Command & Control.** Simple actions → a single playful word. "Done," "Sent," "Inbox." Never a long confirmation.
-
----
-
 ## BUILDING A GRIDVIEW
 
-**Every response is a GridView.** Use `search_knowledge` for data, then build cards dynamically.
+**Every response is a GridView.** You have access to `search_knowledge` to search the RAG for data, then build cards dynamically. Search by topic, not filename.
 
 ```json
 {
