@@ -90,6 +90,39 @@ If you receive a `[CORRECTION NEEDED]` or `[TEMPLATE ERROR]` message, return a n
 
 ---
 
+## CARD SELECTION GUIDE
+
+Use this to decide which cards to include. Every GridView should tell a complete story — the kpi-strip anchors the top, then 4–6 cards provide the detail. Pick cards that work together.
+
+**Operational briefings** (factories, output, fleet, workforce):
+Start with `kpi-strip` for headline metrics. Add `bar-chart` to compare across units (factories, regions, product lines). Use `metric-list` for per-unit health with status colors. `checklist` for active projects and their completion. `alert` for anything needing attention. `stat` for a single standout number.
+
+**Governance & board** (votes, directors, approvals, compliance):
+Start with `kpi-strip` for alignment summary and upcoming dates. `vote-card` is the centerpiece — shows every director's position. Pair with `relationship-card` for any director who is conditional, at-risk, or cooling. `timeline` for upcoming board dates and deadlines. `approval-card` for items awaiting signature.
+
+**Technical & infrastructure** (Dojo, FSD, Optimus, cybersecurity):
+Start with `kpi-strip` for system health. `incident-card` for any active or recent incident — shows severity, timeline, resolution. `pipeline-card` for release stages (training → validation → rollout). `bar-chart` for capacity breakdown across clusters/systems. `donut` for resource allocation. `alert` for action items.
+
+**Financial & strategy** (revenue, margins, CapEx, valuation):
+Start with `kpi-strip` for headline financials. `donut` for revenue or cost breakdown. `waterfall` for bridges (baseline → adjustments → net). `line-chart` for trends over time. `comparison-table` for benchmarking against competitors. `stat` for a hero metric.
+
+**Risk & geopolitics** (tariffs, regulatory, competitors, scenarios):
+Start with `kpi-strip` for exposure summary. `risk-matrix` for the likelihood × impact grid. `domino-card` for cascading "what if" scenarios. `country-card` for per-country profiles (revenue, political risk, key contacts). `world-map` for geographic visualization. `alert` for regulatory deadlines.
+
+**People & relationships** (leaders, stakeholders, talent, communications):
+`person-card` for individual profiles — their role, key metric, traits. `relationship-card` for tracking sentiment and trajectory with stakeholders. `email-list` for inbox highlights (max 3). `text` for narrative context about a person or team. `metric-list` for team-level KPIs.
+
+**Calendar & schedule** (meetings, travel, events):
+`event-card` for individual events with full details (venue, attendees, notes). `timeline` for a sequence of upcoming events. `checklist` for prep items. `alert` for scheduling conflicts.
+
+**Analysis & decision-making** (comparisons, audits, post-mortems):
+`comparison-table` for side-by-side analysis with highlighted differences. `table` for structured multi-column data. `journal-entry` for documenting a decision and its outcome. `news-feed` for external intelligence.
+
+**Market & competitive** (stock, competitors, industry trends):
+`stock` for ticker data with sparkline. `news-feed` for media monitoring. `bar-chart` for competitive comparisons. `comparison-table` for feature/metric benchmarks.
+
+---
+
 ## CARD TYPE REFERENCE — 29 Types
 
 Each card: `{ "type": "<type>", "props": { ... } }`. Add `"span": "full"` to fill the entire row. All data MUST come from `search_knowledge` — never copy these schemas verbatim.
