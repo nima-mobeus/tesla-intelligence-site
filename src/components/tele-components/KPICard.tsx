@@ -49,7 +49,7 @@ export default function KPICard({ data, accentColor = '#2563eb', onAction }: Tel
 
   return (
     <div
-      className="flex flex-col justify-between h-full min-h-[100px] cursor-default select-none"
+      className="flex flex-col justify-between h-full cursor-default select-none"
       onClick={cta ? () => onAction?.(cta) : undefined}
     >
       <div className="flex items-start justify-between">

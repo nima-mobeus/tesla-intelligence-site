@@ -119,18 +119,19 @@ export default function GridView({ data, accentColor, onAction }: TeleComponentP
     return null;
   }
 
-  // Build weighted row template: e.g. "2fr 3fr 1fr" based on max card size per row
-  const rowTemplate = rows.map(r => `${rowWeight(r)}fr`).join(' ');
+  // Build weighted row template: e.g. "minmax(0,2fr) minmax(0,3fr)" so rows
+  // can shrink below content-size and always fit the viewport.
+  const rowTemplate = rows.map(r => `minmax(0,${rowWeight(r)}fr)`).join(' ');
 
   return (
     <div
-      className="grid gap-4 w-full h-full"
+      className="grid gap-4 w-full h-full overflow-hidden"
       style={{ gridTemplateRows: rowTemplate }}
     >
       {rows.map((rowCards, rowIndex) => (
         <div
           key={rowIndex}
-          className="grid gap-4"
+          className="grid gap-4 min-h-0 overflow-hidden"
           style={{ gridTemplateColumns: `repeat(${rowCards.length}, 1fr)` }}
         >
           {rowCards.map((card, cardIndex) => (
@@ -167,7 +168,7 @@ function CardRenderer({ card, index = 0, accentColor, onAction }: {
   return (
     <Suspense
       fallback={
-        <div className="card-glass animate-pulse h-full min-h-[100px]" />
+        <div className="card-glass animate-pulse h-full" />
       }
     >
       <div

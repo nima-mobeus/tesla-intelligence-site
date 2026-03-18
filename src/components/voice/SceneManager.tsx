@@ -179,7 +179,7 @@ export function SceneManager() {
         )}
 
         {/* Grid content */}
-        <div className="flex-1 overflow-auto min-h-0">
+        <div className="flex-1 min-h-0 overflow-hidden">
           {showSkeleton ? (
             <SceneSkeleton layout={sceneSkeletonLayout || '1-2-3'} />
           ) : GridView && currentScene?.cards && currentScene.cards.length > 0 ? (
@@ -188,7 +188,7 @@ export function SceneManager() {
                 <div className="animate-pulse h-full rounded-xl" style={{ background: 'var(--theme-card-bg)' }} />
               }
             >
-              <div key={currentScene.id}>
+              <div key={currentScene.id} className="h-full">
                 <GridView
                   data={{
                     layout: currentScene.layout,

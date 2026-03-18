@@ -42,7 +42,7 @@ export default function MetricCard({ data, accentColor = '#2563eb', onAction }: 
 
   return (
     <div
-      className="flex flex-col justify-between h-full min-h-[120px] cursor-default select-none"
+      className="flex flex-col justify-between h-full cursor-default select-none"
       onClick={cta ? () => onAction?.(cta) : undefined}
     >
       {/* Header */}
