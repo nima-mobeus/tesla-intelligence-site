@@ -1134,33 +1134,7 @@ function setupRoomEventListeners(
         }
       }
 
-      // --- Fix: Intercept JSON-like agent speech (Realtime API leak) ---
-      // The Realtime API sometimes echoes set_scene function call arguments
-      // as spoken text. Detect this, suppress from transcript, and route
-      // the data to setScene if no scene was already set for this content.
-      if (isAgent && segment.final) {
-        const trimmed = segment.text.trim();
-        if (trimmed.startsWith('{') && trimmed.endsWith('}')) {
-          try {
-            const parsed = JSON.parse(trimmed);
-            // Check if it looks like set_scene args (has scene_json key or cards array)
-            const scenePayload = parsed.scene_json
-              ? JSON.parse(parsed.scene_json)
-              : (Array.isArray(parsed.cards) ? parsed : null);
 
-            if (scenePayload && Array.isArray(scenePayload.cards)) {
-              console.log('Intercepted JSON speech → routing to setScene', scenePayload.id || '(dynamic)');
-              // Route to scene handler (acts as fallback if RPC didn't fire)
-              const { applyScene } = get();
-              applyScene(scenePayload);
-              // Suppress from transcript — don't add this segment
-              continue;
-            }
-          } catch {
-            // Not valid JSON or not a scene — fall through to normal transcript
-          }
-        }
-      }
 
       const entry: TranscriptEntry = {
         id: segment.id,
@@ -1310,72 +1284,6 @@ function registerRpcHandlers(
 ) {
   const localParticipant = room.localParticipant;
 
-  // Handler: Show UI component
-  localParticipant.registerRpcMethod('showComponent', async (data) => {
-    try {
-      const payload = JSON.parse(data.payload);
-      console.log('RPC: showComponent', payload);
-      addToolCallTranscript(set, 'show_component', { templateId: payload.templateId, id: payload.id });
-      if (!payload.templateId) {
-        return JSON.stringify({ success: false, error: 'templateId is required' });
-      }
-
-      const componentId =
-        typeof payload.id === 'string' && payload.id.length > 0
-          ? payload.id
-          : `ui-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-
-      set((state) => {
-        const existingIndex = state.uiComponents.findIndex((c) => c.id === componentId);
-        if (existingIndex >= 0) {
-          const updated = [...state.uiComponents];
-          updated[existingIndex] = {
-            ...updated[existingIndex],
-            templateId: payload.templateId,
-            data: payload.data || {},
-            timestamp: new Date(),
-          };
-          return { uiComponents: updated };
-        }
-
-        return {
-          uiComponents: [
-            ...state.uiComponents,
-            {
-              id: componentId,
-              templateId: payload.templateId,
-              data: payload.data || {},
-              timestamp: new Date(),
-            },
-          ],
-        };
-      });
-
-      return JSON.stringify({ success: true, id: componentId });
-    } catch (error) {
-      console.error('RPC showComponent error:', error);
-      return JSON.stringify({ success: false, error: String(error) });
-    }
-  });
-
-  // Handler: Hide/remove UI component
-  localParticipant.registerRpcMethod('hideComponent', async (data) => {
-    try {
-      const payload = JSON.parse(data.payload);
-      console.log('RPC: hideComponent', payload);
-      addToolCallTranscript(set, 'hide_component', { id: payload.id });
-
-      set((state) => ({
-        uiComponents: state.uiComponents.filter((c) => c.id !== payload.id),
-      }));
-
-      return JSON.stringify({ success: true });
-    } catch (error) {
-      console.error('RPC hideComponent error:', error);
-      return JSON.stringify({ success: false, error: String(error) });
-    }
-  });
-
   // Handler: Navigate to page (client-side navigation)
   localParticipant.registerRpcMethod('navigate', async (data) => {
     try {
@@ -1392,13 +1300,6 @@ function registerRpcHandlers(
       console.error('RPC navigate error:', error);
       return JSON.stringify({ success: false, error: String(error) });
     }
-  });
-
-  // Handler: Clear all UI components
-  localParticipant.registerRpcMethod('clearComponents', async () => {
-    console.log('RPC: clearComponents');
-    set({ uiComponents: [] });
-    return JSON.stringify({ success: true });
   });
 
   // Handler: Set full-screen scene (delegates to applyScene for certified-scene logic)
