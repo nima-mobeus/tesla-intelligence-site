@@ -27,45 +27,65 @@ export function WelcomeLanding() {
 
       {/* Content — left-aligned, vertically centered */}
       <main className="flex items-center">
-        <div className="max-w-2xl space-y-6">
+        <div className="max-w-4xl space-y-5 sm:space-y-6">
           {/* Badge pill */}
           <div
             className="animate-slide-in-left"
             style={{ animationDelay: '0.1s' }}
           >
             <span className="inline-block rounded-full bg-white/10 px-4 py-1.5 text-micro font-data tracking-[0.15em] text-white/80 uppercase backdrop-blur-sm border border-white/10">
-              {agentName} &middot; TESLA 2030
+              {agentName} &middot; Executive Observability
             </span>
           </div>
 
-          {/* Title */}
+          {/* Title — observability thesis */}
           <h1
             className="animate-slide-in-left font-hero text-display leading-[0.95] tracking-tight text-white"
             style={{ animationDelay: '0.25s' }}
           >
-            The Command{' '}
-            <span className="text-[#00e5ff]">
-              Layer
+            Every signal.{' '}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00b4d8] to-white">
+              Every decision.
             </span>
+            {' '}Now.
           </h1>
 
           {/* Subtitle */}
           <p
-            className="animate-slide-in-left text-body text-white/60 max-w-lg"
+            className="animate-slide-in-left text-body text-white/60 max-w-xl"
             style={{ animationDelay: '0.4s' }}
           >
-            48.2M vehicles &middot; 8 gigafactories &middot; 1.2M Optimus units &middot; 8.4M robotaxi rides/day
+            The rules changed. Leaders who see everything — in real time, across every domain — move faster, decide better, and never get surprised. This is what that looks like.
           </p>
+
+          {/* Three market force cards */}
+          <div
+            className="grid grid-cols-1 sm:grid-cols-3 gap-3 animate-slide-in-left"
+            style={{ animationDelay: '0.5s' }}
+          >
+            <div className="card-glass" style={{ borderRadius: '0.75rem', padding: '1rem 1.25rem', animation: 'none' }}>
+              <div className="text-[#00b4d8] text-caption font-semibold tracking-widest uppercase mb-1">10× Output Pressure</div>
+              <div className="text-white/70 text-caption leading-relaxed">Every leader must now do 10× more — AI sets a new baseline for what teams are expected to deliver.</div>
+            </div>
+            <div className="card-glass" style={{ borderRadius: '0.75rem', padding: '1rem 1.25rem', animation: 'none' }}>
+              <div className="text-[#00b4d8] text-caption font-semibold tracking-widest uppercase mb-1">AI-Native Exponentials</div>
+              <div className="text-white/70 text-caption leading-relaxed">New competitors are 100× more efficient, born AI-native, without legacy cost structures or decision latency.</div>
+            </div>
+            <div className="card-glass" style={{ borderRadius: '0.75rem', padding: '1rem 1.25rem', animation: 'none' }}>
+              <div className="text-[#00b4d8] text-caption font-semibold tracking-widest uppercase mb-1">Data Observable at Scale</div>
+              <div className="text-white/70 text-caption leading-relaxed">For the first time, everything is measurable in real time — creating instant action, zero-latency decisions.</div>
+            </div>
+          </div>
 
           {/* BEGIN BRIEFING button */}
           <div
-            className="animate-slide-in-left"
-            style={{ animationDelay: '0.55s' }}
+            className="animate-slide-in-left mt-6"
+            style={{ animationDelay: '0.65s' }}
           >
             <button
               onClick={connect}
               disabled={isConnecting}
-              className="start-button inline-flex items-center gap-3 rounded-none disabled:opacity-60"
+              className="btn-action flex items-center gap-3 disabled:opacity-60 disabled:cursor-wait"
             >
               {isConnecting ? 'CONNECTING...' : 'BEGIN BRIEFING'}
               {!isConnecting && <ArrowRight className="w-4 h-4" />}
@@ -76,8 +96,8 @@ export function WelcomeLanding() {
 
       {/* Footer */}
       <footer className="flex items-center justify-between text-micro font-data text-white/40 uppercase tracking-widest">
-        <span>43 MCP DOMAINS &middot; MAR 2030</span>
-        <span>48.2M FLEET NODES &middot; 8.4M ROBOTAXI RIDES/DAY</span>
+        <span>TESLA INTELLIGENCE &middot; REAL-TIME OBSERVABILITY &middot; MAR 2030</span>
+        <span>43 MCP DOMAINS &middot; 48.2M FLEET &middot; 2.1M OPTIMUS UNITS</span>
       </footer>
     </div>
   );

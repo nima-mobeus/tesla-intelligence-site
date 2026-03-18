@@ -415,6 +415,35 @@ body {
 .card-glass [class*="uppercase"][class*="px-"] { border-radius: 9999px !important; }
 .card-glass .rounded-full { border-radius: 9999px !important; }
 
+/* ── Bar Chart Accent — bright Mobeus cyan ── */
+.card-glass .bg-primary,
+.card-glass [class*="bg-blue"],
+.card-glass [class*="bg-slate"],
+.card-glass [class*="bg-gray-"][class*="00"] {
+  background-color: #00d4f5 !important;
+  box-shadow: 0 0 8px rgba(0, 180, 216, 0.30);
+}
+
+/* ── SVG Icons inside cards — subtle white ── */
+.card-glass svg {
+  color: rgba(255, 255, 255, 0.75);
+  filter: none;
+}
+
+/* ── Status Text Colors — luminous on dark ── */
+.text-emerald-400, .text-emerald-500, [class*="text-green"] {
+  color: #34d399 !important;
+}
+.text-red-400, .text-red-500, [class*="text-red"] {
+  color: #f87171 !important;
+}
+.text-amber-400, .text-amber-500, [class*="text-yellow"], [class*="text-amber"] {
+  color: #fbbf24 !important;
+}
+
+/* ── SVG Charts — scale properly ── */
+svg { max-width: 100%; height: auto; }
+
 /* ── Scene overlay tint (flat, semi-transparent) ── */
 .scene-gradient-overlay {
   background: var(--theme-scene-bg);
