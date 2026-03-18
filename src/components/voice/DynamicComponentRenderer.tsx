@@ -44,8 +44,8 @@ function GenericFallback({ template, data }: { template: ComponentTemplate; data
   if (displayEntries.length === 0) return null;
 
   return (
-    <div className="w-full rounded-lg border p-4 space-y-2">
-      <div className="text-caption font-medium text-muted-foreground">{template.name || template.type}</div>
+    <div className="w-full rounded-lg border border-white/10 p-4 space-y-2">
+      <div className="text-caption font-medium" style={{ color: 'var(--theme-scene-text-muted, rgba(255,255,255,0.5))' }}>{template.name || template.type}</div>
       <div className="space-y-1.5">
         {displayEntries.map(([key, value]) => (
           <div key={key} className="text-body">

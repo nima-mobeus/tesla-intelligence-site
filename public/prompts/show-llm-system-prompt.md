@@ -68,8 +68,8 @@ If you receive a `[CORRECTION NEEDED]` or `[TEMPLATE ERROR]` message, return a n
 | 1 hero card (full-width) | `1x1` |
 | 1 hero + 3 detail | `1-3` |
 
-**Dense cards:** charts, tables, org-rosters, heatmaps, maps.
-**Light cards:** stats, alerts, callouts, checklists, text, metric-lists, person-cards.
+**Dense cards:** charts, tables, comparison-tables, heatmaps, maps, incident-cards, risk-matrices.
+**Light cards:** stats, alerts, checklists, text, metric-lists, person-cards, timelines.
 
 ### Content Budgets
 
@@ -87,7 +87,7 @@ If you receive a `[CORRECTION NEEDED]` or `[TEMPLATE ERROR]` message, return a n
 ### Example
 
 ```json
-{"generativeSubsections":[{"id":"<topic-slug>","templateId":"GridView","props":{"badge":"<Topic> · <Date>","layout":"1-2","cards":[{"type":"kpi-strip","span":"full","props":{"items":[{"label":"<metric>","value":"<value>","trend":"up","status":"good","change":"<delta>"},{"label":"<metric>","value":"<value>","status":"watch"}]}},{"type":"alert","props":{"title":"<section title>","alerts":[{"severity":"critical","title":"<issue>","detail":"<detail>"},{"severity":"warning","title":"<issue>","detail":"<detail>"}]}},{"type":"metric-list","props":{"title":"<section title>","items":[{"label":"<metric>","value":"<value>","status":"good","change":"<delta>"}]}}],"footerLeft":"<Context> · Tesla Intelligence","footerRight":"<Date>"}}]}
+{"generativeSubsections":[{"id":"<topic-slug>","templateId":"GridView","props":{"badge":"<Topic> · <Date>","layout":"1-2-2","cards":[{"type":"kpi-strip","span":"full","props":{"items":[{"label":"<metric>","value":"<value>","trend":"up","status":"good","change":"<delta>"},{"label":"<metric>","value":"<value>","status":"watch"}]}},{"type":"bar-chart","props":{"title":"<chart title>","bars":[{"label":"<category>","value":0},{"label":"<category>","value":0}],"unit":"<unit>"}},{"type":"alert","props":{"title":"<section title>","alerts":[{"severity":"critical","title":"<issue>","detail":"<detail>"},{"severity":"warning","title":"<issue>","detail":"<detail>"}]}},{"type":"metric-list","props":{"title":"<section title>","items":[{"label":"<metric>","value":"<value>","status":"good","change":"<delta>"}]}},{"type":"checklist","props":{"title":"<section title>","items":[{"text":"<item>","status":"pending"},{"text":"<item>","status":"done"}]}}],"footerLeft":"<Context> · Tesla Intelligence","footerRight":"<Date>"}}]}
 ```
 
 ---
@@ -127,7 +127,7 @@ Start with `kpi-strip` for exposure summary. `risk-matrix` for the likelihood ×
 
 ## CARD TYPE REFERENCE — 29 Types
 
-Each card: `{ "type": "<type>", "props": { ... } }`. Add `"span": "full"` to fill the entire row. All data MUST come from `search_knowledge` — never copy these schemas verbatim.
+Each card: `{ "type": "<type>", "props": { ... } }`. Add `"span": "full"` to fill the entire row. All data MUST come from `search_knowledge` — never copy these schemas verbatim. Respect the **Content Budgets** above — exceeding item limits causes overflow or silent truncation.
 
 ### kpi-strip
 The headline row. Use as the first card (span full) to anchor the scene with 3–5 key metrics. Each item is a single number with trend and status. Best for: dashboards, briefings, status overviews.

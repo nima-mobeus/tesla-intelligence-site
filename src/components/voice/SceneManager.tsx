@@ -166,11 +166,6 @@ export function SceneManager() {
 
 /** Skeleton loading grid — shows shimmer cards matching the layout */
 function SceneSkeleton({ layout }: { layout: string }) {
-  // Parse layout to get card count: "1-2-3" → 6, "2x3" → 6
-  const cardCount = layout.includes('x')
-    ? layout.split('x').reduce((a, b) => parseInt(a as unknown as string) * parseInt(b), 1 as unknown as number)
-    : layout.split('-').reduce((sum, n) => sum + parseInt(n), 0);
-
   // Parse rows from layout
   const rows = layout.includes('x')
     ? (() => {

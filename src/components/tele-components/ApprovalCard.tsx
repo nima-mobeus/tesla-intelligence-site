@@ -13,10 +13,10 @@ const PRIORITY_DOT: Record<string, string> = {
 };
 
 const STATUS_STYLE: Record<string, { label: string; bg: string; text: string }> = {
-    pending: { label: 'Awaiting', bg: 'bg-amber-50', text: 'text-amber-800' },
-    signed: { label: 'Signed', bg: 'bg-green-50', text: 'text-green-800' },
-    rejected: { label: 'Rejected', bg: 'bg-red-50', text: 'text-red-800' },
-    expired: { label: 'Expired', bg: 'bg-gray-100', text: 'text-gray-600' },
+    pending: { label: 'Awaiting', bg: 'bg-amber-800/20', text: 'text-amber-400' },
+    signed: { label: 'Signed', bg: 'bg-green-800/20', text: 'text-green-400' },
+    rejected: { label: 'Rejected', bg: 'bg-red-800/20', text: 'text-red-400' },
+    expired: { label: 'Expired', bg: 'bg-white/10', text: 'text-white/50' },
 };
 
 interface ApprovalItem {
@@ -49,7 +49,7 @@ export default function ApprovalCard({ data, accentColor, onAction }: TeleCompon
                     </h3>
                 )}
                 {pending > 0 && (
-                    <span className="font-data text-body bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded-full font-bold">
+                    <span className="font-data text-body bg-amber-800/20 text-amber-400 px-1.5 py-0.5 rounded-full font-bold">
                         {pending} pending
                     </span>
                 )}
