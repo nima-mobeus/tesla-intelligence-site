@@ -8,7 +8,7 @@ import { teslaLogoWhite, teslaLogo } from '@/assets';
 import { ChevronLeft, Sun, Moon, Camera, Download, Mail, Link2 } from 'lucide-react';
 
 export function SceneManager() {
-  const currentScene = useVoiceSessionStore((s) => s.currentScene);
+  const storeScene = useVoiceSessionStore((s) => s.currentScene);
   const sceneActive = useVoiceSessionStore((s) => s.sceneActive);
   const sceneLoading = useVoiceSessionStore((s) => s.sceneLoading);
   const sceneSkeletonLayout = useVoiceSessionStore((s) => s.sceneSkeletonLayout);
@@ -18,26 +18,50 @@ export function SceneManager() {
   const theme = useVoiceSessionStore((s) => s.theme);
   const toggleTheme = useVoiceSessionStore((s) => s.toggleTheme);
 
-  // Debounce skeleton: keep current GridView visible for 500ms before showing shimmer
+  // ── Hold-back mechanism ──
+  // When skeleton arrives, freeze the *displayed* scene (old grid) for 500ms.
+  // If the new full scene arrives before the timer fires, swap grid → grid
+  // with no skeleton flash. Only show skeleton if the hold period expires.
+  const [displayScene, setDisplayScene] = useState(storeScene);
   const [showSkeleton, setShowSkeleton] = useState(false);
-  const skeletonTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const holdTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const holdingRef = useRef(false);
 
   useEffect(() => {
-    if (sceneLoading) {
-      // Delay showing skeleton so existing content lingers
-      skeletonTimerRef.current = setTimeout(() => setShowSkeleton(true), 500);
-    } else {
-      // Full scene arrived — cancel pending timer and hide skeleton immediately
-      if (skeletonTimerRef.current) {
-        clearTimeout(skeletonTimerRef.current);
-        skeletonTimerRef.current = null;
+    if (sceneLoading && !holdingRef.current) {
+      // Skeleton arrived — start 500ms hold, keep old scene visible
+      holdingRef.current = true;
+      holdTimerRef.current = setTimeout(() => {
+        // Hold expired and still loading → show skeleton now
+        if (useVoiceSessionStore.getState().sceneLoading) {
+          setShowSkeleton(true);
+        }
+        holdingRef.current = false;
+      }, 500);
+    } else if (!sceneLoading) {
+      // Full scene arrived — cancel hold timer, show new scene immediately
+      if (holdTimerRef.current) {
+        clearTimeout(holdTimerRef.current);
+        holdTimerRef.current = null;
       }
+      holdingRef.current = false;
       setShowSkeleton(false);
+      setDisplayScene(storeScene);
     }
     return () => {
-      if (skeletonTimerRef.current) clearTimeout(skeletonTimerRef.current);
+      if (holdTimerRef.current) clearTimeout(holdTimerRef.current);
     };
-  }, [sceneLoading]);
+  }, [sceneLoading, storeScene]);
+
+  // When scene updates outside of loading (e.g. RPC setScene, back nav), sync immediately
+  useEffect(() => {
+    if (!sceneLoading && !holdingRef.current) {
+      setDisplayScene(storeScene);
+    }
+  }, [storeScene, sceneLoading]);
+
+  // Use displayScene (buffered) instead of storeScene for rendering
+  const currentScene = displayScene;
 
   const GridView = useMemo(() => getComponent('GridView'), []);
 
