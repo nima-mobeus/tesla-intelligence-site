@@ -2,7 +2,7 @@
 
 import { useVoiceSessionStore } from '@/lib/stores/voice-session-store';
 import { getComponent } from '@/components/tele-components/component-registry';
-import { Suspense, useMemo, useCallback, useEffect } from 'react';
+import { Suspense, useMemo, useCallback, useEffect, useState, useRef } from 'react';
 import Image from 'next/image';
 import { teslaLogoWhite, teslaLogo } from '@/assets';
 import { ChevronLeft, Sun, Moon, Camera, Download, Mail, Link2 } from 'lucide-react';
@@ -17,6 +17,27 @@ export function SceneManager() {
   const tellAgent = useVoiceSessionStore((s) => s.tellAgent);
   const theme = useVoiceSessionStore((s) => s.theme);
   const toggleTheme = useVoiceSessionStore((s) => s.toggleTheme);
+
+  // Debounce skeleton: keep current GridView visible for 500ms before showing shimmer
+  const [showSkeleton, setShowSkeleton] = useState(false);
+  const skeletonTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    if (sceneLoading) {
+      // Delay showing skeleton so existing content lingers
+      skeletonTimerRef.current = setTimeout(() => setShowSkeleton(true), 500);
+    } else {
+      // Full scene arrived — cancel pending timer and hide skeleton immediately
+      if (skeletonTimerRef.current) {
+        clearTimeout(skeletonTimerRef.current);
+        skeletonTimerRef.current = null;
+      }
+      setShowSkeleton(false);
+    }
+    return () => {
+      if (skeletonTimerRef.current) clearTimeout(skeletonTimerRef.current);
+    };
+  }, [sceneLoading]);
 
   const GridView = useMemo(() => getComponent('GridView'), []);
 
@@ -135,7 +156,7 @@ export function SceneManager() {
 
         {/* Grid content */}
         <div className="flex-1 overflow-auto min-h-0">
-          {sceneLoading ? (
+          {showSkeleton ? (
             <SceneSkeleton layout={sceneSkeletonLayout || '1-2-3'} />
           ) : GridView && currentScene?.cards && currentScene.cards.length > 0 ? (
             <Suspense
