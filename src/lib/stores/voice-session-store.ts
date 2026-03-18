@@ -375,7 +375,7 @@ export const useVoiceSessionStore = create<VoiceSessionState>((set, get) => ({
           avatarVisible: defaultAvatarVisible,
           avatarAvailable,
           avatarTogglePending: false,
-          isMuted: defaults.micMuted,
+          isMuted: false,  // Always start unmuted
           isVolumeMuted: defaults.volumeMuted,
           agentName,
           currentAgentName: agentName,
@@ -392,7 +392,7 @@ export const useVoiceSessionStore = create<VoiceSessionState>((set, get) => ({
           }),
         });
 
-        const micPromise = room.localParticipant.setMicrophoneEnabled(!defaults.micMuted);
+        const micPromise = room.localParticipant.setMicrophoneEnabled(true);
 
         const [activateResponse] = await Promise.all([activatePromise, micPromise]);
 
@@ -471,7 +471,7 @@ export const useVoiceSessionStore = create<VoiceSessionState>((set, get) => ({
         avatarVisible: defaultAvatarVisible,
         avatarAvailable,
         avatarTogglePending: false,
-        isMuted: defaultMicMuted,
+        isMuted: false,  // Always start unmuted
         isVolumeMuted: defaultVolumeMuted,
         agentName: resolvedAgentName,
         currentAgentName: resolvedAgentName,
@@ -503,7 +503,7 @@ export const useVoiceSessionStore = create<VoiceSessionState>((set, get) => ({
       console.log(`[TIMING] connect: +${(performance.now() - tConnect).toFixed(0)}ms | room.connect() done`);
 
       // Enable microphone
-      await room.localParticipant.setMicrophoneEnabled(!defaultMicMuted);
+      await room.localParticipant.setMicrophoneEnabled(true);
       console.log(`[TIMING] connect: +${(performance.now() - tConnect).toFixed(0)}ms | mic enabled`);
 
       // Register RPC handlers for agent UI control
