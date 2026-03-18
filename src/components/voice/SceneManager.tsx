@@ -65,25 +65,6 @@ export function SceneManager() {
 
   const GridView = useMemo(() => getComponent('GridView'), []);
 
-  // Keyboard navigation: ←/Backspace = back, →/Shift+D = download
-  useEffect(() => {
-    if (!sceneActive) return;
-
-    const handleKeyDown = (e: KeyboardEvent) => {
-      // Skip if user is typing in an input
-      const tag = (e.target as HTMLElement)?.tagName;
-      if (tag === 'INPUT' || tag === 'TEXTAREA' || (e.target as HTMLElement)?.isContentEditable) return;
-
-      if (e.key === 'ArrowLeft' || e.key === 'Backspace') {
-        e.preventDefault();
-        navigateSceneBack();
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [sceneActive, navigateSceneBack]);
-
   const handleAction = useCallback(
     (phrase: string) => {
       tellAgent(phrase);

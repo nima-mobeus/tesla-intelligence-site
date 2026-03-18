@@ -110,6 +110,7 @@ interface VoiceSessionState {
   // Scene state
   currentScene: SceneData | null;
   sceneHistory: SceneData[];
+  sceneFuture: SceneData[];     // Forward stack for back/forward navigation
   sceneActive: boolean;
   sceneLoading: boolean;        // True while skeleton is shown, waiting for full scene
   sceneSkeletonLayout: string | null;  // Layout code for skeleton (e.g. "1-2-3")
@@ -148,6 +149,7 @@ interface VoiceSessionState {
   applyScene: (payload: Record<string, any>) => void;
   clearScene: () => void;
   navigateSceneBack: () => void;
+  navigateSceneForward: () => void;
   tellAgent: (message: string) => Promise<void>;
   informAgent: (message: string) => Promise<void>;
 }
@@ -188,6 +190,7 @@ export const useVoiceSessionStore = create<VoiceSessionState>((set, get) => ({
   // Scene state
   currentScene: null,
   sceneHistory: [],
+  sceneFuture: [],
   sceneActive: false,
   sceneLoading: false,
   sceneSkeletonLayout: null,
@@ -331,6 +334,7 @@ export const useVoiceSessionStore = create<VoiceSessionState>((set, get) => ({
       // Reset scene state
       currentScene: null,
       sceneHistory: [],
+      sceneFuture: [],
       sceneActive: false,
       sceneLoading: false,
       sceneSkeletonLayout: null,
@@ -580,6 +584,7 @@ export const useVoiceSessionStore = create<VoiceSessionState>((set, get) => ({
         templates: [],
         currentScene: null,
         sceneHistory: [],
+        sceneFuture: [],
         sceneActive: false,
         sceneLoading: false,
         sceneSkeletonLayout: null,
@@ -826,6 +831,7 @@ export const useVoiceSessionStore = create<VoiceSessionState>((set, get) => ({
       currentScene: sceneData,
       sceneActive: true,
       sceneHistory: [...state.sceneHistory, sceneData],
+      sceneFuture: [],  // New scene clears forward stack (like browser)
     }));
   },
 
@@ -835,20 +841,43 @@ export const useVoiceSessionStore = create<VoiceSessionState>((set, get) => ({
   },
 
   navigateSceneBack: () => {
-    const { sceneHistory } = get();
+    const { sceneHistory, sceneFuture } = get();
     if (sceneHistory.length > 1) {
       const newHistory = [...sceneHistory];
-      newHistory.pop(); // Remove current
+      const popped = newHistory.pop()!; // Remove current
       const previous = newHistory[newHistory.length - 1];
       set({
         currentScene: previous,
         sceneHistory: newHistory,
+        sceneFuture: [popped, ...sceneFuture],
         sceneActive: true,
       });
+    } else if (sceneHistory.length === 1) {
+      // Going back to welcome page — preserve the scene in future stack
+      const popped = sceneHistory[0];
+      set({
+        sceneActive: false,
+        currentScene: null,
+        sceneHistory: [],
+        sceneFuture: [popped, ...sceneFuture],
+      });
+      get().setTheme('dark');
     } else {
       set({ sceneActive: false, currentScene: null, sceneHistory: [] });
       get().setTheme('dark');
     }
+  },
+
+  navigateSceneForward: () => {
+    const { sceneFuture, sceneHistory } = get();
+    if (sceneFuture.length === 0) return;
+    const [next, ...rest] = sceneFuture;
+    set({
+      currentScene: next,
+      sceneActive: true,
+      sceneHistory: [...sceneHistory, next],
+      sceneFuture: rest,
+    });
   },
 
   tellAgent: async (message: string) => {
@@ -956,6 +985,7 @@ function setupRoomEventListeners(
         templates: [],
         currentScene: null,
         sceneHistory: [],
+        sceneFuture: [],
         sceneActive: false,
         sceneLoading: false,
         sceneSkeletonLayout: null,
@@ -1209,6 +1239,7 @@ function setupRoomEventListeners(
       templates: [],
       currentScene: null,
       sceneHistory: [],
+      sceneFuture: [],
       sceneActive: false,
       _preWarm: null,
       _preWarmState: 'idle',
