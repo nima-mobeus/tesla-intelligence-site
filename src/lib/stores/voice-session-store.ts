@@ -1180,6 +1180,8 @@ function setupRoomEventListeners(
 
       if (data.type === 'skeleton') {
         // Start hold period — displayScene stays frozen (old grid visible)
+        const currentDisplay = get().displayScene;
+        console.log(`[HOLD] skeleton arrived. holdStart=${Date.now()}. displayScene=${currentDisplay?.id || 'null'} (frozen for ${HOLD_MS}ms)`);
         holdStart = Date.now();
         pendingScene = null;
         if (holdTimer) clearTimeout(holdTimer);
@@ -1188,10 +1190,12 @@ function setupRoomEventListeners(
           // Hold expired
           if (pendingScene) {
             // Scene arrived during hold — show it now
+            console.log(`[HOLD] timer expired — swapping to buffered scene: ${pendingScene.id}`);
             set({ displayScene: pendingScene, showSkeleton: false, sceneLoading: false, sceneSkeletonLayout: null });
             pendingScene = null;
           } else {
             // No scene yet — show skeleton shimmer
+            console.log('[HOLD] timer expired — no scene yet, showing skeleton');
             set({ showSkeleton: true });
           }
           holdStart = null;
@@ -1215,12 +1219,14 @@ function setupRoomEventListeners(
           // Still in hold period — buffer the scene
           const elapsed = Date.now() - holdStart;
           const remaining = HOLD_MS - elapsed;
+          console.log(`[HOLD] scene arrived during hold. elapsed=${elapsed}ms, remaining=${remaining}ms`);
 
           if (remaining > 0) {
             pendingScene = newScene;
             // Replace hold timer with one that fires after the remainder
             if (holdTimer) clearTimeout(holdTimer);
             holdTimer = setTimeout(() => {
+              console.log(`[HOLD] remainder timer fired — swapping to: ${(pendingScene ?? newScene)?.id}`);
               set({ displayScene: pendingScene ?? newScene, showSkeleton: false, sceneLoading: false, sceneSkeletonLayout: null });
               pendingScene = null;
               holdStart = null;
@@ -1228,6 +1234,7 @@ function setupRoomEventListeners(
             }, remaining);
           } else {
             // Hold already expired — swap immediately
+            console.log(`[HOLD] hold already expired — swapping immediately to: ${newScene?.id}`);
             if (holdTimer) clearTimeout(holdTimer);
             set({ displayScene: newScene, showSkeleton: false, sceneLoading: false, sceneSkeletonLayout: null });
             holdStart = null;
@@ -1236,6 +1243,7 @@ function setupRoomEventListeners(
           }
         } else {
           // No hold in progress — swap immediately
+          console.log(`[HOLD] no hold — immediate swap to: ${newScene?.id}`);
           set({ displayScene: newScene, showSkeleton: false, sceneLoading: false, sceneSkeletonLayout: null });
         }
       }
