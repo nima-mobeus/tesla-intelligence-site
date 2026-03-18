@@ -29,17 +29,14 @@
   --color-amber: var(--amber);
 }
 
-/* ── 5-Tier Type Scale (hardcoded — NOT in @theme, which inlines and kills var()) ──
-   T1 display : hero headlines, welcome page
-   T2 title   : card big numbers, KPI values, section headings
-   T3 body    : chat messages, card body text, descriptions
-   T4 caption : labels, metadata, timestamps, card subtitles
-   T5 micro   : badges, footers, tracking data, status pills */
-.text-display { font-size: clamp(2rem, 5vw, 4.5rem) !important; line-height: 1; }
-.text-title   { font-size: clamp(1.25rem, 2vw, 1.75rem) !important; line-height: 1.2; }
-.text-body    { font-size: 0.875rem !important; line-height: 1.5; }
-.text-caption { font-size: 0.75rem !important; line-height: 1.4; }
-.text-micro   { font-size: 0.625rem !important; line-height: 1.3; letter-spacing: 0.04em; }
+/* ── 5-Tier Type Scale ── */
+@layer utilities {
+  .text-display { font-size: clamp(2rem, 5vw, 4.5rem) !important; line-height: 1 !important; }
+  .text-title   { font-size: clamp(1.25rem, 2.5vw, 2rem) !important; line-height: 1.2 !important; }
+  .text-body    { font-size: 0.875rem !important; line-height: 1.5 !important; }
+  .text-caption { font-size: 0.75rem !important; line-height: 1.4 !important; }
+  .text-micro   { font-size: 0.625rem !important; line-height: 1.3 !important; letter-spacing: 0.04em !important; }
+}
 
 :root {
   --background: oklch(0.145 0.01 256);
