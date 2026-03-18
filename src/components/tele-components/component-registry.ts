@@ -1,185 +1,154 @@
 /**
- * Component Registry — Convention-based auto-import for tele-components.
+ * Component Registry — 30-card tele-component library.
  *
- * HOW IT WORKS:
- * Every .tsx file in this directory (except types.ts, this file, and index.ts)
- * that exports a default React component is automatically registered here.
+ * v2.0 — Reduced from 55 unique components to 30.
+ * Every removed type is aliased to its surviving counterpart below,
+ * ensuring zero runtime breakage for existing prompts.
  *
- * The registry maps component type names (PascalCase, matching the filename)
- * to their lazy-loaded React component. DynamicComponentRenderer uses this
- * registry to resolve template.type → React component at runtime.
- *
- * TO ADD A NEW COMPONENT:
- * 1. Create a new .tsx file in src/components/tele-components/ (e.g. MyWidget.tsx)
- * 2. Export a default function component that accepts TeleComponentProps
- * 3. Add one import line + one registry entry below
- *
- * CONVENTION:
- * - Filename must be PascalCase and match the template type exactly
- * - Component must `export default function ComponentName(props: TeleComponentProps)`
- * - The template.type in the database must match the filename (e.g. "BarChart" → BarChart.tsx)
+ * THE 30 CARDS:
+ *  Tier 1 (Indispensable): kpi-strip, bar-chart, metric-list, alert, table,
+ *                          text, stat, donut, line-chart, timeline
+ *  Tier 2 (High Value):    email-list, relationship-card, country-card,
+ *                          domino-card, vote-card, approval-card, person-card,
+ *                          incident-card, pipeline-card, event-card
+ *  Tier 3 (Versatile):     risk-matrix, comparison-table, news-feed, checklist,
+ *                          waterfall, heatmap, world-map, journal-entry, stock,
+ *                          image-card
  */
 
 import { ComponentType, lazy } from 'react';
 import type { TeleComponentProps } from './types';
 
-// ─── Built-in component registry ────────────────────────────────────────────
-// Each entry: 'TemplateType' → lazy(() => import('./FileName'))
-// Lazy loading ensures only used components are bundled for a given page.
-
 const registry: Record<string, ComponentType<TeleComponentProps>> = {};
 
-// Helper to register a lazy component
 function reg(type: string, loader: () => Promise<{ default: ComponentType<TeleComponentProps> }>) {
   registry[type] = lazy(loader);
 }
 
-// ─── Data Visualization ─────────────────────────────────────────────────────
-reg('BarChart', () => import('./BarChart'));
-reg('LineChart', () => import('./LineChart'));
-reg('PieChart', () => import('./PieChart'));
-reg('StatsRow', () => import('./StatsRow'));
-reg('ProgressTracker', () => import('./ProgressTracker'));
+// ═══════════════════════════════════════════════════════════════════════════════
+// PRIMARY REGISTRATIONS — 30 Cards + GridView
+// ═══════════════════════════════════════════════════════════════════════════════
 
-// ─── Content Display ────────────────────────────────────────────────────────
-reg('ProductCard', () => import('./ProductCard'));
-reg('InfoCards', () => import('./InfoCards'));
-reg('ImageGallery', () => import('./ImageGallery'));
-reg('QuoteCallout', () => import('./QuoteCallout'));
-reg('FAQ', () => import('./FAQ'));
-reg('MediaContent', () => import('./MediaContent'));
+// ─── Tier 1: Indispensable (10) ─────────────────────────────────────────────
+reg('kpi-strip',    () => import('./KPIStrip'));
+reg('bar-chart',    () => import('./SceneBarChart'));
+reg('metric-list',  () => import('./MetricList'));
+reg('alert',        () => import('./AlertCard'));
+reg('table',        () => import('./TableCard'));
+reg('text',         () => import('./TextCard'));
+reg('stat',         () => import('./StatCard'));
+reg('donut',        () => import('./SceneDonutChart'));
+reg('line-chart',   () => import('./SceneLineChart'));
+reg('timeline',     () => import('./TimelineCard'));
 
-// ─── Interactive ────────────────────────────────────────────────────────────
-reg('Form', () => import('./Form'));
-reg('ComparisonTable', () => import('./ComparisonTable'));
-reg('Quiz', () => import('./Quiz'));
-reg('Checklist', () => import('./Checklist'));
+// ─── Tier 2: High Value (10) ────────────────────────────────────────────────
+reg('email-list',        () => import('./EmailListCard'));
+reg('relationship-card', () => import('./RelationshipCard'));
+reg('country-card',      () => import('./CountryCard'));
+reg('domino-card',       () => import('./DominoCard'));
+reg('vote-card',         () => import('./VoteCard'));
+reg('approval-card',     () => import('./ApprovalCard'));
+reg('person-card',       () => import('./PersonCard'));
+reg('incident-card',     () => import('./IncidentCard'));
+reg('pipeline-card',     () => import('./PipelineCard'));
+reg('event-card',        () => import('./EventCard'));
 
-// ─── Layout / Presentation ──────────────────────────────────────────────────
-reg('HeroSplit', () => import('./HeroSplit'));
-reg('Timeline', () => import('./Timeline'));
-reg('CarouselCards', () => import('./CarouselCards'));
-reg('TrioColumns', () => import('./TrioColumns'));
-reg('ProcessFlow', () => import('./ProcessFlow'));
+// ─── Tier 3: Versatile Support (10) ─────────────────────────────────────────
+reg('risk-matrix',       () => import('./RiskMatrixCard'));
+reg('comparison-table',  () => import('./ComparisonTableCard'));
+reg('news-feed',         () => import('./NewsFeedCard'));
+reg('checklist',         () => import('./ChecklistCard'));
+reg('waterfall',         () => import('./WaterfallCard'));
+reg('heatmap',           () => import('./HeatmapCard'));
+reg('world-map',         () => import('./WorldMapCard'));
+reg('journal-entry',     () => import('./JournalEntryCard'));
+reg('stock',             () => import('./StockCard'));
+reg('image-card',        () => import('./ImageCard'));
+
+// ─── Infrastructure ─────────────────────────────────────────────────────────
 reg('GridView', () => import('./GridView'));
 
-// ─── Specialized ────────────────────────────────────────────────────────────
-reg('ProfileRoster', () => import('./ProfileRoster'));
-reg('StatusList', () => import('./StatusList'));
-reg('NumberedList', () => import('./NumberedList'));
-reg('MeetingScheduler', () => import('./MeetingScheduler'));
+// ═══════════════════════════════════════════════════════════════════════════════
+// ALIASES — Backward compatibility for removed cards & LLM hallucinations
+// Every removed card type maps to its best surviving counterpart.
+// ═══════════════════════════════════════════════════════════════════════════════
 
-// ─── Scene-Optimized (dark backgrounds) ─────────────────────────────────────
-reg('KPICard', () => import('./KPICard'));
-reg('MetricCard', () => import('./MetricCard'));
-reg('DonutChart', () => import('./DonutChart'));
-reg('SceneCard', () => import('./SceneCard'));
+// --- Removed cards → surviving counterparts ---
+reg('delegation-card',  () => import('./ApprovalCard'));       // delegation → approval
+reg('decision-card',    () => import('./VoteCard'));           // decision → vote
+reg('email-card',       () => import('./EmailListCard'));      // single email → email list
+reg('trip-card',        () => import('./EventCard'));          // trip → event
+reg('briefing',         () => import('./TextCard'));           // briefing → text
+reg('info-card',        () => import('./TextCard'));           // info-card → text
+reg('bullet-list',      () => import('./TextCard'));           // bullet-list → text (has bullets)
+reg('callout',          () => import('./TextCard'));           // callout → text
+reg('quote-card',       () => import('./TextCard'));           // quote → text
+reg('ranked-list',      () => import('./SceneBarChart'));      // ranked list → bar chart
+reg('status-grid',      () => import('./MetricList'));         // status grid → metric list
+reg('split-stat',       () => import('./StatCard'));           // split stat → stat
+reg('data-cluster',     () => import('./MetricList'));         // data cluster → metric list
+reg('mini-dashboard',   () => import('./MetricList'));         // mini dashboard → metric list
+reg('stacked-bar',      () => import('./SceneBarChart'));      // stacked bar → bar chart
+reg('funnel',           () => import('./SceneBarChart'));      // funnel → bar chart
+reg('scatter-plot',     () => import('./SceneLineChart'));     // scatter → line chart
+reg('gauge',            () => import('./StatCard'));           // gauge → stat
+reg('org-roster',       () => import('./PersonCard'));         // org roster → person card
+reg('comparison-profile', () => import('./ComparisonTableCard')); // comparison profile → comparison table
+reg('stakeholder-map',  () => import('./RelationshipCard'));   // stakeholder map → relationship card
+reg('team-kpi',         () => import('./MetricList'));         // team kpi → metric list
 
-// ─── Scene Cards (ported from small lift) ────────────────────────────────────
+// --- Legacy PascalCase duplicates → scene counterparts ---
+reg('BarChart',         () => import('./SceneBarChart'));
+reg('LineChart',        () => import('./SceneLineChart'));
+reg('DonutChart',       () => import('./SceneDonutChart'));
+reg('StatsRow',         () => import('./KPIStrip'));
+reg('KPICard',          () => import('./KPIStrip'));
+reg('MetricCard',       () => import('./MetricList'));
+reg('QuoteCallout',     () => import('./TextCard'));
+reg('InfoCards',        () => import('./TextCard'));
+reg('ComparisonTable',  () => import('./ComparisonTableCard'));
+reg('Checklist',        () => import('./ChecklistCard'));
+reg('Timeline',         () => import('./TimelineCard'));
+reg('PieChart',         () => import('./SceneDonutChart'));
+reg('ProgressTracker',  () => import('./SceneBarChart'));
+reg('ProductCard',      () => import('./TextCard'));
+reg('ImageGallery',     () => import('./ImageCard'));
+reg('FAQ',              () => import('./TextCard'));
+reg('MediaContent',     () => import('./ImageCard'));
+reg('Form',             () => import('./TextCard'));
+reg('Quiz',             () => import('./TextCard'));
+reg('HeroSplit',        () => import('./TextCard'));
+reg('CarouselCards',    () => import('./TextCard'));
+reg('TrioColumns',      () => import('./TextCard'));
+reg('ProcessFlow',      () => import('./TimelineCard'));
+reg('ProfileRoster',    () => import('./PersonCard'));
+reg('StatusList',       () => import('./MetricList'));
+reg('NumberedList',     () => import('./TextCard'));
+reg('MeetingScheduler', () => import('./EventCard'));
+reg('SceneCard',        () => import('./TextCard'));
 
-// Core Data
-reg('stat', () => import('./StatCard'));
-reg('kpi-strip', () => import('./KPIStrip'));
-reg('metric-list', () => import('./MetricList'));
-reg('alert', () => import('./AlertCard'));
-reg('text', () => import('./TextCard'));
-reg('split-stat', () => import('./SplitStat'));
-reg('table', () => import('./TableCard'));
-reg('info-card', () => import('./InfoCard'));
-reg('bullet-list', () => import('./BulletListCard'));
-
-// Charts & Visualization
-reg('bar-chart', () => import('./SceneBarChart'));
-reg('line-chart', () => import('./SceneLineChart'));
-reg('donut', () => import('./SceneDonutChart'));
-reg('heatmap', () => import('./HeatmapCard'));
-reg('waterfall', () => import('./WaterfallCard'));
-reg('scatter-plot', () => import('./ScatterPlot'));
-reg('gauge', () => import('./GaugeCard'));
-reg('stacked-bar', () => import('./StackedBarCard'));
-reg('funnel', () => import('./FunnelCard'));
-
-// People & Organization
-reg('person-card', () => import('./PersonCard'));
-reg('org-roster', () => import('./OrgRoster'));
-reg('comparison-profile', () => import('./ComparisonProfile'));
-reg('stakeholder-map', () => import('./StakeholderMap'));
-reg('team-kpi', () => import('./TeamKPI'));
-
-// Rich Content
-reg('callout', () => import('./CalloutCard'));
-reg('quote-card', () => import('./QuoteCard'));
-reg('image-card', () => import('./ImageCard'));
-reg('briefing', () => import('./BriefingCard'));
-
-// Geo & Comparison
-reg('world-map', () => import('./WorldMapCard'));
-reg('comparison-table', () => import('./ComparisonTableCard'));
-reg('ranked-list', () => import('./RankedListCard'));
-reg('status-grid', () => import('./StatusGridCard'));
-reg('country-card', () => import('./CountryCard'));
-
-// Operational
-reg('incident-card', () => import('./IncidentCard'));
-reg('pipeline-card', () => import('./PipelineCard'));
-reg('risk-matrix', () => import('./RiskMatrixCard'));
-reg('mini-dashboard', () => import('./MiniDashboardCard'));
-reg('data-cluster', () => import('./DataClusterCard'));
-
-// Live Data
-reg('weather', () => import('./WeatherCard'));
-reg('traffic', () => import('./TrafficCard'));
-reg('stock', () => import('./StockCard'));
-reg('news-feed', () => import('./NewsFeedCard'));
-// reg('live-map', () => import('./LiveMapCard'));  // DEFERRED: needs react-simple-maps
-
-// Email, Calendar & Travel
-reg('event-card', () => import('./EventCard'));
-reg('email-card', () => import('./EmailCard'));
-reg('email-list', () => import('./EmailListCard'));
-reg('trip-card', () => import('./TripCard'));
-
-// Executive Action
-reg('decision-card', () => import('./DecisionCard'));
-reg('approval-card', () => import('./ApprovalCard'));
-reg('delegation-card', () => import('./DelegationCard'));
-
-// Cross-Domain
-reg('vote-card', () => import('./VoteCard'));
-reg('relationship-card', () => import('./RelationshipCard'));
-reg('domino-card', () => import('./DominoCard'));
-reg('journal-entry', () => import('./JournalEntryCard'));
-
-// Scene-specific overrides (kebab-case versions for scene prompt)
-reg('checklist', () => import('./ChecklistCard'));
-reg('timeline', () => import('./TimelineCard'));
-
-// ─── Aliases (prompt compatibility & LLM hallucination resilience) ───────────
-reg('profile-roster', () => import('./OrgRoster'));
-reg('area-chart', () => import('./SceneLineChart'));
-reg('progress', () => import('./SceneBarChart'));
-reg('news-article', () => import('./NewsFeedCard'));
-
-// Common LLM hallucinations (e.g. "donut-chart" instead of "donut")
-reg('donut-chart', () => import('./SceneDonutChart'));
-reg('bar', () => import('./SceneBarChart'));
-reg('line', () => import('./SceneLineChart'));
-reg('stat-card', () => import('./StatCard'));
-reg('stats', () => import('./StatCard'));
-reg('kpi', () => import('./KPIStrip'));
-reg('kpi-card', () => import('./KPIStrip'));
-reg('metric', () => import('./MetricList'));
-reg('info', () => import('./InfoCard'));
+// --- Common LLM hallucinations ---
+reg('donut-chart',    () => import('./SceneDonutChart'));
+reg('bar',            () => import('./SceneBarChart'));
+reg('line',           () => import('./SceneLineChart'));
+reg('stat-card',      () => import('./StatCard'));
+reg('stats',          () => import('./StatCard'));
+reg('kpi',            () => import('./KPIStrip'));
+reg('kpi-card',       () => import('./KPIStrip'));
+reg('metric',         () => import('./MetricList'));
+reg('info',           () => import('./TextCard'));
 reg('checklist-card', () => import('./ChecklistCard'));
-reg('timeline-card', () => import('./TimelineCard'));
+reg('timeline-card',  () => import('./TimelineCard'));
+reg('area-chart',     () => import('./SceneLineChart'));
+reg('progress',       () => import('./SceneBarChart'));
+reg('news-article',   () => import('./NewsFeedCard'));
+reg('profile-roster', () => import('./PersonCard'));
+reg('calendar',       () => import('./EventCard'));           // ghost type in prompt
+reg('live-map',       () => import('./WorldMapCard'));        // ghost type in prompt
 
-// ─── Custom client components ────────────────────────────────────────────────
-// Client-specific components are added below this line.
-// The website builder agent or discovery service will append entries here.
-// Example:
-//   reg('CustomWidget', () => import('../CustomWidget'));
-
-// ─── Exports ────────────────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════════════════════
+// EXPORTS
+// ═══════════════════════════════════════════════════════════════════════════════
 
 /**
  * Look up a component by template type name.

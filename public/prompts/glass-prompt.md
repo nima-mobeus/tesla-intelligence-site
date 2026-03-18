@@ -109,7 +109,7 @@ If you receive a `[CORRECTION NEEDED]` or `[TEMPLATE ERROR]` message, call `navi
 
 ---
 
-## CARD TYPE REFERENCE — 50 Types
+## CARD TYPE REFERENCE — 30 Types
 
 Each card: `{ "type": "<type>", "props": { ... } }`. Add `"span": "full"` to fill the entire row.
 
@@ -167,12 +167,41 @@ Alerts: `{ severity: "critical"|"warning"|"info", title, detail }`.
 ```
 `label`, `value`, `subtitle?`, `trend?`, `change?`, `status?`.
 
-
-### decision-card
+### timeline
 ```json
-{"title":"Pending Decision","subject":"CapEx Berlin — $1.2B Overrun","urgency":"critical","deadline":"Today EOD","consequence":"Construction halts Monday","options":[{"label":"Approve with milestone gates","recommender":"Vaibhav","recommended":true},{"label":"Approve unconditionally","recommender":"Tom"},{"label":"Reject"}],"owner":"CEO"}
+{"title":"Solid-State Battery Roadmap","events":[{"date":"Oct 2029","title":"450 Wh/kg cell achieved","category":"milestone"},{"date":"Q4 2031","title":"Pilot production — TRL 6→8","impact":"2× energy density"},{"date":"2033","title":"Mass production viable","impact":"Beat BYD Seagull on price"}]}
 ```
-`subject`, `urgency?`: "critical"|"high"|"normal", `deadline?`, `consequence?`, `options?`, `owner?`.
+Events: `{ date, title, category?, impact? }`.
+
+### email-list
+```json
+{"title":"Urgent Emails","emails":[{"from":"Vaibhav Taneja","fromTitle":"CFO","subject":"CapEx Berlin Approval","time":"2h","priority":"critical","replyNeeded":true},{"from":"Brandon Ehrhart","fromTitle":"GC","subject":"Elliott Proxy Response","time":"5h","priority":"critical"}]}
+```
+Max 3 emails. Each: `{ from, fromTitle?, subject, time?, priority?, unread?, replyNeeded? }`.
+
+### relationship-card
+```json
+{"name":"Kathleen Wilson-Thompson","role":"Director, Governance Chair","sentiment":"watch","trajectory":"cooling","lastContact":"March 11","daysSince":4,"commitments":["Expects $5B insurance before YES vote"],"actionNeeded":"Call before April 10","riskLevel":"medium"}
+```
+`name`, `role?`, `sentiment`: "strong"|"watch"|"at-risk"|"cold", `trajectory?`: "warming"|"stable"|"cooling", `lastContact?`, `daysSince?`, `commitments?`, `actionNeeded?`, `riskLevel?`.
+
+### country-card
+```json
+{"country":"China","flag":"🇨🇳","revenue":"$298B (24.0%)","employees":"22,400","factories":["Shanghai (2.4M)"],"politicalRisk":"high","tradeExposure":"15% duty avoided via local production","relationshipHealth":"watch","keyContact":"MIIT Vice Minister Li"}
+```
+`country`, `flag?`, `revenue?`, `employees?`, `factories?`, `politicalRisk?`: "low"|"medium"|"high", `tradeExposure?`, `relationshipHealth?`: "strong"|"watch"|"at-risk", `keyContact?`.
+
+### domino-card
+```json
+{"title":"Jakarta Dojo Stays Down","probability":8,"exposure":"$14B revenue at risk","chain":[{"step":1,"event":"Jakarta Dojo down 2 more weeks"},{"step":2,"event":"FSD v18.5 training delayed 3 weeks"},{"step":3,"event":"Robotaxi expansion paused","impact":"Safety validation depends on v18.5"},{"step":4,"event":"500-city target at risk"}]}
+```
+`probability?`, `exposure?`, `chain?`: `{ step, event, impact? }[]`.
+
+### vote-card
+```json
+{"title":"Optimus Liability Framework","resolution":"2030-04-01","description":"Approve Optimus Home Edition Liability Framework v2.0","positions":[{"director":"CEO","vote":"yes"},{"director":"Robyn Denholm","vote":"yes"},{"director":"Kathleen Wilson-Thompson","vote":"conditional","condition":"Wants $5B insurance"},{"director":"Hiro Mizuno","vote":"no"}],"predictedOutcome":"9-1 approval","prepActions":["Call Kathleen before April 10 — $5B is achievable"]}
+```
+`resolution?`, `description?`, `positions?`: `{ director, vote: "yes"|"no"|"conditional"|"abstain"|"unknown", condition? }[]`. `predictedOutcome?`, `prepActions?`: string[].
 
 ### approval-card
 ```json
@@ -180,132 +209,11 @@ Alerts: `{ severity: "critical"|"warning"|"info", title, detail }`.
 ```
 Items: `{ subject, from?, fromTitle?, priority?: "critical"|"high"|"normal"|"low", deadline?, status?: "pending"|"signed"|"rejected"|"expired" }`.
 
-### delegation-card
-```json
-{"title":"Delegated Items","items":[{"task":"Elliott proxy response","owner":"Brandon","ownerTitle":"GC","status":"in-progress","eta":"Today"},{"task":"Jakarta $14M retrofit","owner":"Ashok","ownerTitle":"VP AI","status":"waiting","eta":"Mar 17"}]}
-```
-Items: `{ task, owner, ownerTitle?, status?: "in-progress"|"waiting"|"complete"|"blocked"|"overdue", eta?, detail? }`.
-
-### heatmap
-```json
-{"title":"Supercharger Utilization","rows":["China","Europe","N. America","India"],"cols":["Peak","Average","Off-Peak"],"cells":[[{"value":82},{"value":58},{"value":34}],[{"value":72},{"value":48},{"value":28}],[{"value":64},{"value":42},{"value":22}],[{"value":56},{"value":38},{"value":18}]]}
-```
-`rows`: string[], `cols`: string[], `cells`: `{ value: number }[][]`.
-
-### timeline
-```json
-{"title":"Solid-State Battery Roadmap","events":[{"date":"Oct 2029","title":"450 Wh/kg cell achieved","category":"milestone"},{"date":"Q4 2031","title":"Pilot production — TRL 6→8","impact":"2× energy density"},{"date":"2033","title":"Mass production viable","impact":"Beat BYD Seagull on price"}]}
-```
-Events: `{ date, title, category?, impact? }`.
-
-### waterfall
-```json
-{"title":"Tariff Exposure ($M)","segments":[{"label":"Baseline","value":0},{"label":"China→EU (21%)","value":-420},{"label":"India Import","value":-280},{"label":"CBAM Advantage","value":200},{"label":"Net Exposure","value":-500,"isTotal":true}],"unit":"$M"}
-```
-Segments: `{ label, value: number, isTotal?: boolean }`. `unit?`.
-
-### scatter-plot
-```json
-{"title":"Brand Value vs Ad Spend","xLabel":"Marketing Spend ($B)","yLabel":"Brand Value ($B)","points":[{"x":0.58,"y":380,"label":"Tesla","cluster":1},{"x":4.2,"y":62,"label":"Toyota"},{"x":5.8,"y":48,"label":"VW"}]}
-```
-Points: `{ x: number, y: number, label?, cluster?: number }`.
-
-### gauge
-```json
-{"title":"EU AI Act Compliance","value":62,"max":100,"unit":"%","status":"bad","label":"Deadline: Jun 30, 2030"}
-```
-`value`: number, `max?`, `unit?`, `status?`, `label?`.
-
-### stacked-bar
-```json
-{"title":"Insurance Premium by Model","groups":[{"label":"Model Y","segments":[{"label":"Premium","value":1240},{"label":"Claims","value":843}]},{"label":"Cybertruck","segments":[{"label":"Premium","value":1680},{"label":"Claims","value":1310}]}],"unit":"$M"}
-```
-Groups: `{ label, segments: [{ label, value: number }] }`. `unit?`.
-
-### funnel
-```json
-{"title":"Patent Portfolio by Category","stages":[{"label":"Battery & Energy (4,820)","value":4820},{"label":"FSD & Autonomy (3,640)","value":3640},{"label":"Vehicle Design (2,340)","value":2340},{"label":"Manufacturing (2,180)","value":2180}]}
-```
-Stages: `{ label, value: number }`.
-
 ### person-card
 ```json
 {"name":"Ashok Elluswamy","title":"VP, AI & Autopilot","metric":"41.2M","metricLabel":"FSD Fleet","status":"watch","detail":"11-year tenure. FSD, Optimus (Karn), Dojo (Milan). Key-person risk.","traits":["AI/ML","Autonomy","Strategy"]}
 ```
 `name`, `title?`, `company?`, `metric?`, `metricLabel?`, `status?`, `detail?`, `traits?`: string[]. **Never set photoUrl.**
-
-### org-roster
-```json
-{"title":"ELT — Direct to CEO","members":[{"name":"Tom Zhu","role":"SVP Automotive","badge":"60% of HC"},{"name":"Ashok Elluswamy","role":"VP AI & Autopilot","badge":"41.2M FSD"},{"name":"Vaibhav Taneja","role":"CFO","badge":"$1.2T"}]}
-```
-`members`: `{ name, role, badge? }`.
-
-
-### callout
-```json
-{"icon":"lightning","value":"$48B","label":"R&D Spend FY2030 — 4.0% of Revenue","body":"2,330 patents filed. Solid-state battery at TRL 6. FSD v19 in shadow-mode testing."}
-```
-`icon?` (warning, info, success, fire, target, chart, globe, lightning, star), `value?`, `label?`, `body?`, `subtitle?`.
-
-### checklist
-```json
-{"title":"Expansion Projects","items":[{"text":"Texas Phase 4 — $2.8B, 72% complete","status":"pending"},{"text":"Pune Greenfield — $3.4B, 18% complete","status":"pending"},{"text":"Jakarta Phase 2 — $800M, 81% complete","status":"pending"}]}
-```
-Items: `{ text, status: "done"|"pending"|"failed"|"blocked", detail? }`.
-
-### info-card
-```json
-{"icon":"globe","title":"NACS Network Dominance","body":"82K stations, 1.24M stalls, 68 countries. Non-Tesla 27% of sessions — NACS industry standard.","cta":"Deep Dive","ctaPhrase":"Tell me more about the charging network"}
-```
-`icon?`, `title`, `body`, `cta?`, `ctaPhrase?`.
-
-### briefing
-```json
-{"title":"Cybersecurity Weekly Brief","subtitle":"For: Tom · Prepared by Tesla Intelligence","body":"Zero-day patched 6h OTA to 48.2M vehicles. Pwn2Own 2030: zero compromises.","cta":"Send to Tom","ctaPhrase":"Send this to Tom"}
-```
-`title`, `subtitle?`, `body`, `cta?`, `ctaPhrase?`.
-
-### quote-card
-```json
-{"quote":"Tesla spends $0 on advertising and has the #3 most valuable brand on Earth.","speaker":"Brand Finance","role":"Global 500 Report","date":"Feb 2030"}
-```
-`quote`, `speaker`, `role?`, `date?`.
-
-### bullet-list
-```json
-{"title":"Talent Retention Actions","items":[{"text":"AI researcher equity refresh — losing 86/yr to Apple","status":"watch"},{"text":"Optimus technician academy — 2,200 roles to fill","status":"info"}]}
-```
-Items: `{ text, status? }`.
-
-### image-card
-```json
-{"imageUrl":"Tesla Gigafactory Shanghai floor, robotic arms assembling vehicles, CCTV security camera aesthetic, grainy monochrome, wide-angle, timestamp overlay","caption":"GF-SH-Floor-3 · Live · 21:14 UTC"}
-```
-`imageUrl?` (SmartImage prompt or URL), `caption?`, `subtitle?`.
-
-### world-map
-```json
-{"title":"Factory Expansion Pipeline","regions":[{"name":"Texas Phase 4","value":"$2.8B — 72%","code":"north-america"},{"name":"Pune Greenfield","value":"$3.4B — 18%","code":"india"},{"name":"Berlin Battery Wing","value":"€1.6B — 58%","code":"europe"}]}
-```
-Regions: `{ name, value, code?, color? }`.
-
-### comparison-table
-```json
-{"title":"Compensation vs FAANG","headers":["Level","Tesla","FAANG Avg","Gap"],"rows":[{"cells":["L5 (Senior)","$375K","$425K","−12%"],"highlights":[3]},{"cells":["L6 (Staff)","$530K","$590K","−10%"],"highlights":[3]}]}
-```
-`headers`: string[], `rows`: `{ cells: string[], highlights?: number[] }[]`.
-
-### ranked-list
-```json
-{"title":"Utility Cost by Factory","items":[{"label":"Shanghai — $102M","value":102000000,"change":"18% solar"},{"label":"Texas — $74M","value":74000000,"change":"42% solar"}],"unit":"$"}
-```
-Items: `{ label, value: number, change? }`. `unit?`.
-
-### status-grid
-```json
-{"title":"Regulatory Compliance","items":[{"label":"NHTSA AV Framework","status":"green","detail":"L4 certified 28 states"},{"label":"EU AI Act","status":"red","detail":"Partial — audit Q2"},{"label":"China L4","status":"yellow","detail":"4 cities approved"}]}
-```
-Items: `{ label, status: "green"|"red"|"yellow"|"gray", detail? }`.
 
 ### incident-card
 ```json
@@ -319,43 +227,23 @@ Items: `{ label, status: "green"|"red"|"yellow"|"gray", detail? }`.
 ```
 Stages: `{ label, status: "complete"|"active"|"pending", detail?, duration? }`.
 
+### event-card
+```json
+{"title":"Dinner with Gov. Officials","date":"Mar 22","time":"19:00","type":"dinner","location":"Shanghai","venue":"Waldorf Astoria, Jade Room","attendees":"Ministry officials, Tesla China","note":"Formal attire"}
+```
+Types: `meeting|dinner|flight|hotel|personal|travel|call|review|social|workout`. `status?: "confirmed"|"tentative"|"cancelled"`.
+
 ### risk-matrix
 ```json
 {"title":"Political Risk by Market","risks":[{"label":"China — forced JV","likelihood":2,"impact":2},{"label":"US — IRA phase-out","likelihood":1,"impact":2},{"label":"EU — AI Act fine","likelihood":2,"impact":1}]}
 ```
 Risks: `{ label, likelihood: 0-2, impact: 0-2 }`.
 
-### mini-dashboard
+### comparison-table
 ```json
-{"title":"Water Stress Monitor","metrics":[{"label":"Monterrey","value":"HIGH","status":"bad"},{"label":"Austin","value":"MEDIUM","status":"watch"},{"label":"Riyadh","value":"LOW (desal)","status":"good"}],"sparkline":[420,380,340,280]}
+{"title":"Compensation vs FAANG","headers":["Level","Tesla","FAANG Avg","Gap"],"rows":[{"cells":["L5 (Senior)","$375K","$425K","−12%"],"highlights":[3]},{"cells":["L6 (Staff)","$530K","$590K","−10%"],"highlights":[3]}]}
 ```
-Metrics: `{ label, value, status?, trend? }`. `sparkline?`: number[].
-
-### data-cluster
-```json
-{"title":"Real Estate & Facilities","metrics":[{"label":"Total Sq Ft","value":"44.1M","trend":"up","change":"+13.1M pipeline"},{"label":"Active Construction","value":"$10.8B","status":"watch"},{"label":"Solar Self-Gen","value":"28%","trend":"up"}]}
-```
-Metrics: `{ label, value, trend?, change?, status? }`.
-
-
-### live-map
-```json
-{"title":"China Factory Status","region":"China","pins":[{"label":"Shanghai","value":"2.4M units","status":"green","lat":31.2,"lng":121.5},{"label":"Beijing","value":"Robotaxi HQ","status":"yellow","lat":39.9,"lng":116.4}],"overlay":"status"}
-```
-Pins: `{ label, value?, status?: "green"|"red"|"yellow"|"blue"|"gray", detail?, lat, lng }`. Use **real lat/lng**. `region?` sets center/zoom.
-
-**Updating the map:** Send `_update: true` on the GridView with the map inside `cards`:
-```json
-{"_update":true,"layout":"1","cards":[{"type":"live-map","span":"full","props":{"region":"shanghai","pins":[...]}}]}
-```
-
-Supported regions: `world`, `usa`, `china`, `india`, `europe`, `germany`, `uk`, `brazil`, `saudi-arabia`, `australia` + US states (`california`, `texas`, `nevada`) + Tesla cities (`austin`, `shanghai`, `berlin`, `mumbai`, `jakarta`, `monterrey`, `riyadh`, `fremont`) + world cities (`nyc`, `london`, `tokyo`, `seoul`, `dubai`, `sao-paulo`)
-
-### stock
-```json
-{"title":"TSLA vs Competitors","ticker":"TSLA","price":"$1,847.20","change":"+$5.20","changePercent":"+0.28%","trend":"up","marketCap":"$6.2T","volume":"42.8M","sparkline":[1780,1795,1810,1825,1842]}
-```
-`ticker`, `price`, `change`, `changePercent`, `trend`: "up"|"down"|"flat". Optional: `marketCap?`, `volume?`, `dayHigh?`, `dayLow?`, `sparkline?`.
+`headers`: string[], `rows`: `{ cells: string[], highlights?: number[] }[]`.
 
 ### news-feed
 ```json
@@ -363,64 +251,47 @@ Supported regions: `world`, `usa`, `china`, `india`, `europe`, `germany`, `uk`, 
 ```
 Articles: `{ headline, source?, time?, sentiment?: "positive"|"negative"|"neutral" }`.
 
-### event-card
+### checklist
 ```json
-{"title":"Dinner with Gov. Officials","date":"Mar 22","time":"19:00","type":"dinner","location":"Shanghai","venue":"Waldorf Astoria, Jade Room","attendees":"Ministry officials, Tesla China","note":"Formal attire"}
+{"title":"Expansion Projects","items":[{"text":"Texas Phase 4 — $2.8B, 72% complete","status":"pending"},{"text":"Pune Greenfield — $3.4B, 18% complete","status":"pending"},{"text":"Jakarta Phase 2 — $800M, 81% complete","status":"pending"}]}
 ```
-Types: `meeting|dinner|flight|hotel|personal|travel|call|review|social|workout`. `status?: "confirmed"|"tentative"|"cancelled"`.
+Items: `{ text, status: "done"|"pending"|"failed"|"blocked", detail? }`.
 
-### calendar
+### waterfall
 ```json
-{"title":"Suggested Slots — Hiro 1-on-1","events":[{"title":"Hiro 1-on-1 (Tentative)","date":"April 9, 2030","time":"08:00 AM JST","duration":"30 min","status":"tentative"}]}
+{"title":"Tariff Exposure ($M)","segments":[{"label":"Baseline","value":0},{"label":"China→EU (21%)","value":-420},{"label":"India Import","value":-280},{"label":"CBAM Advantage","value":200},{"label":"Net Exposure","value":-500,"isTotal":true}],"unit":"$M"}
 ```
-Events: `{ title, date?, time?, duration?, status?, note? }`.
+Segments: `{ label, value: number, isTotal?: boolean }`. `unit?`.
 
-### email-card
+### heatmap
 ```json
-{"from":"Vaibhav Taneja","fromTitle":"CFO","subject":"CapEx Berlin — $1.2B Overrun","snippet":"Need your sign-off by EOD...","time":"2h ago","priority":"critical","unread":true,"hasAttachment":true,"replyNeeded":true}
+{"title":"Supercharger Utilization","rows":["China","Europe","N. America","India"],"cols":["Peak","Average","Off-Peak"],"cells":[[{"value":82},{"value":58},{"value":34}],[{"value":72},{"value":48},{"value":28}],[{"value":64},{"value":42},{"value":22}],[{"value":56},{"value":38},{"value":18}]]}
 ```
-Priority: `critical|high|normal|low`.
+`rows`: string[], `cols`: string[], `cells`: `{ value: number }[][]`.
 
-### email-list
+### world-map
 ```json
-{"title":"Urgent Emails","emails":[{"from":"Vaibhav Taneja","fromTitle":"CFO","subject":"CapEx Berlin Approval","time":"2h","priority":"critical","replyNeeded":true},{"from":"Brandon Ehrhart","fromTitle":"GC","subject":"Elliott Proxy Response","time":"5h","priority":"critical"}]}
+{"title":"Factory Expansion Pipeline","regions":[{"name":"Texas Phase 4","value":"$2.8B — 72%","code":"north-america"},{"name":"Pune Greenfield","value":"$3.4B — 18%","code":"india"},{"name":"Berlin Battery Wing","value":"€1.6B — 58%","code":"europe"}]}
 ```
-Max 3 emails. Each: `{ from, fromTitle?, subject, time?, priority?, unread?, replyNeeded? }`.
-
-### trip-card
-```json
-{"destination":"Shanghai","dates":"Mar 20–23","purpose":"Giga inspection + CATL negotiation","flight":"N628TS · Austin → Shanghai","flightTime":"Mar 20 06:00 → Mar 21 10:00","hotel":"The Peninsula Shanghai","hotelRoom":"Presidential Suite","companions":"Tom Zhu, 2 staff","keyMeeting":"CATL pricing with Dr. Zeng"}
-```
-
-### vote-card
-```json
-{"title":"Optimus Liability Framework","resolution":"2030-04-01","description":"Approve Optimus Home Edition Liability Framework v2.0","positions":[{"director":"CEO","vote":"yes"},{"director":"Robyn Denholm","vote":"yes"},{"director":"Kathleen Wilson-Thompson","vote":"conditional","condition":"Wants $5B insurance"},{"director":"Hiro Mizuno","vote":"no"}],"predictedOutcome":"9-1 approval","prepActions":["Call Kathleen before April 10 — $5B is achievable"]}
-```
-`resolution?`, `description?`, `positions?`: `{ director, vote: "yes"|"no"|"conditional"|"abstain"|"unknown", condition? }[]`. `predictedOutcome?`, `prepActions?`: string[].
-
-### relationship-card
-```json
-{"name":"Kathleen Wilson-Thompson","role":"Director, Governance Chair","sentiment":"watch","trajectory":"cooling","lastContact":"March 11","daysSince":4,"commitments":["Expects $5B insurance before YES vote"],"actionNeeded":"Call before April 10","riskLevel":"medium"}
-```
-`name`, `role?`, `sentiment`: "strong"|"watch"|"at-risk"|"cold", `trajectory?`: "warming"|"stable"|"cooling", `lastContact?`, `daysSince?`, `commitments?`, `actionNeeded?`, `riskLevel?`.
-
-### domino-card
-```json
-{"title":"Jakarta Dojo Stays Down","probability":8,"exposure":"$14B revenue at risk","chain":[{"step":1,"event":"Jakarta Dojo down 2 more weeks"},{"step":2,"event":"FSD v18.5 training delayed 3 weeks"},{"step":3,"event":"Robotaxi expansion paused","impact":"Safety validation depends on v18.5"},{"step":4,"event":"500-city target at risk"}]}
-```
-`probability?`, `exposure?`, `chain?`: `{ step, event, impact? }[]`.
-
-### country-card
-```json
-{"country":"China","flag":"🇨🇳","revenue":"$298B (24.0%)","employees":"22,400","factories":["Shanghai (2.4M)"],"politicalRisk":"high","tradeExposure":"15% duty avoided via local production","relationshipHealth":"watch","keyContact":"MIIT Vice Minister Li"}
-```
-`country`, `flag?`, `revenue?`, `employees?`, `factories?`, `politicalRisk?`: "low"|"medium"|"high", `tradeExposure?`, `relationshipHealth?`: "strong"|"watch"|"at-risk", `keyContact?`.
+Regions: `{ name, value, code?, color? }`.
 
 ### journal-entry
 ```json
 {"decision":"Dojo Compute Reallocation — 0.4 EF to Optimus","date":"Mar 3, 2030","context":"ELT meeting — Karn requested more Dojo for GRASP","dataAvailable":["FSD pipeline utilization","GRASP v1.2 success rate (78%)"],"dataMissing":["Exact FSD delay impact"],"expectedOutcome":"FSD delayed ~1 week","actualOutcome":"FSD delayed ~2 weeks","accuracy":"partial","speed":"8 min"}
 ```
 `decision`, `date?`, `context?`, `dataAvailable?`, `dataMissing?`, `expectedOutcome?`, `actualOutcome?`, `accuracy?`: "correct"|"partial"|"wrong"|"pending", `speed?`, `dissenters?`.
+
+### stock
+```json
+{"title":"TSLA vs Competitors","ticker":"TSLA","price":"$1,847.20","change":"+$5.20","changePercent":"+0.28%","trend":"up","marketCap":"$6.2T","volume":"42.8M","sparkline":[1780,1795,1810,1825,1842]}
+```
+`ticker`, `price`, `change`, `changePercent`, `trend`: "up"|"down"|"flat". Optional: `marketCap?`, `volume?`, `dayHigh?`, `dayLow?`, `sparkline?`.
+
+### image-card
+```json
+{"imageUrl":"Tesla Gigafactory Shanghai floor, robotic arms assembling vehicles, CCTV security camera aesthetic, grainy monochrome, wide-angle, timestamp overlay","caption":"GF-SH-Floor-3 · Live · 21:14 UTC"}
+```
+`imageUrl?` (SmartImage prompt or URL), `caption?`, `subtitle?`.
 
 ---
 
