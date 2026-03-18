@@ -82,7 +82,7 @@
   --theme-card-title: #ffffff;
 
   /* Scene page-level */
-  --theme-scene-bg: rgba(5, 5, 8, 0.75);
+  --theme-scene-bg: rgba(5, 5, 8, 0.55);
   --theme-scene-text: #ffffff;
   --theme-scene-text-muted: #94a3b8;
   --theme-scene-badge-bg: rgba(255, 255, 255, 0.1);
