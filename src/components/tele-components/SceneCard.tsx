@@ -16,7 +16,7 @@ import { TeleComponentProps } from './types';
  *   ctaLabel?: string            — Button text (shows only if cta is set)
  *   variant?: 'default' | 'highlight' | 'success' | 'warning' | 'danger'
  */
-export default function SceneCard({ data, accentColor = '#2563eb', onAction }: TeleComponentProps) {
+export default function SceneCard({ data, accentColor = '#00d4f5', onAction }: TeleComponentProps) {
   const title = (data.title as string) || '';
   const description = data.description as string | undefined;
   const icon = data.icon as string | undefined;

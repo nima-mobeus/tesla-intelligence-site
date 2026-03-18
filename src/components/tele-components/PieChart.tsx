@@ -2,7 +2,7 @@
 
 import { TeleComponentProps } from './types';
 
-const DEFAULT_COLORS = ['#2563eb', '#f59e0b', '#10b981', '#ef4444', '#8b5cf6', '#ec4899', '#06b6d4', '#f97316'];
+const DEFAULT_COLORS = ['#00d4f5', '#f59e0b', '#10b981', '#ef4444', '#8b5cf6', '#ec4899', '#06b6d4', '#f97316'];
 
 /**
  * PieChart — SVG donut/pie chart with legend.

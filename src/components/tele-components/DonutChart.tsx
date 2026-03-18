@@ -24,7 +24,7 @@ const PALETTE = [
   '#f97316', // orange
 ];
 
-export default function DonutChart({ data, accentColor = '#2563eb', onAction }: TeleComponentProps) {
+export default function DonutChart({ data, accentColor = '#00d4f5', onAction }: TeleComponentProps) {
   const title = data.title as string | undefined;
   const segments: Array<{ label: string; value: number; color?: string }> = Array.isArray(data.segments)
     ? data.segments

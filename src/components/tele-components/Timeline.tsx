@@ -15,7 +15,7 @@ import { TeleComponentProps } from './types';
  *     status?: 'done' | 'active' | 'pending';
  *   }>
  */
-export default function Timeline({ data, accentColor = '#2563eb' }: TeleComponentProps) {
+export default function Timeline({ data, accentColor = '#00d4f5' }: TeleComponentProps) {
   const title = data.title as string | undefined;
   const entries: Array<{
     label: string;

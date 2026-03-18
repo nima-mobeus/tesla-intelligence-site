@@ -11,7 +11,7 @@ import { TeleComponentProps } from './types';
  *   items: Array<{ question: string; answer: string }>
  *   allowMultiple?: boolean   — Allow multiple items open at once (default: false)
  */
-export default function FAQ({ data, accentColor = '#2563eb' }: TeleComponentProps) {
+export default function FAQ({ data, accentColor = '#00d4f5' }: TeleComponentProps) {
   const title = data.title as string | undefined;
   const items: Array<{ question: string; answer: string }> = Array.isArray(data.items) ? data.items : [];
   const allowMultiple = data.allowMultiple === true;

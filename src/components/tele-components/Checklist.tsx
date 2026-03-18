@@ -9,7 +9,7 @@ import { TeleComponentProps } from './types';
  *   title?: string
  *   items: Array<{ text: string; checked?: boolean; description?: string }>
  */
-export default function Checklist({ data, accentColor = '#2563eb' }: TeleComponentProps) {
+export default function Checklist({ data, accentColor = '#00d4f5' }: TeleComponentProps) {
   const title = data.title as string | undefined;
   const items: Array<{ text: string; checked?: boolean; description?: string }> = Array.isArray(data.items)
     ? data.items

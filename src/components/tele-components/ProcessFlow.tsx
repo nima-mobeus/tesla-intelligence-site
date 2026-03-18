@@ -9,7 +9,7 @@ import { TeleComponentProps } from './types';
  *   title?: string
  *   steps: Array<{ title: string; description?: string; icon?: string }>
  */
-export default function ProcessFlow({ data, accentColor = '#2563eb' }: TeleComponentProps) {
+export default function ProcessFlow({ data, accentColor = '#00d4f5' }: TeleComponentProps) {
   const title = data.title as string | undefined;
   const steps: Array<{ title: string; description?: string; icon?: string }> = Array.isArray(data.steps)
     ? data.steps

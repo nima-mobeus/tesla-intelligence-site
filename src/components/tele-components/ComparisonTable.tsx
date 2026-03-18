@@ -11,7 +11,7 @@ import { TeleComponentProps } from './types';
  *   rows: Array<Array<string | boolean>>  — Row data matching columns. Boolean → ✓/✗
  *   highlightColumn?: number          — 0-based column index to highlight
  */
-export default function ComparisonTable({ data, accentColor = '#2563eb' }: TeleComponentProps) {
+export default function ComparisonTable({ data, accentColor = '#00d4f5' }: TeleComponentProps) {
   const title = data.title as string | undefined;
   const columns: string[] = Array.isArray(data.columns) ? data.columns : [];
   const rows: Array<Array<string | boolean>> = Array.isArray(data.rows) ? data.rows : [];

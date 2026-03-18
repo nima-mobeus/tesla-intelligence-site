@@ -11,7 +11,7 @@ import { TeleComponentProps } from './types';
  *   steps: Array<string>          — Step labels (e.g. ["Cart", "Shipping", "Payment", "Done"])
  *   showPercent?: boolean          — Show percentage (default: false)
  */
-export default function ProgressTracker({ data, accentColor = '#2563eb' }: TeleComponentProps) {
+export default function ProgressTracker({ data, accentColor = '#00d4f5' }: TeleComponentProps) {
   const title = data.title as string | undefined;
   const steps: string[] = Array.isArray(data.steps) ? data.steps : [];
   const currentStep = typeof data.currentStep === 'number' ? data.currentStep : 1;
@@ -25,7 +25,7 @@ export default function ProgressTracker({ data, accentColor = '#2563eb' }: TeleC
     <div className="w-full space-y-3">
       {title && <h3 className="text-body font-semibold">{title}</h3>}
       <div className="flex items-center gap-2">
-        <div className="h-2 flex-1 overflow-hidden rounded-full bg-gray-100">
+        <div className="h-2 flex-1 overflow-hidden rounded-full" style={{ background: 'rgba(255,255,255,0.10)' }}>
           <div
             className="h-full rounded-full transition-all duration-500"
             style={{ width: `${pct}%`, backgroundColor: accentColor }}

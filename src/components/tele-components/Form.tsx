@@ -25,7 +25,7 @@ import { TeleComponentProps } from './types';
  * Special: Requires `templateId` from the template object for form submission.
  * The parent DynamicComponentRenderer passes this via the `data.__templateId` field.
  */
-export default function Form({ data, accentColor = '#2563eb' }: TeleComponentProps) {
+export default function Form({ data, accentColor = '#00d4f5' }: TeleComponentProps) {
   const submitForm = useVoiceSessionStore((state) => state.submitForm);
   const templateId = data.__templateId as string | undefined;
   const title = data.title as string | undefined;

@@ -10,7 +10,7 @@ import { TeleComponentProps } from './types';
  *   subtitle?: string
  *   items: Array<{ title: string; description?: string; badge?: string }>
  */
-export default function NumberedList({ data, accentColor = '#2563eb' }: TeleComponentProps) {
+export default function NumberedList({ data, accentColor = '#00d4f5' }: TeleComponentProps) {
   const title = data.title as string | undefined;
   const subtitle = data.subtitle as string | undefined;
   const items: Array<{ title: string; description?: string; badge?: string }> = Array.isArray(data.items)

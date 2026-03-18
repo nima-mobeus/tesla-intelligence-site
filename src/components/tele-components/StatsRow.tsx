@@ -9,7 +9,7 @@ import { TeleComponentProps } from './types';
  *   title?: string
  *   stats: Array<{ label: string; value: string | number; unit?: string; icon?: string }>
  */
-export default function StatsRow({ data, accentColor = '#2563eb' }: TeleComponentProps) {
+export default function StatsRow({ data, accentColor = '#00d4f5' }: TeleComponentProps) {
   const title = data.title as string | undefined;
   const stats: Array<{ label: string; value: string | number; unit?: string }> = Array.isArray(data.stats)
     ? data.stats

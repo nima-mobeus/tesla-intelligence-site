@@ -18,7 +18,7 @@ import { TeleComponentProps } from './types';
  *   ctaLabel?: string
  *   ctaUrl?: string
  */
-export default function ProductCard({ data, accentColor = '#2563eb', onAction }: TeleComponentProps) {
+export default function ProductCard({ data, accentColor = '#00d4f5', onAction }: TeleComponentProps) {
   const tags: string[] = Array.isArray(data.tags) ? data.tags : [];
   const rating = typeof data.rating === 'number' ? data.rating : null;
 

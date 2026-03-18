@@ -12,7 +12,7 @@ import { TeleComponentProps } from './types';
  *   options: Array<{ label: string; correct?: boolean }>
  *   explanation?: string       — Shown after answering
  */
-export default function Quiz({ data, accentColor = '#2563eb', onAction }: TeleComponentProps) {
+export default function Quiz({ data, accentColor = '#00d4f5', onAction }: TeleComponentProps) {
   const title = data.title as string | undefined;
   const question = data.question as string;
   const options: Array<{ label: string; correct?: boolean }> = Array.isArray(data.options) ? data.options : [];

@@ -15,7 +15,7 @@ import { TeleComponentProps } from './types';
  *   description?: string         — Additional context text
  *   status?: 'on-track' | 'at-risk' | 'behind' | 'exceeded'
  */
-export default function MetricCard({ data, accentColor = '#2563eb', onAction }: TeleComponentProps) {
+export default function MetricCard({ data, accentColor = '#00d4f5', onAction }: TeleComponentProps) {
   const title = (data.title as string) || '';
   const value = data.value ?? '—';
   const target = data.target;

@@ -14,7 +14,7 @@ import { TeleComponentProps } from './types';
  *   showGrid?: boolean     — Show horizontal grid lines (default: true)
  *   lineColor?: string     — Override line color
  */
-export default function LineChart({ data, accentColor = '#2563eb' }: TeleComponentProps) {
+export default function LineChart({ data, accentColor = '#00d4f5' }: TeleComponentProps) {
   const title = data.title as string | undefined;
   const points: Array<{ x: string | number; y: number }> = Array.isArray(data.points) ? data.points : [];
   const xLabel = data.xLabel as string | undefined;

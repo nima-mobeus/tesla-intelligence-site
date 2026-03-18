@@ -11,7 +11,7 @@ import { TeleComponentProps } from './types';
  *   authorTitle?: string
  *   authorImage?: string
  */
-export default function QuoteCallout({ data, accentColor = '#2563eb' }: TeleComponentProps) {
+export default function QuoteCallout({ data, accentColor = '#00d4f5' }: TeleComponentProps) {
   const quote = data.quote as string;
   if (!quote) return null;
 

@@ -13,7 +13,7 @@ import { TeleComponentProps } from './types';
  *   showValues?: boolean    — Show numeric values on bars (default: true)
  *   accentColor?: string    — Default bar color
  */
-export default function BarChart({ data, accentColor = '#2563eb' }: TeleComponentProps) {
+export default function BarChart({ data, accentColor = '#00d4f5' }: TeleComponentProps) {
   const title = data.title as string | undefined;
   const bars: Array<{ label: string; value: number; color?: string }> = Array.isArray(data.bars) ? data.bars : [];
   const unit = (data.unit as string) || '';
@@ -39,7 +39,7 @@ export default function BarChart({ data, accentColor = '#2563eb' }: TeleComponen
                   </span>
                 )}
               </div>
-              <div className="h-4 w-full overflow-hidden rounded bg-gray-100">
+              <div className="h-4 w-full overflow-hidden rounded" style={{ background: 'rgba(255,255,255,0.10)' }}>
                 <div
                   className="h-full rounded transition-all duration-500"
                   style={{ width: `${pct}%`, backgroundColor: color }}

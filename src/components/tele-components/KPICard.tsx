@@ -14,7 +14,7 @@ import { TeleComponentProps } from './types';
  *   unit?: string                — Unit suffix (e.g., "%", "M", "kWh")
  *   sparkline?: number[]         — Tiny sparkline data points (optional)
  */
-export default function KPICard({ data, accentColor = '#2563eb', onAction }: TeleComponentProps) {
+export default function KPICard({ data, accentColor = '#00d4f5', onAction }: TeleComponentProps) {
   const value = data.value ?? '—';
   const label = (data.label as string) || '';
   const change = data.change as string | undefined;

@@ -18,7 +18,7 @@ import { TeleComponentProps } from './types';
  *   autoPlay?: boolean      — Default: true
  *   interval?: number       — Milliseconds between slides (default: 3000)
  */
-export default function CarouselCards({ data, accentColor = '#2563eb', onAction }: TeleComponentProps) {
+export default function CarouselCards({ data, accentColor = '#00d4f5', onAction }: TeleComponentProps) {
   const title = data.title as string | undefined;
   const cards: Array<{
     title: string;

@@ -14,7 +14,7 @@ import { TeleComponentProps } from './types';
  *   mediaPosition?: 'left' | 'right' — Default: right
  *   ctaLabel?: string
  */
-export default function HeroSplit({ data, accentColor = '#2563eb', onAction }: TeleComponentProps) {
+export default function HeroSplit({ data, accentColor = '#00d4f5', onAction }: TeleComponentProps) {
   const title = data.title as string;
   const subtitle = data.subtitle as string | undefined;
   const badge = data.badge as string | undefined;

@@ -16,7 +16,7 @@ import { TeleComponentProps } from './types';
  *     ctaLabel?: string;
  *   }>
  */
-export default function ProfileRoster({ data, accentColor = '#2563eb', onAction }: TeleComponentProps) {
+export default function ProfileRoster({ data, accentColor = '#00d4f5', onAction }: TeleComponentProps) {
   const title = data.title as string | undefined;
   const subtitle = data.subtitle as string | undefined;
   const profiles: Array<{

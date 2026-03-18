@@ -15,7 +15,7 @@ import { TeleComponentProps } from './types';
  *   message?: string
  *   ctaLabel?: string
  */
-export default function MeetingScheduler({ data, accentColor = '#2563eb', onAction }: TeleComponentProps) {
+export default function MeetingScheduler({ data, accentColor = '#00d4f5', onAction }: TeleComponentProps) {
   const personName = data.personName as string;
   const personTitle = data.personTitle as string | undefined;
   const photoUrl = data.photoUrl as string | undefined;
