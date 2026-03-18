@@ -31,11 +31,11 @@
 
 /* ── 5-Tier Type Scale ── */
 @layer utilities {
-  .text-display { font-size: clamp(2rem, 5vw, 4.5rem) !important; line-height: 1 !important; }
-  .text-title   { font-size: clamp(1.25rem, 2.5vw, 2rem) !important; line-height: 1.2 !important; }
-  .text-body    { font-size: 0.875rem !important; line-height: 1.5 !important; }
-  .text-caption { font-size: 0.75rem !important; line-height: 1.4 !important; }
-  .text-micro   { font-size: 0.625rem !important; line-height: 1.3 !important; letter-spacing: 0.04em !important; }
+  .text-display { font-size: clamp(2.5rem, 6vw, 5rem) !important; line-height: 0.95 !important; }
+  .text-title   { font-size: clamp(1.375rem, 2.5vw, 2rem) !important; line-height: 1.15 !important; }
+  .text-body    { font-size: 0.9375rem !important; line-height: 1.5 !important; }
+  .text-caption { font-size: 0.8125rem !important; line-height: 1.4 !important; }
+  .text-micro   { font-size: 0.6875rem !important; line-height: 1.3 !important; letter-spacing: 0.03em !important; }
 }
 
 :root {
