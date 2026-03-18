@@ -109,6 +109,8 @@ interface VoiceSessionState {
 
   // Scene state
   currentScene: SceneData | null;
+  displayScene: SceneData | null;   // What the UI actually renders (buffered during hold)
+  showSkeleton: boolean;             // True when skeleton shimmer should be visible
   sceneHistory: SceneData[];
   sceneFuture: SceneData[];     // Forward stack for back/forward navigation
   sceneActive: boolean;
@@ -189,6 +191,8 @@ export const useVoiceSessionStore = create<VoiceSessionState>((set, get) => ({
 
   // Scene state
   currentScene: null,
+  displayScene: null,
+  showSkeleton: false,
   sceneHistory: [],
   sceneFuture: [],
   sceneActive: false,
@@ -333,6 +337,8 @@ export const useVoiceSessionStore = create<VoiceSessionState>((set, get) => ({
       currentAgentName: null,
       // Reset scene state
       currentScene: null,
+      displayScene: null,
+      showSkeleton: false,
       sceneHistory: [],
       sceneFuture: [],
       sceneActive: false,
@@ -583,6 +589,8 @@ export const useVoiceSessionStore = create<VoiceSessionState>((set, get) => ({
         uiComponents: [],
         templates: [],
         currentScene: null,
+        displayScene: null,
+        showSkeleton: false,
         sceneHistory: [],
         sceneFuture: [],
         sceneActive: false,
@@ -836,7 +844,7 @@ export const useVoiceSessionStore = create<VoiceSessionState>((set, get) => ({
   },
 
   clearScene: () => {
-    set({ sceneActive: false, currentScene: null });
+    set({ sceneActive: false, currentScene: null, displayScene: null, showSkeleton: false });
     get().setTheme('dark');
   },
 
@@ -848,6 +856,8 @@ export const useVoiceSessionStore = create<VoiceSessionState>((set, get) => ({
       const previous = newHistory[newHistory.length - 1];
       set({
         currentScene: previous,
+        displayScene: previous,
+        showSkeleton: false,
         sceneHistory: newHistory,
         sceneFuture: [popped, ...sceneFuture],
         sceneActive: true,
@@ -858,12 +868,14 @@ export const useVoiceSessionStore = create<VoiceSessionState>((set, get) => ({
       set({
         sceneActive: false,
         currentScene: null,
+        displayScene: null,
+        showSkeleton: false,
         sceneHistory: [],
         sceneFuture: [popped, ...sceneFuture],
       });
       get().setTheme('dark');
     } else {
-      set({ sceneActive: false, currentScene: null, sceneHistory: [] });
+      set({ sceneActive: false, currentScene: null, displayScene: null, showSkeleton: false, sceneHistory: [] });
       get().setTheme('dark');
     }
   },
@@ -874,6 +886,8 @@ export const useVoiceSessionStore = create<VoiceSessionState>((set, get) => ({
     const [next, ...rest] = sceneFuture;
     set({
       currentScene: next,
+      displayScene: next,
+      showSkeleton: false,
       sceneActive: true,
       sceneHistory: [...sceneHistory, next],
       sceneFuture: rest,
@@ -984,6 +998,8 @@ function setupRoomEventListeners(
         uiComponents: [],
         templates: [],
         currentScene: null,
+        displayScene: null,
+        showSkeleton: false,
         sceneHistory: [],
         sceneFuture: [],
         sceneActive: false,
@@ -1162,6 +1178,17 @@ function setupRoomEventListeners(
   // The UI Engine publishes scene data (skeleton + full scenes) to the room
   // via LiveKit Server SDK send_data(). This runs in parallel with the voice
   // agent — both receive the same user transcript independently.
+  //
+  // ── Hold-back mechanism (1000ms) ──
+  // When skeleton arrives, displayScene (what the UI renders) stays frozen
+  // for 1000ms showing the old grid. If the full scene arrives within that
+  // window, it's buffered and swapped after the remainder. Skeleton shimmer
+  // only appears if the full scene hasn't arrived after 1000ms.
+  const HOLD_MS = 1000;
+  let holdStart: number | null = null;
+  let holdTimer: ReturnType<typeof setTimeout> | null = null;
+  let pendingScene: SceneData | null = null;
+
   room.on(RoomEvent.DataReceived, (payload: Uint8Array, participant, kind, topic) => {
     if (topic !== 'ui-engine:scene') return;
 
@@ -1170,17 +1197,65 @@ function setupRoomEventListeners(
       console.log('UI Engine data received:', data.type, data.id || '');
 
       if (data.type === 'skeleton') {
-        // Show skeleton loading state with the given layout
+        // Start hold period — displayScene stays frozen (old grid visible)
+        holdStart = Date.now();
+        pendingScene = null;
+        if (holdTimer) clearTimeout(holdTimer);
+
+        holdTimer = setTimeout(() => {
+          // Hold expired
+          if (pendingScene) {
+            // Scene arrived during hold — show it now
+            set({ displayScene: pendingScene, showSkeleton: false, sceneLoading: false, sceneSkeletonLayout: null });
+            pendingScene = null;
+          } else {
+            // No scene yet — show skeleton shimmer
+            set({ showSkeleton: true });
+          }
+          holdStart = null;
+          holdTimer = null;
+        }, HOLD_MS);
+
         set({
           sceneLoading: true,
           sceneSkeletonLayout: data.layout || '1-2-3',
           sceneActive: true,
+          // displayScene is NOT changed — old grid stays visible
         });
+
       } else if (data.type === 'scene') {
-        // Full scene arrived — replace skeleton with real content
+        // Full scene arrived — apply to currentScene (for history/back/forward)
         const { applyScene } = get();
         applyScene(data);
-        set({ sceneLoading: false, sceneSkeletonLayout: null });
+        const newScene = get().currentScene;
+
+        if (holdStart !== null) {
+          // Still in hold period — buffer the scene
+          const elapsed = Date.now() - holdStart;
+          const remaining = HOLD_MS - elapsed;
+
+          if (remaining > 0) {
+            pendingScene = newScene;
+            // Replace hold timer with one that fires after the remainder
+            if (holdTimer) clearTimeout(holdTimer);
+            holdTimer = setTimeout(() => {
+              set({ displayScene: pendingScene ?? newScene, showSkeleton: false, sceneLoading: false, sceneSkeletonLayout: null });
+              pendingScene = null;
+              holdStart = null;
+              holdTimer = null;
+            }, remaining);
+          } else {
+            // Hold already expired — swap immediately
+            if (holdTimer) clearTimeout(holdTimer);
+            set({ displayScene: newScene, showSkeleton: false, sceneLoading: false, sceneSkeletonLayout: null });
+            holdStart = null;
+            holdTimer = null;
+            pendingScene = null;
+          }
+        } else {
+          // No hold in progress — swap immediately
+          set({ displayScene: newScene, showSkeleton: false, sceneLoading: false, sceneSkeletonLayout: null });
+        }
       }
     } catch (err) {
       console.error('UI Engine data parse error:', err);
@@ -1212,6 +1287,8 @@ function setupRoomEventListeners(
       uiComponents: [],
       templates: [],
       currentScene: null,
+      displayScene: null,
+      showSkeleton: false,
       sceneHistory: [],
       sceneFuture: [],
       sceneActive: false,
@@ -1311,6 +1388,8 @@ function registerRpcHandlers(
 
       const { applyScene } = get();
       applyScene(payload);
+      // RPC path: no skeleton, show scene immediately
+      set({ displayScene: get().currentScene, showSkeleton: false });
 
       return JSON.stringify({ success: true });
     } catch (error) {
@@ -1322,7 +1401,7 @@ function registerRpcHandlers(
   // Handler: Clear scene (return to static page)
   localParticipant.registerRpcMethod('clearScene', async () => {
     console.log('RPC: clearScene');
-    set({ sceneActive: false, currentScene: null });
+    set({ sceneActive: false, currentScene: null, displayScene: null, showSkeleton: false });
     // Restore light theme when leaving scene
     get().setTheme('dark');
     return JSON.stringify({ success: true });

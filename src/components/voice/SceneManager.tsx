@@ -2,13 +2,14 @@
 
 import { useVoiceSessionStore } from '@/lib/stores/voice-session-store';
 import { getComponent } from '@/components/tele-components/component-registry';
-import { Suspense, useMemo, useCallback, useEffect, useState, useRef } from 'react';
+import { Suspense, useMemo, useCallback, useEffect } from 'react';
 import Image from 'next/image';
 import { teslaLogoWhite, teslaLogo } from '@/assets';
 import { ChevronLeft, Sun, Moon, Camera, Download, Mail, Link2 } from 'lucide-react';
 
 export function SceneManager() {
-  const storeScene = useVoiceSessionStore((s) => s.currentScene);
+  const displayScene = useVoiceSessionStore((s) => s.displayScene);
+  const showSkeleton = useVoiceSessionStore((s) => s.showSkeleton);
   const sceneActive = useVoiceSessionStore((s) => s.sceneActive);
   const sceneLoading = useVoiceSessionStore((s) => s.sceneLoading);
   const sceneSkeletonLayout = useVoiceSessionStore((s) => s.sceneSkeletonLayout);
@@ -18,86 +19,8 @@ export function SceneManager() {
   const theme = useVoiceSessionStore((s) => s.theme);
   const toggleTheme = useVoiceSessionStore((s) => s.toggleTheme);
 
-  // ── Hold-back mechanism (1000ms) ──
-  // When a skeleton arrives, the old grid stays visible for 1000ms.
-  // If the full scene arrives within that window, we buffer it and swap
-  // after the remainder of the hold. Skeleton shimmer only appears if
-  // the full scene hasn't arrived by the time the hold expires.
-  const HOLD_MS = 1000;
-
-  const [displayScene, setDisplayScene] = useState(storeScene);
-  const [showSkeleton, setShowSkeleton] = useState(false);
-  const holdStartRef = useRef<number | null>(null);
-  const holdTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const pendingSceneRef = useRef<typeof storeScene>(null);
-
-  useEffect(() => {
-    // ── Skeleton arrived: start the hold period
-    if (sceneLoading && holdStartRef.current === null) {
-      holdStartRef.current = Date.now();
-      pendingSceneRef.current = null;
-
-      holdTimerRef.current = setTimeout(() => {
-        // Hold expired — if a scene arrived during the hold, show it now
-        if (pendingSceneRef.current) {
-          setDisplayScene(pendingSceneRef.current);
-          pendingSceneRef.current = null;
-          setShowSkeleton(false);
-        } else {
-          // No scene yet — show skeleton shimmer
-          setShowSkeleton(true);
-        }
-        holdStartRef.current = null;
-      }, HOLD_MS);
-
-    // ── Full scene arrived
-    } else if (!sceneLoading && storeScene) {
-      const holdStart = holdStartRef.current;
-
-      if (holdStart !== null) {
-        // Still in the hold period — buffer the scene
-        const elapsed = Date.now() - holdStart;
-        const remaining = HOLD_MS - elapsed;
-
-        if (remaining > 0) {
-          // Buffer it; the existing hold timer will pick it up
-          pendingSceneRef.current = storeScene;
-          // Replace the hold timer with one that fires after the remainder
-          if (holdTimerRef.current) clearTimeout(holdTimerRef.current);
-          holdTimerRef.current = setTimeout(() => {
-            setDisplayScene(pendingSceneRef.current ?? storeScene);
-            pendingSceneRef.current = null;
-            setShowSkeleton(false);
-            holdStartRef.current = null;
-          }, remaining);
-        } else {
-          // Hold already expired — swap immediately
-          if (holdTimerRef.current) clearTimeout(holdTimerRef.current);
-          setDisplayScene(storeScene);
-          setShowSkeleton(false);
-          holdStartRef.current = null;
-          pendingSceneRef.current = null;
-        }
-      } else {
-        // No hold in progress — immediate swap (e.g., RPC setScene, back nav)
-        setDisplayScene(storeScene);
-        setShowSkeleton(false);
-      }
-    }
-
-    return () => {
-      if (holdTimerRef.current) clearTimeout(holdTimerRef.current);
-    };
-  }, [sceneLoading, storeScene]);
-
-  // When scene updates outside of loading (RPC setScene, back nav), sync immediately
-  useEffect(() => {
-    if (!sceneLoading && holdStartRef.current === null) {
-      setDisplayScene(storeScene);
-    }
-  }, [storeScene, sceneLoading]);
-
-  // Use displayScene (buffered) instead of storeScene for rendering
+  // displayScene and showSkeleton are managed by the store's data channel
+  // handler with a 1000ms hold-back mechanism. No local state needed.
   const currentScene = displayScene;
 
   const GridView = useMemo(() => getComponent('GridView'), []);
