@@ -94,10 +94,6 @@ export function ChatPanel() {
         right: isChatPanelOpen ? '0' : 'calc(-1 * var(--glass-chat-width))',
         opacity: isChatPanelOpen ? 1 : 0,
         pointerEvents: isChatPanelOpen ? 'auto' : 'none',
-        background: 'rgba(6, 8, 14, 0.82)',
-        borderLeft: '1px solid rgba(0, 212, 245, 0.12)',
-        backdropFilter: 'blur(20px)',
-        WebkitBackdropFilter: 'blur(20px)',
       }}
     >
       {/* Chat messages area */}
@@ -159,19 +155,19 @@ export function ChatPanel() {
 
               {/* Bubble */}
               <div
-                className="chat-message-bubble max-w-[78%] sm:max-w-[72%] px-3.5 py-2.5 sm:px-4 sm:py-3 text-body leading-relaxed transition-all duration-500 hover:brightness-110"
+                className="chat-message-bubble max-w-[78%] sm:max-w-[72%] px-3.5 py-2.5 sm:px-4 sm:py-3 text-body leading-relaxed transition-all duration-300 rounded-2xl"
                 style={isUser ? {
-                  background: 'rgba(0, 180, 216, 0.13)',
-                  color: 'rgba(224, 240, 248, 0.95)',
-                  border: '1px solid rgba(0, 212, 245, 0.22)',
-                  boxShadow: '0 2px 12px rgba(0, 180, 216, 0.08)',
-                  borderRadius: '1.25rem 1.25rem 0.35rem 1.25rem',
+                  background: 'rgba(0, 180, 216, 0.12)',
+                  color: 'rgba(255, 255, 255, 0.92)',
+                  border: '1px solid rgba(0, 212, 245, 0.18)',
+                  boxShadow: 'none',
+                  backdropFilter: 'blur(6px)',
                 } : {
-                  background: 'rgba(255,255,255,0.04)',
-                  color: 'rgba(218, 228, 238, 0.88)',
-                  border: '1px solid rgba(255,255,255,0.07)',
-                  boxShadow: '0 2px 12px rgba(0,0,0,0.15)',
-                  borderRadius: '1.25rem 1.25rem 1.25rem 0.35rem',
+                  background: 'rgba(255, 255, 255, 0.08)',
+                  color: 'rgba(255, 255, 255, 0.88)',
+                  border: '1px solid rgba(255,255,255,0.08)',
+                  boxShadow: 'none',
+                  backdropFilter: 'blur(6px)',
                 }}
               >
                 {t.text}
@@ -188,9 +184,9 @@ export function ChatPanel() {
         <div
           className="flex items-center gap-2 rounded-full px-3 sm:px-4 py-2 sm:py-2.5"
           style={{
-            background: 'rgba(8, 10, 18, 0.75)',
-            border: '1px solid rgba(0, 212, 245, 0.18)',
-            backdropFilter: 'blur(12px)',
+            background: 'rgba(0, 0, 0, 0.20)',
+            border: '1px solid rgba(255, 255, 255, 0.10)',
+            backdropFilter: 'blur(8px)',
           }}
         >
           <button
