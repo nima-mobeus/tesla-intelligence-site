@@ -9,6 +9,7 @@ import { playUISound, playGlassSound } from '@/utils/soundGenerator';
 export function ControlBar() {
   const sessionState = useVoiceSessionStore((s) => s.sessionState);
   const isMuted = useVoiceSessionStore((s) => s.isMuted);
+  const isPushToTalk = useVoiceSessionStore((s) => s.isPushToTalk);
   const isChatPanelOpen = useVoiceSessionStore((s) => s.isChatPanelOpen);
   const sceneActive = useVoiceSessionStore((s) => s.sceneActive);
   const theme = useVoiceSessionStore((s) => s.theme);
@@ -82,13 +83,17 @@ export function ControlBar() {
         <button
           onClick={handleToggleMute}
           className={`p-2 rounded-full transition-all duration-200 ${
-            isMuted
+            isPushToTalk
+              ? 'bg-emerald-500/20 text-emerald-400 ring-2 ring-emerald-400 ring-offset-1 ring-offset-black/50 shadow-[0_0_12px_rgba(52,211,153,0.6)]'
+              : isMuted
               ? 'text-red-500 hover:text-red-400'
               : `${iconBg} ${iconColor}`
           }`}
-          title={isMuted ? 'Unmute mic' : 'Mute mic'}
+          title={isPushToTalk ? 'PTT active — release Space to mute' : isMuted ? 'Unmute mic' : 'Mute mic'}
         >
-          {isMuted ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
+          {isMuted && !isPushToTalk
+            ? <MicOff className="w-4 h-4" />
+            : <Mic className={`w-4 h-4 ${isPushToTalk ? 'animate-pulse' : ''}`} />}
         </button>
       )}
 

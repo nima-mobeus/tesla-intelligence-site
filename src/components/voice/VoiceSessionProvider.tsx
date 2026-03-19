@@ -130,6 +130,7 @@ export function VoiceSessionProvider({ children }: VoiceSessionProviderProps) {
         if (isMuted && !pushToTalkRef.current) {
           e.preventDefault();
           pushToTalkRef.current = true;
+          useVoiceSessionStore.setState({ isPushToTalk: true });
           toggleMute(); // unmute
         }
       }
@@ -139,6 +140,7 @@ export function VoiceSessionProvider({ children }: VoiceSessionProviderProps) {
       if (e.code === 'Space' && pushToTalkRef.current) {
         e.preventDefault();
         pushToTalkRef.current = false;
+        useVoiceSessionStore.setState({ isPushToTalk: false });
         const { sessionState, toggleMute } = useVoiceSessionStore.getState();
         if (sessionState === 'connected') {
           toggleMute(); // re-mute

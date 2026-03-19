@@ -99,6 +99,7 @@ interface VoiceSessionState {
   // Audio
   isMuted: boolean;
   isVolumeMuted: boolean;
+  isPushToTalk: boolean;
 
   // Transcripts
   transcripts: TranscriptEntry[];
@@ -185,6 +186,7 @@ export const useVoiceSessionStore = create<VoiceSessionState>((set, get) => ({
 
   isMuted: false,
   isVolumeMuted: false,
+  isPushToTalk: false,
   transcripts: [],
   uiComponents: [],
   templates: [],
