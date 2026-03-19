@@ -4,8 +4,8 @@ import { useVoiceSessionStore } from '@/lib/stores/voice-session-store';
 import { getComponent } from '@/components/tele-components/component-registry';
 import { Suspense, useMemo, useCallback, useEffect } from 'react';
 import Image from 'next/image';
-import { teslaLogoWhite, teslaLogo } from '@/assets';
-import { ChevronLeft, Sun, Moon, Camera, Download, Mail, Link2 } from 'lucide-react';
+import { teslaLogoWhite } from '@/assets';
+import { ChevronLeft, Camera, Download, Mail, Link2 } from 'lucide-react';
 
 export function SceneManager() {
   const displayScene = useVoiceSessionStore((s) => s.displayScene);
@@ -16,8 +16,6 @@ export function SceneManager() {
   const navigateSceneBack = useVoiceSessionStore((s) => s.navigateSceneBack);
   const sceneHistory = useVoiceSessionStore((s) => s.sceneHistory);
   const tellAgent = useVoiceSessionStore((s) => s.tellAgent);
-  const theme = useVoiceSessionStore((s) => s.theme);
-  const toggleTheme = useVoiceSessionStore((s) => s.toggleTheme);
 
   // displayScene and showSkeleton are managed by the store's data channel
   // handler with a 1000ms hold-back mechanism. No local state needed.
@@ -47,8 +45,8 @@ export function SceneManager() {
   if (!sceneActive || (!currentScene && !sceneLoading)) return null;
 
   const hasHistory = sceneHistory.length > 1;
-  const isDark = theme === 'dark';
-  const logoSrc = isDark ? teslaLogoWhite : teslaLogo;
+  const isDark = true;
+  const logoSrc = teslaLogoWhite;
 
   return (
     <div
@@ -60,7 +58,6 @@ export function SceneManager() {
 
       {/* Slide action icons — fixed to viewport, shifts left on chat squeeze */}
       <div className="slide-action-icons fixed top-3 right-3 md:top-6 md:right-6 z-[60] flex items-center gap-1.5">
-        <ActionIcon icon={isDark ? Sun : Moon} onClick={toggleTheme} title="Toggle theme" />
         <ActionIcon icon={Camera} onClick={handleScreenshot} title="Screenshot" />
         <ActionIcon icon={Download} onClick={handleScreenshot} title="Download" />
         <ActionIcon icon={Mail} onClick={handleEmail} title="Email briefing" />

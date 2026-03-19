@@ -85,7 +85,6 @@ export function ChatPanel() {
     <div
       ref={panelRef}
       className={`fixed telelabor-panel top-0 h-dvh z-50 flex flex-col
-        border-l-0
         transition-[right,opacity] duration-500 ease-out
         max-xl:left-0 max-xl:right-0 max-xl:w-full
       `}
@@ -95,25 +94,24 @@ export function ChatPanel() {
         right: isChatPanelOpen ? '0' : 'calc(-1 * var(--glass-chat-width))',
         opacity: isChatPanelOpen ? 1 : 0,
         pointerEvents: isChatPanelOpen ? 'auto' : 'none',
+        background: 'rgba(6, 8, 14, 0.82)',
+        borderLeft: '1px solid rgba(0, 212, 245, 0.12)',
+        backdropFilter: 'blur(20px)',
+        WebkitBackdropFilter: 'blur(20px)',
       }}
     >
       {/* Chat messages area */}
       <div className="chat-messages-container flex-1 px-4 pt-20 pb-4 flex flex-col gap-3">
         {transcripts.length === 0 && isConnected && (
           <div className="flex-1 flex items-center justify-center">
-            <p
-              className="text-body font-voice"
-              style={{ color: 'var(--theme-chat-placeholder)' }}
-            >
+            <p className="text-body font-voice" style={{ color: 'rgba(255,255,255,0.25)' }}>
               Conversation will appear here...
             </p>
           </div>
         )}
 
         {visibleTranscripts.map((t, i) => {
-          // Tool call entries
           if (t.participant === 'tool') {
-            // generate_scene: compact pill with copy — no expand/params display
             if (t.participantName === 'generate_scene') {
               return (
                 <ToolCallIndicator
@@ -125,14 +123,8 @@ export function ChatPanel() {
                 />
               );
             }
-
-            // All other tool calls get the standard expandable indicator
             let toolParams: Record<string, unknown> = {};
-            try {
-              toolParams = JSON.parse(t.text);
-            } catch {
-              toolParams = { raw: t.text };
-            }
+            try { toolParams = JSON.parse(t.text); } catch { toolParams = { raw: t.text }; }
             return (
               <ToolCallIndicator
                 key={t.id}
@@ -143,56 +135,47 @@ export function ChatPanel() {
             );
           }
 
+          const isUser = t.participant === 'user';
+
           return (
             <div
               key={t.id}
-              className={`animate-chat-bubble-enter flex gap-2.5 ${
-                t.participant === 'user' ? 'flex-row-reverse' : 'flex-row'
-              }`}
+              className={`animate-chat-bubble-enter flex gap-2.5 ${isUser ? 'flex-row-reverse' : 'flex-row'}`}
               style={{ animationDelay: `${Math.min(i * 0.05, 0.3)}s` }}
             >
-              {/* Avatar (agent only) */}
-              {t.participant === 'agent' && (
-                <div
-                  className="chat-avatar w-7 h-7 sm:w-9 sm:h-9 rounded-full
-                  backdrop-blur-sm flex items-center justify-center flex-shrink-0"
-                  style={{
-                    background: 'rgba(0, 180, 216, 0.10)',
-                    border: '1px solid rgba(0, 180, 216, 0.20)',
-                  }}
-                >
-                  <Bot className="chat-icon w-4 h-4 sm:w-5 sm:h-5" style={{ color: 'rgba(0, 180, 216, 0.80)' }} />
-                </div>
-              )}
+              {/* Avatar icon */}
+              <div
+                className="chat-avatar w-7 h-7 sm:w-8 sm:h-8 rounded-full backdrop-blur-sm flex items-center justify-center flex-shrink-0 self-end"
+                style={{
+                  background: isUser ? 'rgba(0, 180, 216, 0.12)' : 'rgba(255,255,255,0.05)',
+                  border: isUser ? '1px solid rgba(0, 212, 245, 0.35)' : '1px solid rgba(255,255,255,0.10)',
+                }}
+              >
+                {isUser
+                  ? <User className="chat-icon w-3.5 h-3.5 sm:w-4 sm:h-4" style={{ color: 'rgba(0, 212, 245, 0.90)' }} />
+                  : <Bot className="chat-icon w-3.5 h-3.5 sm:w-4 sm:h-4" style={{ color: 'rgba(255,255,255,0.55)' }} />
+                }
+              </div>
 
               {/* Bubble */}
               <div
-                className={`chat-message-bubble max-w-[75%] sm:max-w-[70%] p-3 sm:p-4 rounded-2xl
-                  text-body leading-relaxed transition-all duration-500
-                  hover:brightness-110 hover:shadow-lg
-                  ${t.participant === 'user' ? 'ml-auto' : ''}`}
-                style={{
-                  background: 'var(--theme-chat-bubble)',
-                  color: 'var(--theme-chat-text)',
-                  boxShadow: '0 4px 16px rgba(0, 0, 0, 0.1)',
+                className="chat-message-bubble max-w-[78%] sm:max-w-[72%] px-3.5 py-2.5 sm:px-4 sm:py-3 text-body leading-relaxed transition-all duration-500 hover:brightness-110"
+                style={isUser ? {
+                  background: 'rgba(0, 180, 216, 0.13)',
+                  color: 'rgba(224, 240, 248, 0.95)',
+                  border: '1px solid rgba(0, 212, 245, 0.22)',
+                  boxShadow: '0 2px 12px rgba(0, 180, 216, 0.08)',
+                  borderRadius: '1.25rem 1.25rem 0.35rem 1.25rem',
+                } : {
+                  background: 'rgba(255,255,255,0.04)',
+                  color: 'rgba(218, 228, 238, 0.88)',
+                  border: '1px solid rgba(255,255,255,0.07)',
+                  boxShadow: '0 2px 12px rgba(0,0,0,0.15)',
+                  borderRadius: '1.25rem 1.25rem 1.25rem 0.35rem',
                 }}
               >
                 {t.text}
               </div>
-
-              {/* Avatar (user only) */}
-              {t.participant === 'user' && (
-                <div
-                  className="chat-avatar w-7 h-7 sm:w-9 sm:h-9 rounded-full
-                  backdrop-blur-sm flex items-center justify-center flex-shrink-0"
-                  style={{
-                    background: 'rgba(0, 180, 216, 0.10)',
-                    border: '1px solid rgba(0, 180, 216, 0.20)',
-                  }}
-                >
-                  <User className="chat-icon w-4 h-4 sm:w-5 sm:h-5" style={{ color: 'rgba(0, 180, 216, 0.80)' }} />
-                </div>
-              )}
             </div>
           );
         })}
@@ -200,41 +183,42 @@ export function ChatPanel() {
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Text input area with sparkle toggle */}
-      <div className="shrink-0 px-4 pb-4 pt-2">
-        <div className="flex items-center gap-2 bg-black/40 backdrop-blur-sm rounded-full px-3 sm:px-4 py-2 sm:py-2.5">
-          {/* Smart Mode (sparkle) toggle */}
+      {/* Text input area */}
+      <div className="shrink-0 px-3 pb-4 pt-2">
+        <div
+          className="flex items-center gap-2 rounded-full px-3 sm:px-4 py-2 sm:py-2.5"
+          style={{
+            background: 'rgba(8, 10, 18, 0.75)',
+            border: '1px solid rgba(0, 212, 245, 0.18)',
+            backdropFilter: 'blur(12px)',
+          }}
+        >
           <button
             onClick={() => setShowToolCalls(!showToolCalls)}
-            className={`flex items-center justify-center w-7 h-7 transition-all duration-300 flex-shrink-0 bg-transparent
-              ${showToolCalls
-                ? 'text-amber-400'
-                : 'text-gray-400/30 hover:text-gray-400/50'
-              }`}
-            title={showToolCalls ? 'Smart Mode: ON — Tool calls visible' : 'Smart Mode: OFF — Tool calls hidden'}
+            className={`flex items-center justify-center w-7 h-7 transition-all duration-300 flex-shrink-0 bg-transparent ${showToolCalls ? 'text-[#00d4f5]' : 'text-white/20 hover:text-white/40'}`}
+            title={showToolCalls ? 'Smart Mode: ON' : 'Smart Mode: OFF'}
           >
-            <Sparkles className="w-4 h-4 sm:w-5 sm:h-5" />
+            <Sparkles className="w-4 h-4" />
           </button>
 
           <input
             ref={inputRef}
             value={textInput}
             onChange={(e) => setTextInput(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                handleSend();
-              }
-            }}
+            onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSend(); } }}
             onFocus={resetSleep}
             placeholder="Type a message..."
-            className="flex-1 min-w-0 bg-transparent text-white text-body placeholder:text-white/30 focus:outline-none font-voice"
+            className="flex-1 min-w-0 bg-transparent text-body placeholder:text-white/25 focus:outline-none font-voice"
+            style={{ color: 'rgba(220, 232, 240, 0.92)' }}
             disabled={!isConnected}
           />
           <button
             onClick={handleSend}
             disabled={!isConnected || textInput.trim().length === 0}
-            className="chat-icon p-1.5 rounded-lg text-white/50 hover:text-white hover:bg-white/10 transition-colors disabled:opacity-30"
+            className="chat-icon p-1.5 rounded-lg transition-colors disabled:opacity-20"
+            style={{ color: 'rgba(0, 212, 245, 0.80)' }}
+            onMouseEnter={(e) => (e.currentTarget.style.color = 'rgba(0, 212, 245, 1)')}
+            onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(0, 212, 245, 0.80)')}
           >
             <Send className="w-4 h-4" />
           </button>
