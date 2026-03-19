@@ -24,6 +24,7 @@ export interface CardDef {
   props: Record<string, any>;  // Props to pass to the component
   span?: 'full';          // Optional: span full width
   _changed?: boolean;     // partial-change flag — this card re-animates; others stay frozen
+  tint?: string;          // Card background tint: "red"|"green"|"orange"|"white"|"black"|"#hex"
 }
 
 export interface SceneData {

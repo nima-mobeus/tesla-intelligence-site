@@ -21,6 +21,18 @@ export default function SceneBarChart({ data, accentColor, onAction }: TeleCompo
     const allBars = overflow > 0 ? bars : visible;  // show all when scrollable
     const max = Math.max(...bars.map(b => b.value), 1);
 
+    // Vibrant per-bar gradient palette
+    const BAR_GRADIENTS = [
+        ['#00d4f5', '#0ea5e9'],  // cyan → sky
+        ['#a78bfa', '#7c3aed'],  // violet → purple
+        ['#f59e0b', '#ef4444'],  // amber → red
+        ['#10b981', '#059669'],  // emerald → green
+        ['#fb923c', '#f43f5e'],  // orange → rose
+        ['#3b82f6', '#6366f1'],  // blue → indigo
+        ['#84cc16', '#22c55e'],  // lime → green
+        ['#e879f9', '#a78bfa'],  // fuchsia → violet
+    ];
+
     const fmt = (n: number) => {
         const v = n ?? 0;
         if (v >= 1_000_000) return `${(v / 1_000_000).toFixed(1)}M`;
@@ -48,7 +60,11 @@ export default function SceneBarChart({ data, accentColor, onAction }: TeleCompo
                                 <div className="flex-1 h-3 rounded-sm overflow-hidden" style={{ backgroundColor: `${getColor(5)}` }}>
                                     <div
                                         className="h-full rounded-sm transition-all duration-700"
-                                        style={{ width: `${pct}%`, background: `linear-gradient(90deg, ${getColor(88)}, ${getColor(56)})` }}
+                                        style={{
+                                            width: `${pct}%`,
+                                            background: `linear-gradient(90deg, ${BAR_GRADIENTS[i % BAR_GRADIENTS.length][0]}, ${BAR_GRADIENTS[i % BAR_GRADIENTS.length][1]})`,
+                                            boxShadow: `0 0 8px ${BAR_GRADIENTS[i % BAR_GRADIENTS.length][0]}60`,
+                                        }}
                                     />
                                 </div>
                                 <span className="font-data text-body font-bold min-w-[36px] sm:min-w-[48px] text-right" style={{ color: `${getColor(90)}` }}>

@@ -39,6 +39,7 @@ reg('stat',         () => import('./StatCard'));
 reg('donut',        () => import('./SceneDonutChart'));
 reg('line-chart',   () => import('./SceneLineChart'));
 reg('timeline',     () => import('./TimelineCard'));
+reg('pie-chart',    () => import('./PieChart'));
 
 // ─── Tier 2: High Value (10) ────────────────────────────────────────────────
 reg('email-list',        () => import('./EmailListCard'));
@@ -107,7 +108,7 @@ reg('InfoCards',        () => import('./TextCard'));
 reg('ComparisonTable',  () => import('./ComparisonTableCard'));
 reg('Checklist',        () => import('./ChecklistCard'));
 reg('Timeline',         () => import('./TimelineCard'));
-reg('PieChart',         () => import('./SceneDonutChart'));
+reg('PieChart',         () => import('./PieChart'));  // now a real pie, not donut alias
 reg('ProgressTracker',  () => import('./SceneBarChart'));
 reg('ProductCard',      () => import('./TextCard'));
 reg('ImageGallery',     () => import('./TextCard'));

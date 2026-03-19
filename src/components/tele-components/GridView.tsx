@@ -9,6 +9,7 @@ interface CardDef {
   props: Record<string, any>;
   span?: 'full';
   _changed?: boolean;  // partial-change flag — only this card re-animates
+  tint?: string;       // background tint: 'red'|'green'|'orange'|'white'|'black'|'#hex'
 }
 
 /**
@@ -152,6 +153,27 @@ export default function GridView({ data, accentColor, onAction }: TeleComponentP
   );
 }
 
+// Named tint → [background rgba, border rgba]
+const TINT_MAP: Record<string, [string, string]> = {
+  red:    ['rgba(220,38,38,0.18)',  'rgba(220,38,38,0.40)'],
+  green:  ['rgba(34,197,94,0.18)', 'rgba(34,197,94,0.40)'],
+  orange: ['rgba(249,115,22,0.18)','rgba(249,115,22,0.40)'],
+  yellow: ['rgba(234,179,8,0.18)', 'rgba(234,179,8,0.40)'],
+  amber:  ['rgba(245,158,11,0.18)','rgba(245,158,11,0.40)'],
+  white:  ['rgba(255,255,255,0.12)','rgba(255,255,255,0.25)'],
+  black:  ['rgba(0,0,0,0.45)',     'rgba(0,0,0,0.60)'],
+  cyan:   ['rgba(0,212,245,0.15)', 'rgba(0,212,245,0.40)'],
+  purple: ['rgba(167,139,250,0.18)','rgba(167,139,250,0.40)'],
+};
+
+function resolveTint(tint?: string): [string, string] | null {
+  if (!tint) return null;
+  const key = tint.toLowerCase();
+  if (TINT_MAP[key]) return TINT_MAP[key];
+  // Treat as raw CSS color (hex, rgb, etc.) — build a 20% overlay
+  return [`${tint}33`, `${tint}66`];
+}
+
 function CardRenderer({ card, index = 0, rowIndex = 0, accentColor, onAction, isPartialScene }: {
   card: CardDef;
   index?: number;
@@ -165,6 +187,7 @@ function CardRenderer({ card, index = 0, rowIndex = 0, accentColor, onAction, is
   // In a partial-change scene, only cards flagged _changed re-animate.
   // In a full-change scene (or first render), every card animates in.
   const shouldAnimate = !isPartialScene || card._changed === true;
+  const tintColors = resolveTint(card.tint);
 
   if (!Component) {
     return (
@@ -181,12 +204,20 @@ function CardRenderer({ card, index = 0, rowIndex = 0, accentColor, onAction, is
       }
     >
       <div
-        className={`${
+        className={`relative ${
           isTopRow ? 'h-full flex flex-col overflow-hidden' : 'card-glass'
         }${shouldAnimate ? ' animate-card-enter' : ''} ${
           card.span === 'full' ? 'col-span-full' : ''
         }`}
-        style={shouldAnimate ? { animationDelay: `${index * 0.08}s` } : undefined}
+        style={{
+          ...(shouldAnimate ? { animationDelay: `${index * 0.08}s` } : undefined),
+          ...(tintColors ? {
+            background: tintColors[0],
+            borderColor: tintColors[1],
+            borderWidth: '1px',
+            borderStyle: 'solid',
+          } : undefined),
+        }}
       >
         <Component
           data={card.props || {}}
