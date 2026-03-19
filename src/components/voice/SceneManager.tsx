@@ -138,6 +138,7 @@ export function SceneManager() {
                     layout: currentScene.layout,
                     cards: currentScene.cards,
                     maxRows: currentScene.maxRows,
+                    responseMode: currentScene.responseMode,
                   }}
                   accentColor={isDark ? '#00d4f5' : '#00b4d8'}
                   onAction={handleAction}

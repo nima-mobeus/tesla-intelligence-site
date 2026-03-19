@@ -795,6 +795,18 @@ export const useVoiceSessionStore = create<VoiceSessionState>((set, get) => ({
 
   // Apply a scene payload (from RPC, data channel, or intercepted JSON speech).
   applyScene: (payload: Record<string, any>) => {
+    // ── Mode 1: no-change sentinel ──
+    // The Glass sends this when the current scene already fully answers the question.
+    // Return immediately — nothing changes, displayScene stays as-is.
+    const subsections = payload.generativeSubsections;
+    if (
+      subsections?.length === 1 &&
+      subsections[0].templateId === 'no-change'
+    ) {
+      console.log('[SCENE] no-change: skipping hydration');
+      return;
+    }
+
     let cards = payload.cards || [];
     let layout = payload.layout;
     let badge = payload.badge;
@@ -803,6 +815,14 @@ export const useVoiceSessionStore = create<VoiceSessionState>((set, get) => ({
     let footerLeft = payload.footerLeft;
     let footerRight = payload.footerRight;
     const sceneId = payload.id;
+
+    // ── Mode 2: partial-change detection ──
+    // A partial-change has at least one card with _changed: true AND the scene ID
+    // matches the current scene (same topic, surgical update). If the ID doesn't
+    // match, treat it as a full-change (new scene).
+    const hasChangedCards = cards.some((c: any) => c._changed === true);
+    const currentSceneId = get().currentScene?.id;
+    const isPartialChange = hasChangedCards && !!sceneId && sceneId === currentSceneId;
 
     const sceneData: SceneData = {
       id: sceneId || `scene-${Date.now()}`,
@@ -814,14 +834,19 @@ export const useVoiceSessionStore = create<VoiceSessionState>((set, get) => ({
       maxRows: payload.maxRows,
       footerLeft,
       footerRight,
+      responseMode: isPartialChange ? 'partial' : 'full',
       timestamp: new Date(),
     };
 
     set((state) => ({
       currentScene: sceneData,
       sceneActive: true,
-      sceneHistory: [...state.sceneHistory, sceneData],
-      sceneFuture: [],  // New scene clears forward stack (like browser)
+      // Partial-change replaces the last history entry (same scene, updated state).
+      // Full-change pushes a new entry (new scene, back button goes to previous).
+      sceneHistory: isPartialChange
+        ? [...state.sceneHistory.slice(0, -1), sceneData]
+        : [...state.sceneHistory, sceneData],
+      sceneFuture: [],
     }));
   },
 
@@ -1209,11 +1234,37 @@ function setupRoomEventListeners(
           // displayScene is NOT changed — old grid stays visible
         });
 
+      } else if (data.type === 'no-change') {
+        // ── Glass explicit no-change ──
+        // The Glass decided the current scene already answers the question.
+        // Cancel the hold period and restore the previous display — glass stays frozen.
+        console.log('[SCENE] no-change received — glass stays, cancelling hold');
+        if (holdTimer) clearTimeout(holdTimer);
+        set({ showSkeleton: false, sceneLoading: false, sceneSkeletonLayout: null });
+        holdStart = null;
+        holdTimer = null;
+        pendingScene = null;
+
       } else if (data.type === 'scene') {
         // Full scene arrived — apply to currentScene (for history/back/forward)
         const { applyScene } = get();
+        const prevScene = get().currentScene;   // Snapshot before apply
+        const prevDisplay = get().displayScene; // Snapshot for no-op rollback
         applyScene(data);
         const newScene = get().currentScene;
+
+        // Detect no-change from inside a scene envelope:
+        // If applyScene found the no-change sentinel and returned early,
+        // currentScene won't have changed. Cancel hold and restore display.
+        if (newScene === prevScene) {
+          console.log('[SCENE] applyScene no-op (no-change sentinel) — restoring display');
+          if (holdTimer) clearTimeout(holdTimer);
+          set({ displayScene: prevDisplay, showSkeleton: false, sceneLoading: false, sceneSkeletonLayout: null });
+          holdStart = null;
+          holdTimer = null;
+          pendingScene = null;
+          return;
+        }
 
         if (holdStart !== null) {
           // Still in hold period — buffer the scene

@@ -8,6 +8,7 @@ interface CardDef {
   type: string;
   props: Record<string, any>;
   span?: 'full';
+  _changed?: boolean;  // partial-change flag — only this card re-animates
 }
 
 /**
@@ -82,6 +83,7 @@ export default function GridView({ data, accentColor, onAction }: TeleComponentP
   const layout = (data?.layout as string) || '';
   const cards = (data?.cards || []) as CardDef[];
   const maxRows = (data?.maxRows as number) || 3;
+  const isPartialScene = data?.responseMode === 'partial';
 
   const rows = useMemo(() => {
     const rowDef = parseLayout(layout, cards.length);
@@ -141,6 +143,7 @@ export default function GridView({ data, accentColor, onAction }: TeleComponentP
               rowIndex={rowIndex}
               accentColor={accentColor}
               onAction={onAction}
+              isPartialScene={isPartialScene}
             />
           ))}
         </div>
@@ -149,15 +152,19 @@ export default function GridView({ data, accentColor, onAction }: TeleComponentP
   );
 }
 
-function CardRenderer({ card, index = 0, rowIndex = 0, accentColor, onAction }: {
+function CardRenderer({ card, index = 0, rowIndex = 0, accentColor, onAction, isPartialScene }: {
   card: CardDef;
   index?: number;
   rowIndex?: number;
   accentColor?: string;
   onAction?: (phrase: string) => void;
+  isPartialScene?: boolean;
 }) {
   const Component = getComponent(card.type);
   const isTopRow = rowIndex === 0;
+  // In a partial-change scene, only cards flagged _changed re-animate.
+  // In a full-change scene (or first render), every card animates in.
+  const shouldAnimate = !isPartialScene || card._changed === true;
 
   if (!Component) {
     return (
@@ -176,10 +183,10 @@ function CardRenderer({ card, index = 0, rowIndex = 0, accentColor, onAction }: 
       <div
         className={`${
           isTopRow ? 'h-full flex flex-col overflow-hidden' : 'card-glass'
-        } animate-card-enter ${
+        }${shouldAnimate ? ' animate-card-enter' : ''} ${
           card.span === 'full' ? 'col-span-full' : ''
         }`}
-        style={{ animationDelay: `${index * 0.08}s` }}
+        style={shouldAnimate ? { animationDelay: `${index * 0.08}s` } : undefined}
       >
         <Component
           data={card.props || {}}
