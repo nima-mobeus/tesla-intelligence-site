@@ -243,7 +243,9 @@ body {
 .chat-messages-container {
   overflow-y: auto;
   scrollbar-width: none;
-  mask-image: linear-gradient(to bottom, transparent 0%, transparent 70px, black 170px);
+  /* Tiny top-only fade to signal scroll past the header — keep it short so
+     short bubbles ("Yes.") don't get clipped to slivers by the mask */
+  mask-image: linear-gradient(to bottom, transparent 0%, black 32px);
 }
 .chat-messages-container::-webkit-scrollbar { display: none; }
 
