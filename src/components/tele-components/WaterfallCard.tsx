@@ -50,35 +50,42 @@ export default function WaterfallCard({ data, accentColor, onAction }: TeleCompo
             {title && (
                 <h3 className="font-data text-body uppercase tracking-[0.12em] mb-2" style={{ color: `${getColor(90)}` }}>{title}</h3>
             )}
+            {/* Chart + label area */}
             <div className="flex-1 flex items-end gap-1 min-h-0">
                 {items.map((item, i) => {
                     const barH = Math.abs(item.height / range) * chartH;
                     const bottom = ((item.height >= 0 ? item.base : item.base + item.height) - minV) / range * chartH;
                     const isPositive = item.height >= 0;
                     return (
-                        <div key={i} className="flex-1 flex flex-col items-center relative" style={{ height: chartH }}>
-                            <div
-                                className="w-full max-w-[40px] rounded-sm absolute"
-                                style={{
-                                    height: Math.max(barH, 4),
-                                    bottom,
-                                    backgroundColor: item.isTotal ? C : isPositive ? '#22c55e' : '#ff4040',
-                                    opacity: item.isTotal ? 1 : 0.85,
-                                }}
-                            />
-                            <div className="absolute -bottom-4 w-full text-center">
-                                <span className="font-data text-body uppercase" style={{ color: `${getColor(70)}` }}>{item.label}</span>
+                        <div key={i} className="flex-1 flex flex-col items-center">
+                            {/* Chart zone: fixed height, holds bar + value label */}
+                            <div className="relative w-full flex justify-center" style={{ height: chartH }}>
+                                <div
+                                    className="w-full max-w-[40px] rounded-sm absolute"
+                                    style={{
+                                        height: Math.max(barH, 4),
+                                        bottom,
+                                        backgroundColor: item.isTotal ? C : isPositive ? '#22c55e' : '#ff4040',
+                                        opacity: item.isTotal ? 1 : 0.85,
+                                    }}
+                                />
+                                {/* Value label: anchored just above the top of the bar */}
+                                <div className="absolute w-full text-center" style={{ bottom: bottom + Math.max(barH, 4) + 4 }}>
+                                    <span className="font-data text-body font-bold" style={{ color: item.isTotal ? C : isPositive ? '#22c55e' : '#ff4040' }}>
+                                        {unit}{fmt(item.height)}
+                                    </span>
+                                </div>
                             </div>
-                            <div className="absolute w-full text-center" style={{ bottom: bottom + barH + 2 }}>
-                                <span className="font-data text-body font-bold" style={{ color: item.isTotal ? C : isPositive ? '#22c55e' : '#ff4040' }}>
-                                    {unit}{fmt(item.height)}
+                            {/* Category label: always below the chart zone, never overlaps bars */}
+                            <div className="w-full text-center pt-1" style={{ minHeight: '2.5rem' }}>
+                                <span className="font-data text-micro uppercase leading-tight" style={{ color: `${getColor(70)}` }}>
+                                    {item.label}
                                 </span>
                             </div>
                         </div>
                     );
                 })}
             </div>
-            <div className="h-4" />
         </div>
     );
 }

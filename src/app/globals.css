@@ -177,38 +177,7 @@ body {
   animation: chat-bubble-enter 0.4s ease-out forwards;
 }
 
-/* ── Typing Indicator Pulse ── */
-@keyframes typing-indicator-pulse {
-  0%, 100% { opacity: 0.3; transform: scale(0.8); }
-  50% { opacity: 1; transform: scale(1.2); }
-}
-.animate-typing-pulse {
-  animation: typing-indicator-pulse 1.4s ease-in-out infinite;
-}
 
-/* ── Chat Stagger Delays ── */
-.chat-delay-1 { animation-delay: 0.1s; }
-.chat-delay-2 { animation-delay: 0.2s; }
-.chat-delay-3 { animation-delay: 0.3s; }
-.chat-delay-4 { animation-delay: 0.4s; }
-.chat-delay-5 { animation-delay: 0.5s; }
-
-/* ── Thinking Pulse (tele thinking state) ── */
-@keyframes tele-thinking-pulse {
-  0%, 100% { opacity: 0.3; }
-  50% { opacity: 0.8; }
-}
-
-/* ── Emoji Celebration Rain ── */
-@keyframes emoji-fall {
-  0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
-  70% { opacity: 1; }
-  100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
-}
-.animate-emoji-fall {
-  animation: emoji-fall linear forwards;
-  will-change: transform, opacity;
-}
 
 /* ── Sleep Mode (dim after mouse idle) ── */
 .telelabor-panel .chat-message-bubble,
@@ -316,31 +285,7 @@ body {
   }
 }
 
-/* ── Container Queries for Grid ── */
-.grid-container { container-type: inline-size; }
-@container (max-width: 900px) {
-  .grid-container .lg\:grid-cols-3 {
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-  }
-}
 
-/* ── Loading Ring Animation (avatar thumbnail) ── */
-@keyframes loading-ring-spin {
-  to { transform: rotate(360deg); }
-}
-.loading-ring {
-  animation: loading-ring-spin 1.5s linear infinite;
-}
-
-/* ── Slide In From Left (WelcomeLanding) ── */
-@keyframes slide-in-from-left {
-  0% { opacity: 0; transform: translateX(-30px); }
-  100% { opacity: 1; transform: translateX(0); }
-}
-.animate-slide-in-left {
-  animation: slide-in-from-left 0.6s ease-out forwards;
-  opacity: 0;
-}
 
 /* ── Card Enter Animation ── */
 @keyframes card-enter {
@@ -352,11 +297,7 @@ body {
   opacity: 0;
 }
 
-/* ── Screenshot Mode (force opaque for html2canvas) ── */
-.screenshot-mode .card-glass {
-  background: var(--theme-card-bg) !important;
-  backdrop-filter: none !important;
-}
+
 
 /* ── Card Glass — Studio default ── */
 .card-glass {
@@ -393,38 +334,7 @@ body {
   color: var(--theme-card-voice);
 }
 
-/* ── Card Legibility Floor — enforce 16px min inside cards ── */
-.card-glass.card-glass .text-xs,
-.card-glass.card-glass .text-sm,
-.card-glass.card-glass [class*="text-[11px]"],
-.card-glass.card-glass [class*="text-[10px]"],
-.card-glass.card-glass [class*="text-[9px]"],
-.card-glass.card-glass [class*="text-[12px]"],
-.card-glass.card-glass [class*="text-[13px]"] {
-  font-size: 16px !important;
-}
 
-.card-glass.card-glass .font-voice,
-.card-glass.card-glass .font-data {
-  font-size: 16px !important;
-}
-
-/* ── Fluid Card Typography — scales with card width, not viewport ── */
-@container card (max-width: 250px) {
-  h3 { font-size: 16px !important; letter-spacing: 0.1em !important; }
-  .font-data { font-size: 16px !important; }
-  .font-voice { font-size: 16px !important; }
-}
-@container card (min-width: 251px) and (max-width: 400px) {
-  h3 { font-size: 16px !important; }
-  .font-data { font-size: 16px !important; }
-  .font-voice { font-size: 16px !important; }
-}
-@container card (min-width: 401px) {
-  h3 { font-size: 16px !important; }
-  .font-data { font-size: 16px !important; }
-  .font-voice { font-size: 16px !important; }
-}
 
 /* ── Card Hover — Studio glow ── */
 .card-glass:hover {
@@ -467,19 +377,8 @@ body {
   box-shadow: 0 0 6px rgba(245, 158, 11, 0.50);
 }
 
-/* ── Pill-ification — soft-rounded bars, badges, radius ── */
+/* ── Pill-ification — soft-rounded corners ── */
 .card-glass .rounded-sm { border-radius: 0.75rem !important; }
-.card-glass .h-2,
-.card-glass .h-3,
-.card-glass .h-4,
-.card-glass .h-5 { border-radius: 9999px !important; }
-.card-glass .h-2 > *,
-.card-glass .h-3 > *,
-.card-glass .h-4 > *,
-.card-glass .h-5 > * { border-radius: 9999px !important; }
-.card-glass [class*="tracking-wider"],
-.card-glass [class*="uppercase"][class*="px-"] { border-radius: 9999px !important; }
-.card-glass .rounded-full { border-radius: 9999px !important; }
 
 /* ── Bar Chart Accent — bright Mobeus cyan ── */
 .card-glass .bg-primary,

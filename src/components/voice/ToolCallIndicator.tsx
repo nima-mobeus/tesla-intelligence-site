@@ -80,9 +80,10 @@ export function ToolCallIndicator({
         style={{
           background: 'rgba(255,255,255,0.07)',
           borderColor: 'rgba(255,255,255,0.10)',
+          minHeight: '44px',
         }}
       >
-        <div className="flex items-center justify-between px-3 sm:px-4 py-3">
+        <div className="flex items-center justify-between px-3 sm:px-4 py-3" style={{ minHeight: '44px' }}>
           <div className="flex items-center gap-2 min-w-0">
             <DisplayIcon className="w-4 h-4 text-emerald-400 shrink-0" />
             <span
@@ -117,12 +118,17 @@ export function ToolCallIndicator({
       style={{
         background: 'rgba(255,255,255,0.07)',
         borderColor: 'rgba(255,255,255,0.10)',
+        minHeight: '44px',
       }}
     >
-      <button
+      {/* Use div instead of button to avoid preflight stripping inline display/height */}
+      <div
+        role="button"
+        tabIndex={0}
         onClick={() => setIsExpanded(!isExpanded)}
-        className="w-full flex items-center justify-between px-3 sm:px-4 py-3 transition-colors"
-        style={{ color: 'rgba(255,255,255,0.7)' }}
+        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setIsExpanded(!isExpanded); }}
+        className="w-full flex items-center justify-between px-3 sm:px-4 py-3 transition-colors cursor-pointer"
+        style={{ color: 'rgba(255,255,255,0.7)', minHeight: '44px' }}
       >
         <div className="flex items-center gap-2 min-w-0 pr-2">
           <DisplayIcon className="w-4 h-4 text-emerald-400 shrink-0" />
@@ -159,7 +165,7 @@ export function ToolCallIndicator({
             />
           )}
         </div>
-      </button>
+      </div>
 
       {isExpanded && (
         <div
