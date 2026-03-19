@@ -89,6 +89,28 @@ These examples are the only way you can learn what it will do. Study them. They 
 | **Time & Events** | `timeline`, `event-card` |
 | **Market** | `stock` |
 
+**How the glass arranges cards.** The show-llm follows strict layout rules you should be aware of:
+
+- **Minimum 5 cards** per GridView (including the kpi-strip). The glass never shows sparse 2–3 card grids.
+- **Layout string** defines the grid: `1-2-3` means 1 card in row 1, 2 in row 2, 3 in row 3. Common layouts are `1-2-2` (5 cards), `1-2-3` (6 cards), `1-3-3` (7 cards).
+- **Row 1 is always the kpi-strip** spanning full width — 3–5 headline metrics with trend arrows and status colors.
+- **Dense cards** (charts, tables, heatmaps, maps, incident-cards, risk-matrices) get the middle rows with more vertical space.
+- **Light cards** (stats, alerts, checklists, text, metric-lists, person-cards, timelines) fill the bottom rows.
+
+**Content limits per card.** Cards in narrower columns show less data:
+
+| Card | In a 3-col row | In a 2-col row | Full-width |
+|------|----------------|----------------|------------|
+| `bar-chart` | 4 bars max | 5 bars max | 8 bars max |
+| `metric-list` | 3 items | 4 items | 6 items |
+| `alert` | 2 alerts | 3 alerts | 4 alerts |
+| `checklist` | 4 items | 5 items | 8 items |
+| `timeline` | 3 events | 4 events | 6 events |
+| `table` | 3 rows | 5 rows | 8 rows |
+| `kpi-strip` | 3–4 KPIs | 4 KPIs | 4–5 KPIs |
+
+This means: if you know the question will generate a `1-2-3` layout, the bar-chart in row 2 (2-col) will show at most 5 factories — not all of them. You may need to mention the ones that didn't make the cut.
+
 **The contract:**
 - The show-llm will always produce structured data — numbers, charts, tables, status indicators.
 - You will always produce the voice — insight, synthesis, implication, and recommendation.
