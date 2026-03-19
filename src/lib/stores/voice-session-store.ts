@@ -1244,6 +1244,10 @@ function setupRoomEventListeners(
         holdStart = null;
         holdTimer = null;
         pendingScene = null;
+        // Log the no-change event so it appears in the chat JSON inspector
+        addToolCallTranscript(set, 'generate_scene', {
+          generativeSubsections: [{ id: 'no-change', templateId: 'no-change', props: {} }],
+        });
 
       } else if (data.type === 'scene') {
         // Full scene arrived — apply to currentScene (for history/back/forward)
@@ -1263,8 +1267,15 @@ function setupRoomEventListeners(
           holdStart = null;
           holdTimer = null;
           pendingScene = null;
+          // Log as no-change in chat
+          addToolCallTranscript(set, 'generate_scene', {
+            generativeSubsections: [{ id: 'no-change', templateId: 'no-change', props: {} }],
+          });
           return;
         }
+
+        // Log the full scene payload to transcripts for the JSON inspector
+        addToolCallTranscript(set, 'generate_scene', data);
 
         if (holdStart !== null) {
           // Still in hold period — buffer the scene
@@ -1425,7 +1436,8 @@ function registerRpcHandlers(
     try {
       const payload = JSON.parse(data.payload);
       console.log('RPC: setScene', payload);
-      addToolCallTranscript(set, 'generate_scene', { sceneId: payload.id, layout: payload.layout, cards: payload.cards?.length });
+      // Log the full payload so the JSON inspector can render it in chat
+      addToolCallTranscript(set, 'generate_scene', payload);
 
       const { applyScene } = get();
       applyScene(payload);
