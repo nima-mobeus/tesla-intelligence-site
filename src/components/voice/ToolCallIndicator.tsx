@@ -28,6 +28,8 @@ interface ToolCallIndicatorProps {
   compact?: boolean;
   /** Override the text written to clipboard. Defaults to JSON.stringify({toolName, parameters}) */
   clipboardText?: string;
+  /** When true: applies backdrop blur to the card — set to isChatPanelOpen from parent */
+  blurred?: boolean;
 }
 
 const TOOL_DISPLAY_CONFIG: Record<string, { label: string; Icon: React.ElementType }> = {
@@ -53,7 +55,9 @@ export function ToolCallIndicator({
   defaultExpanded = false,
   compact = false,
   clipboardText,
+  blurred = false,
 }: ToolCallIndicatorProps) {
+  const blur = blurred ? 'blur(8px)' : 'none';
   const [isExpanded, setIsExpanded] = useState(defaultExpanded);
   const [copied, setCopied] = useState(false);
 
@@ -81,6 +85,7 @@ export function ToolCallIndicator({
           background: 'rgba(255,255,255,0.07)',
           borderColor: 'rgba(255,255,255,0.10)',
           minHeight: '44px',
+          backdropFilter: blur,
         }}
       >
         <div className="flex items-center justify-between px-3 sm:px-4 py-3" style={{ minHeight: '44px' }}>
@@ -118,6 +123,7 @@ export function ToolCallIndicator({
         background: 'rgba(255,255,255,0.07)',
         borderColor: 'rgba(255,255,255,0.10)',
         minHeight: '44px',
+        backdropFilter: blur,
       }}
     >
       {/* Use div instead of button to avoid preflight stripping inline display/height */}

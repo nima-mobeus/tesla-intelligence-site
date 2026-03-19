@@ -116,6 +116,7 @@ export function ChatPanel() {
                   parameters={{}}
                   compact
                   clipboardText={t.text}
+                  blurred={isChatPanelOpen}
                 />
               );
             }
@@ -127,6 +128,7 @@ export function ChatPanel() {
                 toolName={t.participantName}
                 parameters={toolParams}
                 timestamp={t.timestamp}
+                blurred={isChatPanelOpen}
               />
             );
           }
@@ -161,13 +163,13 @@ export function ChatPanel() {
                   color: 'rgba(255, 255, 255, 0.92)',
                   border: '1px solid rgba(0, 212, 245, 0.18)',
                   boxShadow: 'none',
-                  backdropFilter: 'blur(6px)',
+                  backdropFilter: isChatPanelOpen ? 'blur(8px)' : 'none',
                 } : {
                   background: 'rgba(255, 255, 255, 0.08)',
                   color: 'rgba(255, 255, 255, 0.88)',
                   border: '1px solid rgba(255,255,255,0.08)',
                   boxShadow: 'none',
-                  backdropFilter: 'blur(6px)',
+                  backdropFilter: isChatPanelOpen ? 'blur(8px)' : 'none',
                 }}
               >
                 {t.text}
