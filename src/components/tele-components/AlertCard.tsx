@@ -50,7 +50,7 @@ export default function AlertCard({ data, accentColor, onAction }: TeleComponent
             {/* Content with its own padding */}
             <div className="flex flex-col flex-1 min-h-0 overflow-hidden p-4">
                 {title && (
-                    <h3 className="font-data text-body uppercase tracking-[0.12em] mb-2 pr-16" className="text-card-primary">{title}</h3>
+                    <h3 className="font-data text-body uppercase tracking-[0.12em] mb-2 pr-16 text-card-primary">{title}</h3>
                 )}
                 <div className="flex flex-col gap-1 flex-1 justify-start min-h-0 overflow-hidden">
                     {visible.map((a, i) => {

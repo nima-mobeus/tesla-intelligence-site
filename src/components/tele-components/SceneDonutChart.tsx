@@ -60,7 +60,7 @@ export default function SceneDonutChart({ data, accentColor, onAction }: TeleCom
     return (
         <div className="flex flex-col h-full overflow-hidden">
             {title && (
-                <h3 className="font-data text-body uppercase tracking-[0.12em] mb-2" className="text-card-primary">
+                <h3 className="font-data text-body uppercase tracking-[0.12em] mb-2 text-card-primary">
                     {title}
                 </h3>
             )}
@@ -109,7 +109,7 @@ export default function SceneDonutChart({ data, accentColor, onAction }: TeleCom
                         return (
                             <div key={i} className="flex items-center gap-1.5">
                                 <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: seg.color || defaultColors[i % defaultColors.length] }} />
-                                <span className="font-data text-body uppercase tracking-wider font-medium whitespace-nowrap" className="text-card-primary">
+                                <span className="font-data text-body uppercase tracking-wider font-medium whitespace-nowrap text-card-primary">
                                     {seg.label} {seg.percent}%
                                     {delta !== null && delta !== 0 && (
                                         <span className="ml-0.5 font-bold" style={{ color: delta > 0 ? '#22c55e' : '#ff4040' }}>

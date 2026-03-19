@@ -40,12 +40,12 @@ export default function StockCard({ data, accentColor, onAction }: TeleComponent
 
     return (
         <div className="flex flex-col h-full overflow-hidden">
-            {title && <h3 className="font-data text-body uppercase tracking-[0.12em] mb-2" className="text-card-primary">{title}</h3>}
+            {title && <h3 className="font-data text-body uppercase tracking-[0.12em] mb-2 text-card-primary">{title}</h3>}
             <div className="flex-1 flex flex-col justify-start min-h-0 overflow-hidden gap-1.5">
                 {/* Ticker + price */}
                 <div className="flex items-baseline gap-2">
                     <span className="font-data text-body font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-sm" style={{ backgroundColor: `${getColor(3)}`, color: `${getColor(88)}` }}>{ticker}</span>
-                    <span className="font-data text-title font-bold" className="text-card-primary">{price}</span>
+                    <span className="font-data text-title font-bold text-card-primary">{price}</span>
                 </div>
                 {/* Change */}
                 <div className="flex items-center gap-2">
@@ -60,20 +60,20 @@ export default function StockCard({ data, accentColor, onAction }: TeleComponent
                 {/* Metadata grid */}
                 <div className="grid grid-cols-2 gap-x-3 gap-y-0.5 mt-auto">
                     {marketCap && (
-                        <div><span className="font-data text-body uppercase" className="text-card-muted">Mkt Cap</span>
-                            <span className="font-data text-body font-bold ml-1" className="text-card-secondary">{marketCap}</span></div>
+                        <div><span className="font-data text-body uppercase text-card-muted">Mkt Cap</span>
+                            <span className="font-data text-body font-bold ml-1 text-card-secondary">{marketCap}</span></div>
                     )}
                     {volume && (
-                        <div><span className="font-data text-body uppercase" className="text-card-muted">Vol</span>
-                            <span className="font-data text-body font-bold ml-1" className="text-card-secondary">{volume}</span></div>
+                        <div><span className="font-data text-body uppercase text-card-muted">Vol</span>
+                            <span className="font-data text-body font-bold ml-1 text-card-secondary">{volume}</span></div>
                     )}
                     {dayHigh && (
-                        <div><span className="font-data text-body uppercase" className="text-card-muted">High</span>
-                            <span className="font-data text-body font-bold ml-1" className="text-card-secondary">{dayHigh}</span></div>
+                        <div><span className="font-data text-body uppercase text-card-muted">High</span>
+                            <span className="font-data text-body font-bold ml-1 text-card-secondary">{dayHigh}</span></div>
                     )}
                     {dayLow && (
-                        <div><span className="font-data text-body uppercase" className="text-card-muted">Low</span>
-                            <span className="font-data text-body font-bold ml-1" className="text-card-secondary">{dayLow}</span></div>
+                        <div><span className="font-data text-body uppercase text-card-muted">Low</span>
+                            <span className="font-data text-body font-bold ml-1 text-card-secondary">{dayLow}</span></div>
                     )}
                 </div>
             </div>

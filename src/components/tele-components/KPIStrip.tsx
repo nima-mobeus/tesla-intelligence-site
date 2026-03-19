@@ -39,11 +39,11 @@ export default function KPIStrip({ data, accentColor, onAction }: TeleComponentP
                                     }}
                                 />
                             )}
-                            <span className="font-data text-body uppercase tracking-[0.12em] truncate" className="text-card-primary">
+                            <span className="font-data text-body uppercase tracking-[0.12em] truncate text-card-primary">
                                 {kpi.label}
                             </span>
                         </div>
-                        <div className="font-hero text-title leading-none truncate" className="text-card-primary">
+                        <div className="font-hero text-title leading-none truncate text-card-primary">
                             {kpi.value}
                         </div>
                         {kpi.trend && kpi.change && (

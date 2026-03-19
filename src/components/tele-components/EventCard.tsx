@@ -61,26 +61,26 @@ export default function EventCard({ data, accentColor, onAction }: TeleComponent
         <div className={`flex flex-col h-full justify-start gap-1.5 ${isCancelled ? 'opacity-40' : ''}`}>
             <div className="flex items-center gap-2">
                 <IconComp size={14} color={`${getColor(40)}`} />
-                <span className="font-data text-body tracking-wider uppercase" className="text-card-faint">{type}</span>
+                <span className="font-data text-body tracking-wider uppercase text-card-faint">{type}</span>
                 {status === 'tentative' && (
                     <span className="font-data text-body tracking-wider uppercase px-1.5 py-0.5 rounded-full" style={{ color: '#d97706', border: '1px solid #d9770633' }}>Tentative</span>
                 )}
             </div>
-            <h3 className={`font-data text-body font-bold leading-tight ${isCancelled ? 'line-through' : ''}`} className="text-card-primary">{title}</h3>
+            <h3 className={`font-data text-body font-bold leading-tight ${isCancelled ? 'line-through' : ''} text-card-primary`}>{title}</h3>
             <div className="flex items-center gap-2 flex-wrap">
                 {date && (
-                    <span className="flex items-center gap-1 font-data text-body md:text-micro tracking-wider" className="text-card-muted">
+                    <span className="flex items-center gap-1 font-data text-body md:text-micro tracking-wider text-card-muted">
                         <CalendarDays size={10} /> {date}
                     </span>
                 )}
                 {time && (
-                    <span className="flex items-center gap-1 font-data text-body md:text-micro tracking-wider" className="text-card-muted">
+                    <span className="flex items-center gap-1 font-data text-body md:text-micro tracking-wider text-card-muted">
                         <Clock size={10} /> {time}{endTime ? ` – ${endTime}` : ''}
                     </span>
                 )}
             </div>
             {(venue || location) && (
-                <div className="flex items-center gap-1 font-voice text-body leading-snug" className="text-card-faint">
+                <div className="flex items-center gap-1 font-voice text-body leading-snug text-card-faint">
                     <MapPin size={10} />
                     {venue || location}{venue && location && ` · ${location}`}
                 </div>

@@ -51,7 +51,7 @@ export default function CountryCard({ data, accentColor, onAction }: TeleCompone
             {/* Header: Flag + Country + Risk */}
             <div className="flex items-center gap-2 mb-2">
                 {flag && <span className="text-title shrink-0">{flag}</span>}
-                <h3 className="font-data text-body font-bold uppercase tracking-[0.12em] flex-1" className="text-card-primary">
+                <h3 className="font-data text-body font-bold uppercase tracking-[0.12em] flex-1 text-card-primary">
                     {country}
                 </h3>
                 <span className="font-data text-body uppercase tracking-wider px-1.5 py-0.5 rounded font-bold"
@@ -65,19 +65,19 @@ export default function CountryCard({ data, accentColor, onAction }: TeleCompone
                 {revenue && (
                     <div>
                         <div className="font-data text-body uppercase tracking-wider" style={{ color: `${getColor(45)}` }}>Revenue</div>
-                        <div className="font-data text-body font-bold" className="text-card-primary">{revenue}</div>
+                        <div className="font-data text-body font-bold text-card-primary">{revenue}</div>
                     </div>
                 )}
                 {employees && (
                     <div>
                         <div className="font-data text-body uppercase tracking-wider" style={{ color: `${getColor(45)}` }}>Employees</div>
-                        <div className="font-data text-body font-bold" className="text-card-primary">{employees}</div>
+                        <div className="font-data text-body font-bold text-card-primary">{employees}</div>
                     </div>
                 )}
                 {currency && (
                     <div>
                         <div className="font-data text-body uppercase tracking-wider" style={{ color: `${getColor(45)}` }}>Currency</div>
-                        <div className="font-data text-body font-bold" className="text-card-primary">
+                        <div className="font-data text-body font-bold text-card-primary">
                             {currency}
                             {hedgedPercent !== undefined && (
                                 <span className="font-data text-body font-normal ml-1" style={{ color: `${getColor(55)}` }}>
@@ -123,7 +123,7 @@ export default function CountryCard({ data, accentColor, onAction }: TeleCompone
 
             {/* Key Contact */}
             {keyContact && (
-                <div className="font-data text-body mt-1" className="text-card-faint">
+                <div className="font-data text-body mt-1 text-card-faint">
                     Key contact: {keyContact}
                 </div>
             )}

@@ -31,7 +31,7 @@ export default function TimelineCard({ data }: TeleComponentProps) {
   return (
     <div className="flex flex-col h-full overflow-hidden">
       {title && (
-        <h3 className="font-data text-body uppercase tracking-[0.12em] mb-2" className="text-card-primary">{title}</h3>
+        <h3 className="font-data text-body uppercase tracking-[0.12em] mb-2 text-card-primary">{title}</h3>
       )}
       <div className="flex-1 flex flex-col justify-start min-h-0 overflow-hidden overflow-auto space-y-1.5">
         {visible.map((e, i) => {
@@ -46,9 +46,9 @@ export default function TimelineCard({ data }: TeleComponentProps) {
                 <span className="font-data text-body uppercase tracking-wider" style={{ color: clr }}>
                   {e.date}{e.category ? ` · ${e.category}` : ''}
                 </span>
-                <div className="font-data text-body font-bold leading-tight" className="text-card-primary">{e.title}</div>
+                <div className="font-data text-body font-bold leading-tight text-card-primary">{e.title}</div>
                 {e.impact && (
-                  <div className="font-voice text-body leading-tight" className="text-card-secondary">{e.impact}</div>
+                  <div className="font-voice text-body leading-tight text-card-secondary">{e.impact}</div>
                 )}
               </div>
             </div>

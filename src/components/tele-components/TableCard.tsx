@@ -20,7 +20,7 @@ export default function TableCard({ data, accentColor, onAction }: TeleComponent
     return (
         <div className="flex flex-col h-full overflow-hidden">
             {title && (
-                <h3 className="font-data text-body uppercase tracking-[0.12em] mb-2" className="text-card-primary">
+                <h3 className="font-data text-body uppercase tracking-[0.12em] mb-2 text-card-primary">
                     {title}
                 </h3>
             )}

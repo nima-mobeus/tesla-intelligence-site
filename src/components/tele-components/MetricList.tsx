@@ -26,7 +26,7 @@ export default function MetricList({ data, accentColor, onAction }: TeleComponen
     return (
         <div className="flex flex-col h-full overflow-hidden">
             {title && (
-                <h3 className="font-data text-body uppercase tracking-[0.12em] mb-2" className="text-card-primary">
+                <h3 className="font-data text-body uppercase tracking-[0.12em] mb-2 text-card-primary">
                     {title}
                 </h3>
             )}
@@ -42,16 +42,16 @@ export default function MetricList({ data, accentColor, onAction }: TeleComponen
                                             ...(m.status === 'bad' ? { animation: 'blink-dot 1.2s ease-in-out infinite' } : {}),
                                         }} />
                                 )}
-                                <span className="font-data text-body uppercase tracking-wider font-bold truncate" className="text-card-primary">
+                                <span className="font-data text-body uppercase tracking-wider font-bold truncate text-card-primary">
                                     {m.label}
                                 </span>
                             </div>
                             <div className="flex items-center gap-2 shrink-0">
-                                <span className="font-data text-body font-bold" className="text-card-primary">
+                                <span className="font-data text-body font-bold text-card-primary">
                                     {m.value}
                                 </span>
                                 {m.change && (
-                                    <span className="font-data text-body font-bold" className="text-card-primary">
+                                    <span className="font-data text-body font-bold text-card-primary">
                                         {m.change}
                                     </span>
                                 )}

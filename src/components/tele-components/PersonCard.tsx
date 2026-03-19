@@ -25,19 +25,19 @@ export default function PersonCard({ data, accentColor, onAction }: TeleComponen
         <div className="flex items-center h-full overflow-hidden gap-4 md:gap-6 p-1">
             {/* Left: Avatar + Identity */}
             <div className="flex flex-col items-center shrink-0 gap-1.5 min-w-[80px]">
-                <div className="w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center" className="bg-card-surface">
+                <div className="w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center bg-card-surface">
                     <svg width={28} height={28} viewBox="0 0 24 24" fill="none" stroke={`${getColor(88)}`} strokeWidth={1.5} strokeLinecap="round">
                         <circle cx={12} cy={8} r={4} />
                         <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
                     </svg>
                 </div>
                 <div className="text-center">
-                    <div className="font-data text-body font-bold leading-tight" className="text-card-primary">{name}</div>
-                    {title && <div className="font-data text-body uppercase tracking-wider" className="text-card-secondary">{title}</div>}
+                    <div className="font-data text-body font-bold leading-tight text-card-primary">{name}</div>
+                    {title && <div className="font-data text-body uppercase tracking-wider text-card-secondary">{title}</div>}
                     {company && (
                         <div className="flex items-center justify-center gap-1 mt-0.5">
                             <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: `${getColor(38)}` }} />
-                            <span className="font-data text-body font-bold" className="text-card-primary">{company}</span>
+                            <span className="font-data text-body font-bold text-card-primary">{company}</span>
                         </div>
                     )}
                 </div>
@@ -48,16 +48,16 @@ export default function PersonCard({ data, accentColor, onAction }: TeleComponen
                 {metric && (
                     <div className="flex items-center gap-2">
                         {status && <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: STATUS_DOT[status] }} />}
-                        <span className="font-hero text-title" className="text-card-primary">{metric}</span>
-                        {metricLabel && <span className="font-data text-body uppercase tracking-wider" className="text-card-secondary">{metricLabel}</span>}
+                        <span className="font-hero text-title text-card-primary">{metric}</span>
+                        {metricLabel && <span className="font-data text-body uppercase tracking-wider text-card-secondary">{metricLabel}</span>}
                     </div>
                 )}
-                {detail && <p className="font-voice text-body leading-relaxed line-clamp-2" className="text-card-secondary">{detail}</p>}
-                {bio && <p className="font-voice text-body leading-relaxed line-clamp-2" className="text-card-secondary">{bio}</p>}
+                {detail && <p className="font-voice text-body leading-relaxed line-clamp-2 text-card-secondary">{detail}</p>}
+                {bio && <p className="font-voice text-body leading-relaxed line-clamp-2 text-card-secondary">{bio}</p>}
                 {traits.length > 0 && (
                     <div className="flex flex-wrap gap-1 mt-0.5 overflow-hidden">
                         {traits.slice(0, 4).map((t, i) => (
-                            <span key={i} className="font-data text-body uppercase px-1.5 py-0.5 rounded-sm" className="bg-card-chip text-card-secondary">{t}</span>
+                            <span key={i} className="font-data text-body uppercase px-1.5 py-0.5 rounded-sm bg-card-chip text-card-secondary">{t}</span>
                         ))}
                     </div>
                 )}

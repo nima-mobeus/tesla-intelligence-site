@@ -65,7 +65,7 @@ export default function VoteCard({ data, accentColor, onAction }: TeleComponentP
         <div className="flex flex-col h-full overflow-hidden">
             {/* Header */}
             {title && (
-                <h3 className="font-data text-body uppercase tracking-[0.12em] mb-0.5" className="text-card-primary">
+                <h3 className="font-data text-body uppercase tracking-[0.12em] mb-0.5 text-card-primary">
                     {title}
                 </h3>
             )}
@@ -82,14 +82,14 @@ export default function VoteCard({ data, accentColor, onAction }: TeleComponentP
 
             {/* Description */}
             {description && (
-                <p className="font-voice text-body leading-tight mb-2 line-clamp-2" className="text-card-secondary">
+                <p className="font-voice text-body leading-tight mb-2 line-clamp-2 text-card-secondary">
                     {description}
                 </p>
             )}
 
             {/* Vote Tally Bar */}
             <div className="flex items-center gap-2 mb-2">
-                <div className="flex-1 h-2 rounded-full overflow-hidden" className="bg-card-surface">
+                <div className="flex-1 h-2 rounded-full overflow-hidden bg-card-surface">
                     <div className="h-full rounded-full transition-all duration-500"
                         style={{
                             width: `${yesWidth}%`,
@@ -115,7 +115,7 @@ export default function VoteCard({ data, accentColor, onAction }: TeleComponentP
                                 {pos.director}
                             </span>
                             {pos.condition && (
-                                <span className="font-voice text-body italic truncate" className="text-card-faint">
+                                <span className="font-voice text-body italic truncate text-card-faint">
                                     — {pos.condition}
                                 </span>
                             )}
@@ -137,7 +137,7 @@ export default function VoteCard({ data, accentColor, onAction }: TeleComponentP
             {prepActions.length > 0 && (
                 <div className="mt-1 pt-1 border-t" style={{ borderColor: `${getColor(8)}` }}>
                     {prepActions.slice(0, 2).map((action, i) => (
-                        <div key={i} className="font-voice text-body leading-tight" className="text-card-muted">
+                        <div key={i} className="font-voice text-body leading-tight text-card-muted">
                             → {action}
                         </div>
                     ))}

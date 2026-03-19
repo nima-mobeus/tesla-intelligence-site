@@ -27,16 +27,16 @@ export default function WorldMapCard({ data, accentColor, onAction }: TeleCompon
 
     return (
         <div className="flex flex-col h-full overflow-hidden">
-            {title && <h3 className="font-data text-body uppercase tracking-[0.12em] mb-2" className="text-card-primary">{title}</h3>}
+            {title && <h3 className="font-data text-body uppercase tracking-[0.12em] mb-2 text-card-primary">{title}</h3>}
             <div className="flex-1 grid grid-cols-2 md:grid-cols-3 gap-1.5 content-start overflow-auto">
                 {regions.map((r, i) => {
                     const clr = r.color || REGION_CLR[r.code || ''] || `${getColor(88)}`;
                     return (
                         <div key={i} className="flex items-center gap-2 p-1.5 rounded-sm" style={{ backgroundColor: `${getColor(2)}`, borderLeft: `3px solid ${clr}` }}>
                             <div className="min-w-0">
-                                <div className="font-data text-body font-bold uppercase truncate" className="text-card-primary">{r.name}</div>
+                                <div className="font-data text-body font-bold uppercase truncate text-card-primary">{r.name}</div>
                                 <div className="font-data text-body font-bold" style={{ color: clr }}>{r.value}</div>
-                                {r.subtext && <div className="font-data text-body" className="text-card-secondary">{r.subtext}</div>}
+                                {r.subtext && <div className="font-data text-body text-card-secondary">{r.subtext}</div>}
                             </div>
                         </div>
                     );

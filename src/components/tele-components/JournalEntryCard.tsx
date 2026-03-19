@@ -34,7 +34,7 @@ export default function JournalEntryCard({ data }: TeleComponentProps) {
           <h3 className="font-data text-body font-bold leading-tight" style={{ color: C }}>{decision}</h3>
           {context && <p className="font-voice text-body leading-tight" style={{ color: getColor(55) }}>{context}</p>}
         </div>
-        {date && <span className="font-data text-body shrink-0 tracking-wider" className="text-card-faint">{date}</span>}
+        {date && <span className="font-data text-body shrink-0 tracking-wider text-card-faint">{date}</span>}
       </div>
 
       <div className="flex items-center gap-2 mb-2">
@@ -71,20 +71,20 @@ export default function JournalEntryCard({ data }: TeleComponentProps) {
       {(expectedOutcome || actualOutcome) && (
         <div className="pt-1 border-t space-y-0.5" style={{ borderColor: getColor(8) }}>
           {expectedOutcome && (
-            <div className="font-voice text-body leading-tight" className="text-card-muted">
-              <span className="font-data text-body uppercase tracking-wider" className="text-card-faint">Expected: </span>{expectedOutcome}
+            <div className="font-voice text-body leading-tight text-card-muted">
+              <span className="font-data text-body uppercase tracking-wider text-card-faint">Expected: </span>{expectedOutcome}
             </div>
           )}
           {actualOutcome && (
             <div className="font-voice text-body leading-tight" style={{ color: acc.text }}>
-              <span className="font-data text-body uppercase tracking-wider" className="text-card-faint">Actual: </span>{actualOutcome}
+              <span className="font-data text-body uppercase tracking-wider text-card-faint">Actual: </span>{actualOutcome}
             </div>
           )}
         </div>
       )}
 
       {dissenters.length > 0 && (
-        <div className="flex items-center gap-1 mt-1" className="text-card-faint">
+        <div className="flex items-center gap-1 mt-1 text-card-faint">
           <span className="font-data text-body uppercase tracking-wider">Dissent:</span>
           <span className="font-data text-body" style={{ color: getColor(65) }}>{dissenters.join(', ')}</span>
         </div>
