@@ -94,6 +94,8 @@ export function ChatPanel() {
         right: isChatPanelOpen ? '0' : 'calc(-1 * var(--glass-chat-width))',
         opacity: isChatPanelOpen ? 1 : 0,
         pointerEvents: isChatPanelOpen ? 'auto' : 'none',
+        backdropFilter: isChatPanelOpen ? 'blur(16px)' : 'none',
+        WebkitBackdropFilter: isChatPanelOpen ? 'blur(16px)' : 'none',
       }}
     >
       {/* Chat messages area */}
