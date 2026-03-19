@@ -99,9 +99,9 @@
   --theme-action-btn: rgba(0, 180, 216, 0.85);
   --theme-action-btn-hover: rgba(0, 180, 216, 1);
 
-  /* Chat bubbles */
-  --theme-chat-bubble: rgba(12, 14, 18, 0.85);
-  --theme-chat-text: #e0e0e0;
+  /* Chat bubbles — Studio: white frosted glass, dark text */
+  --theme-chat-bubble: rgba(255, 255, 255, 0.86);
+  --theme-chat-text: #0d1117;
   --theme-chat-placeholder: rgba(255, 255, 255, 0.3);
 
   /* Video filter */
@@ -231,15 +231,18 @@ body {
 .btn-action {
   display: inline-flex; align-items: center; justify-content: center;
   padding: 0.75rem 2rem;
-  background: #00e5ff;
+  min-height: 48px;
+  background: var(--amber);
   color: #0a0e14;
   font-family: var(--font-data);
   font-size: 0.875rem; font-weight: 700;
   letter-spacing: 0.05em; text-transform: uppercase;
   transition: all 0.3s ease;
+  border: none;
+  border-radius: 9999px;
   cursor: pointer;
 }
-.btn-action:hover { transform: translateY(-1px); background: #33ebff; }
+.btn-action:hover { transform: translateY(-1px); background: #33ebff; box-shadow: 0 0 20px rgba(0,180,216,0.35); }
 
 .start-button {
   background: #00e5ff; color: #0a0e14;
@@ -296,6 +299,29 @@ body {
   animation: card-enter 0.5s ease-out forwards;
   opacity: 0;
 }
+
+/* ── Welcome Screen Entrance — slide in from left ── */
+@keyframes slide-in-left {
+  from { opacity: 0; transform: translateX(-24px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+.animate-slide-in-left {
+  animation: slide-in-left 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* ── fade-in-up (welcome cards) ── */
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in-up {
+  animation: fade-in-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ── Color utilities matching project-elon ── */
+.text-starlight { color: var(--color-starlight); }
+.text-amber     { color: var(--amber); }
+.bg-midnight    { background-color: var(--color-midnight); }
 
 
 
