@@ -97,7 +97,13 @@ export function ChatPanel() {
       }}
     >
       {/* Chat messages area */}
-      <div className="chat-messages-container flex-1 px-4 pt-20 pb-4 flex flex-col gap-3">
+      <div
+        className="chat-messages-container flex-1 px-4 pt-20 pb-4 flex flex-col gap-3 overflow-y-auto"
+        style={{
+          maskImage: 'linear-gradient(to bottom, transparent 0px, transparent 60px, black 96px)',
+          WebkitMaskImage: 'linear-gradient(to bottom, transparent 0px, transparent 60px, black 96px)',
+        }}
+      >
         {transcripts.length === 0 && isConnected && (
           <div className="flex-1 flex items-center justify-center">
             <p className="text-body font-voice" style={{ color: 'rgba(255,255,255,0.25)' }}>
