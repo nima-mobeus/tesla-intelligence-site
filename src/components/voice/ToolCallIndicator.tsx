@@ -88,10 +88,9 @@ export function ToolCallIndicator({
             <DisplayIcon className="w-4 h-4 text-emerald-400 shrink-0" />
             <span
               className="text-caption font-mono font-medium truncate"
-              style={{ color: 'rgba(255,255,255,0.5)' }}
+              style={{ color: 'rgba(255,255,255,0.85)' }}
             >
-              Called{' '}
-              <span style={{ color: 'rgba(255,255,255,0.85)' }}>{config.label}</span>
+              {config.label}
             </span>
           </div>
           <button
@@ -134,10 +133,9 @@ export function ToolCallIndicator({
           <DisplayIcon className="w-4 h-4 text-emerald-400 shrink-0" />
           <span
             className="text-caption font-mono font-medium truncate"
-            style={{ color: 'rgba(255,255,255,0.5)' }}
+            style={{ color: 'rgba(255,255,255,0.85)' }}
           >
-            Called{' '}
-            <span style={{ color: 'rgba(255,255,255,0.85)' }}>{config.label}</span>
+            {config.label}
           </span>
         </div>
         <div className="flex items-center gap-2">

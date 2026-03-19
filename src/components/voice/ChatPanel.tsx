@@ -1,9 +1,9 @@
 'use client';
 
 import { useEffect, useRef, useState, useCallback } from 'react';
-import { Send, Sparkles } from 'lucide-react';
+import { Send, Sparkles, Bot, User } from 'lucide-react';
 import { useVoiceSessionStore } from '@/lib/stores/voice-session-store';
-import { assets } from '@/assets';
+
 import { ToolCallIndicator } from './ToolCallIndicator';
 
 
@@ -14,7 +14,7 @@ export function ChatPanel() {
   const transcripts = useVoiceSessionStore((s) => s.transcripts);
   const isChatPanelOpen = useVoiceSessionStore((s) => s.isChatPanelOpen);
   const sendTextMessage = useVoiceSessionStore((s) => s.sendTextMessage);
-  const currentAgentName = useVoiceSessionStore((s) => s.currentAgentName);
+
 
   const [textInput, setTextInput] = useState('');
   const [isSleeping, setIsSleeping] = useState(false);
@@ -153,18 +153,21 @@ export function ChatPanel() {
             >
               {/* Avatar (agent only) */}
               {t.participant === 'agent' && (
-                <div className="chat-avatar w-7 h-7 rounded-full overflow-hidden shrink-0 mt-1">
-                  <img
-                    src={assets.avatarProfile}
-                    alt={currentAgentName || 'Agent'}
-                    className="w-full h-full object-cover"
-                  />
+                <div
+                  className="chat-avatar w-7 h-7 sm:w-9 sm:h-9 rounded-full
+                  backdrop-blur-sm flex items-center justify-center flex-shrink-0"
+                  style={{
+                    background: 'rgba(0, 180, 216, 0.10)',
+                    border: '1px solid rgba(0, 180, 216, 0.20)',
+                  }}
+                >
+                  <Bot className="chat-icon w-4 h-4 sm:w-5 sm:h-5" style={{ color: 'rgba(0, 180, 216, 0.80)' }} />
                 </div>
               )}
 
               {/* Bubble */}
               <div
-                className={`chat-message-bubble max-w-[75%] sm:max-w-[70%] rounded-2xl px-3.5 py-2.5
+                className={`chat-message-bubble max-w-[75%] sm:max-w-[70%] p-3 sm:p-4 rounded-2xl
                   text-body leading-relaxed transition-all duration-500
                   hover:brightness-110 hover:shadow-lg
                   ${t.participant === 'user' ? 'ml-auto' : ''}`}
@@ -176,6 +179,20 @@ export function ChatPanel() {
               >
                 {t.text}
               </div>
+
+              {/* Avatar (user only) */}
+              {t.participant === 'user' && (
+                <div
+                  className="chat-avatar w-7 h-7 sm:w-9 sm:h-9 rounded-full
+                  backdrop-blur-sm flex items-center justify-center flex-shrink-0"
+                  style={{
+                    background: 'rgba(0, 180, 216, 0.10)',
+                    border: '1px solid rgba(0, 180, 216, 0.20)',
+                  }}
+                >
+                  <User className="chat-icon w-4 h-4 sm:w-5 sm:h-5" style={{ color: 'rgba(0, 180, 216, 0.80)' }} />
+                </div>
+              )}
             </div>
           );
         })}
