@@ -30,15 +30,15 @@ export default function RelationshipCard({ data }: TeleComponentProps) {
   return (
     <div className="flex flex-col h-full overflow-hidden">
       <div className="flex items-center gap-3 mb-2">
-        <div className="w-12 h-12 rounded-full flex items-center justify-center shrink-0" style={{ backgroundColor: getColor(8) }}>
+        <div className="w-12 h-12 rounded-full flex items-center justify-center shrink-0" className="bg-card-surface">
           <svg width={22} height={22} viewBox="0 0 24 24" fill="none" stroke={getColor(88)} strokeWidth={1.5} strokeLinecap="round">
             <circle cx={12} cy={8} r={4} />
             <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
           </svg>
         </div>
         <div className="flex-1 min-w-0">
-          <div className="font-data text-body font-bold leading-tight truncate" style={{ color: getColor(90) }}>{name}</div>
-          {role && <div className="font-data text-body uppercase tracking-wider truncate" style={{ color: getColor(60) }}>{role}</div>}
+          <div className="font-data text-body font-bold leading-tight truncate" className="text-card-primary">{name}</div>
+          {role && <div className="font-data text-body uppercase tracking-wider truncate" className="text-card-muted">{role}</div>}
         </div>
         <div className="flex items-center gap-1 shrink-0">
           <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: s.dot, ...(sentiment === 'at-risk' ? { animation: 'blink-dot 1.2s ease-in-out infinite' } : {}) }} />
@@ -51,10 +51,10 @@ export default function RelationshipCard({ data }: TeleComponentProps) {
           <span className="font-herotext-title" style={{ color: trajectory === 'cooling' ? '#ff4040' : trajectory === 'warming' ? '#22c55e' : getColor(60) }}>
             {TRAJECTORY_ICON[trajectory] || '→'}
           </span>
-          <span className="font-data text-body uppercase tracking-wider" style={{ color: getColor(60) }}>{trajectory}</span>
+          <span className="font-data text-body uppercase tracking-wider" className="text-card-muted">{trajectory}</span>
         </div>
         {lastContact && (
-          <div className="font-data text-body" style={{ color: getColor(60) }}>
+          <div className="font-data text-body" className="text-card-muted">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="inline -mt-0.5 mr-0.5"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>
             {lastContact}
           </div>
@@ -72,7 +72,7 @@ export default function RelationshipCard({ data }: TeleComponentProps) {
 
       {commitments.length > 0 && (
         <div className="flex flex-col gap-0.5 mb-2 flex-1 min-h-0 overflow-hidden">
-          <span className="font-data text-body uppercase tracking-wider" style={{ color: getColor(50) }}>Open commitments</span>
+          <span className="font-data text-body uppercase tracking-wider" className="text-card-faint">Open commitments</span>
           {commitments.slice(0, 3).map((c, i) => (
             <div key={i} className="flex items-start gap-1.5">
               <span className="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0" style={{ backgroundColor: getColor(40) }} />
@@ -92,7 +92,7 @@ export default function RelationshipCard({ data }: TeleComponentProps) {
 
       {riskLevel && (
         <div className="flex items-center gap-1 mt-1 pt-1 border-t" style={{ borderColor: getColor(8) }}>
-          <span className="font-data text-body uppercase tracking-wider" style={{ color: getColor(40) }}>Risk:</span>
+          <span className="font-data text-body uppercase tracking-wider" className="text-card-faint">Risk:</span>
           <span className="font-data text-body uppercase tracking-wider font-bold"
             style={{ color: riskLevel === 'high' ? '#ff4040' : riskLevel === 'medium' ? '#b45309' : '#22c55e' }}>
             {riskLevel}

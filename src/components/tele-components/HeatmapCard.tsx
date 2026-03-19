@@ -35,7 +35,7 @@ export default function HeatmapCard({ data, accentColor, onAction }: TeleCompone
     return (
         <div className="flex flex-col h-full overflow-hidden">
             {title && (
-                <h3 className="font-data text-body uppercase tracking-[0.12em] mb-2" style={{ color: `${getColor(90)}` }}>
+                <h3 className="font-data text-body uppercase tracking-[0.12em] mb-2" className="text-card-primary">
                     {title}
                 </h3>
             )}
@@ -45,7 +45,7 @@ export default function HeatmapCard({ data, accentColor, onAction }: TeleCompone
                         <tr>
                             <th />
                             {cols.map((c, i) => (
-                                <th key={i} className="font-data text-body uppercase tracking-wider px-1 py-1 text-center" style={{ color: `${getColor(85)}` }}>
+                                <th key={i} className="font-data text-body uppercase tracking-wider px-1 py-1 text-center" className="text-card-primary">
                                     {c}
                                 </th>
                             ))}
@@ -54,7 +54,7 @@ export default function HeatmapCard({ data, accentColor, onAction }: TeleCompone
                     <tbody>
                         {rows.map((row, ri) => (
                             <tr key={ri}>
-                                <td className="font-data text-body uppercase tracking-wider pr-2 py-1 text-left whitespace-nowrap font-bold" style={{ color: `${getColor(85)}` }}>
+                                <td className="font-data text-body uppercase tracking-wider pr-2 py-1 text-left whitespace-nowrap font-bold" className="text-card-primary">
                                     {row}
                                 </td>
                                 {(cells[ri] || []).map((cell, ci) => (

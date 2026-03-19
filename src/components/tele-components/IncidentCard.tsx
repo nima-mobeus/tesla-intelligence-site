@@ -32,14 +32,14 @@ export default function IncidentCard({ data, accentColor, onAction }: TeleCompon
                 <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: sev.border, ...(severity === 'critical' ? { animation: 'blink-dot 1.2s ease-in-out infinite' } : {}) }} />
                 <span className="font-data text-body uppercase tracking-wider font-bold" style={{ color: sev.text }}>{severity}</span>
             </div>
-            <h3 className="font-data text-body font-bold" style={{ color: `${getColor(90)}` }}>{title}</h3>
-            {summary && <p className="font-voice text-body leading-relaxed" style={{ color: `${getColor(85)}` }}>{summary}</p>}
+            <h3 className="font-data text-body font-bold" className="text-card-primary">{title}</h3>
+            {summary && <p className="font-voice text-body leading-relaxed" className="text-card-primary">{summary}</p>}
             {visibleTimeline.length > 0 && (
                 <div className="space-y-1 ml-1">
                     {visibleTimeline.map((t, i) => (
                         <div key={i} className="flex items-start gap-2">
                             <span className="font-data text-body shrink-0 mt-0.5 font-bold" style={{ color: sev.text }}>{t.time}</span>
-                            <span className="font-voice text-body leading-tight" style={{ color: `${getColor(85)}` }}>{t.description}</span>
+                            <span className="font-voice text-body leading-tight" className="text-card-primary">{t.description}</span>
                         </div>
                     ))}
                 </div>

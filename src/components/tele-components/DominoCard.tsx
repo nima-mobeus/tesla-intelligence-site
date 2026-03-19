@@ -16,7 +16,7 @@ export default function DominoCard({ data }: TeleComponentProps) {
   return (
     <div className="flex flex-col h-full overflow-hidden">
       {title && (
-        <h3 className="font-data text-body uppercase tracking-[0.12em] font-bold mb-1" style={{ color: getColor(90) }}>{title}</h3>
+        <h3 className="font-data text-body uppercase tracking-[0.12em] font-bold mb-1" className="text-card-primary">{title}</h3>
       )}
 
       <div className="flex items-center gap-2 mb-2">

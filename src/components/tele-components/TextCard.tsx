@@ -15,13 +15,13 @@ export default function TextCard({ data, accentColor, onAction }: TeleComponentP
     return (
         <div className="flex flex-col h-full overflow-hidden">
             {title && (
-                <h3 className="font-data text-body uppercase tracking-[0.12em] mb-2" style={{ color: `${getColor(90)}` }}>
+                <h3 className="font-data text-body uppercase tracking-[0.12em] mb-2" className="text-card-primary">
                     {title}
                 </h3>
             )}
             <div className="flex-1 flex flex-col justify-center min-h-0 overflow-hidden">
                 {body && (
-                    <p className="font-voice text-body  leading-relaxed line-clamp-4" style={{ color: `${getColor(70)}` }}>
+                    <p className="font-voice text-body  leading-relaxed line-clamp-4" className="text-card-secondary">
                         {body}
                     </p>
                 )}
@@ -30,7 +30,7 @@ export default function TextCard({ data, accentColor, onAction }: TeleComponentP
                         {visibleBullets.map((b, i) => (
                             <li key={i} className="flex items-start gap-2">
                                 <span className="w-1.5 h-1.5 rounded-full shrink-0 mt-1.5" style={{ backgroundColor: `${getColor(25)}` }} />
-                                <span className="font-voice text-body leading-snug" style={{ color: `${getColor(88)}` }}>
+                                <span className="font-voice text-body leading-snug" className="text-card-primary">
                                     {b}
                                 </span>
                             </li>

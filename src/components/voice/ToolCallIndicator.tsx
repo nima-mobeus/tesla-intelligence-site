@@ -76,7 +76,7 @@ export function ToolCallIndicator({
   if (compact) {
     return (
       <div
-        className="mb-2 rounded-2xl border overflow-hidden relative group"
+        className="mb-2 rounded-full border overflow-hidden relative group"
         style={{
           background: 'rgba(255,255,255,0.07)',
           borderColor: 'rgba(255,255,255,0.10)',
@@ -114,7 +114,7 @@ export function ToolCallIndicator({
   // ── Full mode (default) ───────────────────────────────────────────────────
   return (
     <div
-      className="mb-2 rounded-2xl border overflow-hidden transition-all duration-300 relative group"
+      className="mb-2 rounded-full border overflow-hidden transition-all duration-300 relative group"
       style={{
         background: 'rgba(255,255,255,0.07)',
         borderColor: 'rgba(255,255,255,0.10)',

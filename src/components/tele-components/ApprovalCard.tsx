@@ -44,7 +44,7 @@ export default function ApprovalCard({ data, accentColor, onAction }: TeleCompon
             {/* Header */}
             <div className="flex items-center justify-between mb-2">
                 {title && (
-                    <h3 className="font-data text-body uppercase tracking-[0.12em]" style={{ color: `${getColor(90)}` }}>
+                    <h3 className="font-data text-body uppercase tracking-[0.12em]" className="text-card-primary">
                         {title}
                     </h3>
                 )}
@@ -73,12 +73,12 @@ export default function ApprovalCard({ data, accentColor, onAction }: TeleCompon
                                 </div>
                                 <div className="flex items-center gap-2 mt-0.5">
                                     {item.from && (
-                                        <span className="font-voice text-body" style={{ color: `${getColor(70)}` }}>
+                                        <span className="font-voice text-body" className="text-card-secondary">
                                             From: {item.from}{item.fromTitle ? ` (${item.fromTitle})` : ''}
                                         </span>
                                     )}
                                     {item.deadline && (
-                                        <span className="font-data text-body" style={{ color: `${getColor(60)}` }}>
+                                        <span className="font-data text-body" className="text-card-muted">
                                             ⏰ {item.deadline}
                                         </span>
                                     )}

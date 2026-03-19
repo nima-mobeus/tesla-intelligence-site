@@ -42,7 +42,7 @@ export default function EmailListCard({ data, accentColor, onAction }: TeleCompo
     return (
         <div className="flex flex-col h-full justify-start gap-2">
             {title && (
-                <h3 className="flex items-center gap-1.5 font-data text-body tracking-[0.15em] uppercase font-semibold" style={{ color: `${getColor(60)}` }}>
+                <h3 className="flex items-center gap-1.5 font-data text-body tracking-[0.15em] uppercase font-semibold" className="text-card-muted">
                     <Mail size={12} /> {title}
                 </h3>
             )}
@@ -52,7 +52,7 @@ export default function EmailListCard({ data, accentColor, onAction }: TeleCompo
                         <div className="w-2 h-2 rounded-full mt-1 shrink-0" style={{ backgroundColor: PRIORITY_COLOR[email.priority || 'normal'] }} />
                         <div className="flex-1 min-w-0">
                             <div className="flex items-baseline gap-1.5">
-                                <span className={`font-data text-body tracking-wide truncate ${email.unread ? 'font-bold' : ''}`} style={{ color: `${getColor(88)}` }}>{email.from}</span>
+                                <span className={`font-data text-body tracking-wide truncate ${email.unread ? 'font-bold' : ''}`} className="text-card-primary">{email.from}</span>
                                 {email.fromTitle && (
                                     <span className="font-data text-body tracking-wider uppercase hidden md:inline" style={{ color: `${getColor(25)}` }}>{email.fromTitle}</span>
                                 )}

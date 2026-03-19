@@ -48,7 +48,7 @@ export default function WaterfallCard({ data, accentColor, onAction }: TeleCompo
     return (
         <div className="flex flex-col h-full overflow-hidden">
             {title && (
-                <h3 className="font-data text-body uppercase tracking-[0.12em] mb-2" style={{ color: `${getColor(90)}` }}>{title}</h3>
+                <h3 className="font-data text-body uppercase tracking-[0.12em] mb-2" className="text-card-primary">{title}</h3>
             )}
             {/* Chart + label area */}
             <div className="flex-1 flex items-end gap-1 min-h-0">
@@ -78,7 +78,7 @@ export default function WaterfallCard({ data, accentColor, onAction }: TeleCompo
                             </div>
                             {/* Category label: always below the chart zone, never overlaps bars */}
                             <div className="w-full text-center pt-1" style={{ minHeight: '2.5rem' }}>
-                                <span className="font-data text-micro uppercase leading-tight" style={{ color: `${getColor(70)}` }}>
+                                <span className="font-data text-micro uppercase leading-tight" className="text-card-secondary">
                                     {item.label}
                                 </span>
                             </div>

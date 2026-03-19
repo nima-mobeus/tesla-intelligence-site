@@ -57,10 +57,7 @@ export default function PieChart({ data }: TeleComponentProps) {
   return (
     <div className="flex flex-col h-full overflow-hidden">
       {title && (
-        <h3
-          className="font-data text-body uppercase tracking-[0.12em] mb-2 shrink-0"
-          style={{ color: getColor(90) }}
-        >
+        <h3 className="font-data text-body uppercase tracking-[0.12em] mb-2 shrink-0 text-card-primary">
           {title}
         </h3>
       )}
@@ -102,14 +99,14 @@ export default function PieChart({ data }: TeleComponentProps) {
                   style={{ backgroundColor: color }}
                 />
                 <span
-                  className="font-data text-body uppercase tracking-wider truncate"
-                  style={{ fontSize: '10px', color: getColor(85) }}
+                  className="font-data text-body uppercase tracking-wider truncate text-card-primary"
+                  style={{ fontSize: '10px' }}
                 >
                   {s.label || s.name}
                 </span>
                 <span
-                  className="font-data font-bold ml-auto shrink-0"
-                  style={{ fontSize: '10px', color: getColor(90) }}
+                  className="font-data font-bold ml-auto shrink-0 text-card-primary"
+                  style={{ fontSize: '10px' }}
                 >
                   {pct}{unit === '%' ? '%' : ` ${unit}`}
                 </span>

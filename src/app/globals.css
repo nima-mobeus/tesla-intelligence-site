@@ -363,6 +363,26 @@ body {
   letter-spacing: -0.01em !important;
 }
 
+/* ════════════════════════════════════════════════════════════════
+ * CARD SEMANTIC COLOR TOKENS
+ * These replace all inline style={{ color: getColor(N) }} calls.
+ * Source: color-mix(in srgb, var(--theme-chart-line) N%, transparent)
+ * ════════════════════════════════════════════════════════════════ */
+
+/* ── Text colors ── */
+.text-card-primary   { color: color-mix(in srgb, var(--theme-chart-line) 90%, transparent); }
+.text-card-secondary { color: color-mix(in srgb, var(--theme-chart-line) 70%, transparent); }
+.text-card-muted     { color: color-mix(in srgb, var(--theme-chart-line) 60%, transparent); }
+.text-card-faint     { color: color-mix(in srgb, var(--theme-chart-line) 40%, transparent); }
+
+/* ── Background colors ── */
+.bg-card-surface     { background-color: color-mix(in srgb, var(--theme-chart-line) 8%, transparent); }
+.bg-card-chip        { background-color: color-mix(in srgb, var(--theme-chart-line) 3%, transparent); }
+.bg-card-track       { background-color: color-mix(in srgb, var(--theme-chart-line) 5%, transparent); }
+
+/* ── Border colors ── */
+.border-card-subtle  { border-color: color-mix(in srgb, var(--theme-chart-line) 8%, transparent); }
+
 /* ── Status Dots — vivid with glow ── */
 .bg-emerald-500 {
   background-color: #10b981 !important;

@@ -29,15 +29,15 @@ export default function StatCard({ data, accentColor, onAction }: TeleComponentP
                             ...(status === 'bad' ? { animation: 'blink-dot 1.2s ease-in-out infinite' } : {}),
                         }} />
                 )}
-                <span className="font-data text-body uppercase tracking-[0.15em]" style={{ color: `${getColor(70)}` }}>
+                <span className="font-data text-body uppercase tracking-[0.15em]" className="text-card-secondary">
                     {label}
                 </span>
             </div>
-            <div className="font-hero text-title leading-none" style={{ color: `${getColor(90)}` }}>
+            <div className="font-hero text-title leading-none" className="text-card-primary">
                 {value}
             </div>
             {subtitle && (
-                <p className="font-voice text-body leading-tight mt-1 line-clamp-2" style={{ color: `${getColor(70)}` }}>
+                <p className="font-voice text-body leading-tight mt-1 line-clamp-2" className="text-card-secondary">
                     {subtitle}
                 </p>
             )}

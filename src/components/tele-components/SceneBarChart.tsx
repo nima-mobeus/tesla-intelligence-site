@@ -43,7 +43,7 @@ export default function SceneBarChart({ data, accentColor, onAction }: TeleCompo
     return (
         <div className="flex flex-col h-full overflow-hidden">
             {title && (
-                <h3 className="font-data text-body uppercase tracking-[0.12em] mb-2" style={{ color: `${getColor(90)}` }}>
+                <h3 className="font-data text-body uppercase tracking-[0.12em] mb-2" className="text-card-primary">
                     {title}
                 </h3>
             )}
@@ -54,10 +54,10 @@ export default function SceneBarChart({ data, accentColor, onAction }: TeleCompo
                         const delta = bar.previousValue ? bar.value - bar.previousValue : null;
                         return (
                             <div key={i} className="flex items-center gap-1.5">
-                                <span className="font-data text-body w-14 sm:w-16 text-left truncate font-bold" style={{ color: `${getColor(85)}` }}>
+                                <span className="font-data text-body w-14 sm:w-16 text-left truncate font-bold" className="text-card-primary">
                                     {bar.label}
                                 </span>
-                                <div className="flex-1 h-3 rounded-sm overflow-hidden" style={{ backgroundColor: `${getColor(5)}` }}>
+                                <div className="flex-1 h-3 rounded-sm overflow-hidden" className="bg-card-track">
                                     <div
                                         className="h-full rounded-sm transition-all duration-700"
                                         style={{
@@ -67,7 +67,7 @@ export default function SceneBarChart({ data, accentColor, onAction }: TeleCompo
                                         }}
                                     />
                                 </div>
-                                <span className="font-data text-body font-bold min-w-[36px] sm:min-w-[48px] text-right" style={{ color: `${getColor(90)}` }}>
+                                <span className="font-data text-body font-bold min-w-[36px] sm:min-w-[48px] text-right" className="text-card-primary">
                                     {fmt(bar.value)}{unit ? ` ${unit}` : ''}
                                 </span>
                                 {delta !== null && delta !== 0 && (

@@ -41,7 +41,7 @@ export default function SceneLineChart({ data: propData, accentColor, onAction }
     return (
         <div className="flex flex-col h-full overflow-hidden">
             {title && (
-                <h3 className="font-data text-body uppercase tracking-[0.12em] mb-2" style={{ color: `${getColor(90)}` }}>
+                <h3 className="font-data text-body uppercase tracking-[0.12em] mb-2" className="text-card-primary">
                     {title}
                 </h3>
             )}
@@ -60,7 +60,7 @@ export default function SceneLineChart({ data: propData, accentColor, onAction }
                 {labels && labels.length > 0 && (
                     <div className="flex justify-between mt-1">
                         {labels.map((l, i) => (
-                            <span key={i} className="font-data text-body uppercase" style={{ color: `${getColor(85)}` }}>
+                            <span key={i} className="font-data text-body uppercase" className="text-card-primary">
                                 {l}
                             </span>
                         ))}
@@ -68,10 +68,10 @@ export default function SceneLineChart({ data: propData, accentColor, onAction }
                 )}
                 {/* Min/Max annotation */}
                 <div className="flex justify-between mt-1">
-                    <span className="font-data text-body font-medium" style={{ color: `${getColor(85)}` }}>
+                    <span className="font-data text-body font-medium" className="text-card-primary">
                         {(mn ?? 0).toLocaleString()}{unit ? ` ${unit}` : ''}
                     </span>
-                    <span className="font-data text-body font-bold" style={{ color: `${getColor(90)}` }}>
+                    <span className="font-data text-body font-bold" className="text-card-primary">
                         {(mx ?? 0).toLocaleString()}{unit ? ` ${unit}` : ''}
                     </span>
                 </div>
