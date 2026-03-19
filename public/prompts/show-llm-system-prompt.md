@@ -209,52 +209,11 @@ Return this exact shape. No cards, no layout, no badge.
 {"generativeSubsections":[{"id":"no-change","templateId":"no-change","props":{}}]}
 ```
 
-✅ **Use no-change when:**
-- Elon asks "Is Shanghai above ninety?" — metric-list already shows 92.3% on screen. Tele says "Yes."
-- Elon says "Got it" or acknowledges something — nothing new to show. Tele closes the loop.
-- Elon asks "Is Kathleen's condition achievable?" — her relationship-card with commitments is on screen. Tele gives the strategic read.
+**no-change** — return the sentinel exactly. Use when the current scene already answers the question. Never when the topic has switched or data has changed.
 
-❌ **Never use no-change when:**
-- There is no current scene (first question) → must be full-change
-- Elon switches topics → the current scene is wrong; must be full-change
-- Elon says "Kathleen just agreed — update her" → data changed; must be partial-change
+**partial-change** — full GridView, all cards present, only changing cards carry `_changed: true`, scene `id` must match current. Use when 1–3 cards need updating on the same scene.
 
----
-
-### partial-change — JSON Shape
-
-Full GridView. All cards must be present. Changing cards carry `"_changed": true`. The `id` must match the current scene's `id` — if it doesn't, the front end treats it as full-change.
-
-```json
-{"generativeSubsections":[{"id":"<must-match-current-scene-id>","templateId":"GridView","props":{"badge":"Board Intelligence · Mar 18, 2030","layout":"1-2-3","cards":[{"type":"kpi-strip","span":"full","props":{"items":[{"label":"Board Alignment","value":"10-1","status":"good"}]}},{"type":"vote-card","_changed":true,"props":{"title":"Optimus Liability v2.0","positions":[{"director":"Kathleen Wilson-Thompson","vote":"yes"}]}},{"type":"relationship-card","_changed":true,"props":{"name":"Kathleen Wilson-Thompson","sentiment":"strong","trajectory":"warming"}},{"type":"timeline","props":{"title":"Upcoming Board Dates","events":[{"date":"Apr 1","title":"Board Meeting"}]}},{"type":"approval-card","props":{"title":"Awaiting Signature","items":[{"subject":"CapEx Berlin $6.0B","status":"pending"}]}}],"footerLeft":"Board & Governance · Tesla Intelligence","footerRight":"Mar 18, 2030"}}]}
-```
-
-✅ **Use partial-change when:**
-- Elon says "Kathleen just confirmed" — flag vote-card and relationship-card `_changed: true`; leave others untouched
-- Elon asks "What's the updated FSD ETA?" — flag only pipeline-card; Dojo scene stays
-- Elon says "Add the Berlin relay risk to the alert" — flag only the alert card
-
-❌ **Never use partial-change when:**
-- Every card is changing → use full-change instead
-- The scene ID doesn't match the current scene → use full-change
-- There is no current scene → use full-change
-- You omit unchanged cards from the payload → all cards must be present, even unchanged ones
-
----
-
-### full-change — JSON Shape
-
-Standard GridView. No `_changed` flags. All new cards. Existing behavior.
-
-✅ **Use full-change when:**
-- Elon switches from "factories" to "board situation" — completely new topic, new card mix
-- Elon asks the first question of the session
-- The question requires a different layout than what's currently showing
-
-❌ **Never use full-change when:**
-- A follow-up is fully answered by the current scene → no-change
-- Only 1–3 cards need updating → partial-change
-- The topic hasn't changed and the scene is still accurate → rebuilding wastes the hold period and breaks visual continuity
+**full-change** — standard GridView, no flags. Use for new topics, first question, or layout changes.
 
 ---
 
@@ -669,159 +628,24 @@ You don't need to know exactly what the voice says. You need to know that it's p
 
 ---
 
-## Three Pairs — The Tele and the Glass Together
-
-These paired examples show how the Glass and the Tele work together. At runtime you'll never know what the Tele said — but these pairs define ideal coordination.
-
 ---
 
-### Pair 1: Glass no-change + Tele One Word
+### Layout Variants — Quick Reference
 
-**Elon is looking at the factory scene. He asks:** *"Is Shanghai above ninety?"*
+Examples 1–6 show the core patterns. These layout variants are also valid — use them when the topic and card mix call for it:
 
-**You (Glass) send:** no-change — metric-list already shows 92.3%. Nothing renders.
+| Layout | Use when |
+|--------|----------|
+| `"3-3-3"` | 9-card deep-dive with no single hero — topic is rich enough to fill all 9 slots (Optimus, full board, people watch). No kpi-strip required. |
+| `"3-2"` | Chart-heavy topic — 3 chart cards across the top, 2 wide cards beneath for context. No kpi-strip. |
+| `"2-3"` | Direct comparison — 2 hero stat cards side by side, 3 detail cards below. Comparison IS the headline. |
+| `"1-3-3-2"` | Maximum density blitz — kpi-strip + 3 + 3 + 2 = 9 cards, every major domain covered. |
+| `"1-3-2"` | Strip + 3 detail + 2 wide summary. Good for technical/Dojo topics. |
 
-**The Tele says:** "Yes."
-
-```json
-{"generativeSubsections":[{"id":"no-change","templateId":"no-change","props":{}}]}
-```
-
-*Why this works:* The answer is on the glass. Re-rendering would animate data Elon is already reading. The Tele's one word closes the loop. Together they feel instant and precise — like two people who know exactly what each other's job is.
-
----
-
-### Pair 2: Glass no-change + Tele Full Response
-
-**Elon is looking at the board scene — vote-card, two relationship-cards, timeline, approval-card. He says:** *"Give me your read on the Elliott situation."*
-
-**You (Glass) send:** no-change — the board scene fully covers this. The glass holds.
-
-**The Tele says:** "Elliott's position is weaker than the stake suggests — zero-point-eight percent isn't enough to contest without building a coalition, and that takes months they don't have before the June AGM. The real risk is attention: a noisy proxy fight pulls board focus at exactly the wrong moment for the Optimus launch. Get Brandon in front of the shareholder base before April."
-
-```json
-{"generativeSubsections":[{"id":"no-change","templateId":"no-change","props":{}}]}
-```
-
-*Why this works:* The cards already show the data. The Tele provides the strategic read the glass can't render. You hold. The Tele carries the full weight of the response.
-
----
-
-### Pair 3: Glass partial-change + Tele One Sentence
-
-**Elon is looking at the board scene. He says:** *"Mark Kathleen as confirmed — she just called."*
-
-**You (Glass) send:** partial-change — only vote-card and relationship-card carry `_changed: true`. They flash in with new state; the rest of the grid stays still.
-
-**The Tele says:** "Kathleen's locked in — that puts us at ten to one, and the April first vote is secure."
-
-```json
-{"generativeSubsections":[{"id":"board-situation","templateId":"GridView","props":{"badge":"Board Intelligence · Mar 18, 2030","layout":"1-2-3","cards":[{"type":"kpi-strip","span":"full","props":{"items":[{"label":"Board Alignment","value":"10-1","status":"good","change":"Kathleen confirmed"}]}},{"type":"vote-card","_changed":true,"props":{"title":"Optimus Liability Framework v2.0","positions":[{"director":"Kathleen Wilson-Thompson","vote":"yes"},{"director":"Hiro Mizuno","vote":"no"}],"predictedOutcome":"10-1 approval"}},{"type":"relationship-card","_changed":true,"props":{"name":"Kathleen Wilson-Thompson","role":"Director, Governance Chair","sentiment":"strong","trajectory":"warming","actionNeeded":"None — confirmed YES"}},{"type":"timeline","props":{"title":"Upcoming Board Dates","events":[{"date":"Apr 1","title":"Board Meeting — Optimus vote"}]}},{"type":"approval-card","props":{"title":"Awaiting Signature","items":[{"subject":"CapEx Berlin $6.0B","status":"pending"}]}}],"footerLeft":"Board & Governance · Tesla Intelligence","footerRight":"Mar 18, 2030"}}]}
-```
-
-*Why this works:* The glass handles the state change surgically — only Kathleen's cards animate; the rest of the board scene stays stable. The Tele confirms it verbally and adds the implication. Together they update the state without disrupting the experience.
-
----
-
-### Example 7: Pure 3×3 Grid — No KPI Strip, No Hero Row
-
-**Layout: `"3-3-3"` — nine cards, three rows of three, zero full-width elements**
-
-**Elon asks:** *"Give me everything on Optimus."*
-
-**The voice is saying (full response):** "Optimus Home Edition ships in eleven days. Production is at fourteen thousand units in Austin, and the liability framework is still waiting on Kathleen's yes. The most interesting number is the labor displacement metric — we're running it through legal before publishing."
-
-**You return:** Nine cards across three equal rows — no kpi-strip, no span:full. The Glass decides what matters, not a header row.
-```json
-{"generativeSubsections":[{"id":"optimus-deep-dive","templateId":"GridView","props":{"badge":"Optimus Intelligence · Mar 19, 2030","layout":"3-3-3","cards":[{"type":"stat","tint":"cyan","props":{"label":"Home Edition Launch","value":"11 Days","change":"Apr 1 target","trend":"up","status":"good","subtitle":"14,000 units ready in Austin"}},{"type":"pipeline-card","props":{"title":"Optimus OS v4.1","stages":[{"label":"Firmware Lock","status":"complete","detail":"Mar 15"},{"label":"Safety Audit","status":"active","duration":"72h remaining"},{"label":"OTA Deploy","status":"pending","detail":"41.2M compatible devices"}]}},{"type":"metric-list","props":{"title":"Production Metrics","items":[{"label":"Austin Output","value":"14,200 units","status":"good"},{"label":"Daily Rate","value":"820/day","status":"good","change":"+12% vs plan"},{"label":"Defect Rate","value":"0.31%","status":"good"},{"label":"Cost/Unit","value":"$18,400","status":"watch","change":"Target: $16K"}]}},{"type":"bar-chart","props":{"title":"Optimus Unit Output by Month","bars":[{"label":"Jan","value":6200},{"label":"Feb","value":9800},{"label":"Mar","value":14200}],"unit":"units"}},{"type":"vote-card","props":{"title":"Optimus Liability Framework v2.0","resolution":"2030-04-01","positions":[{"director":"Kathleen Wilson-Thompson","vote":"conditional","condition":"$5B insurance ceiling"},{"director":"Hiro Mizuno","vote":"no"},{"director":"Robyn Denholm","vote":"yes"}],"predictedOutcome":"10-1 if Kathleen converts","prepActions":["Call Kathleen before Apr 10"]}},{"type":"alert","tint":"orange","props":{"title":"Open Risks","alerts":[{"severity":"warning","title":"Labor displacement data under legal review","detail":"Publishing before framework approval risks regulatory action."},{"severity":"info","title":"Insurance ceiling negotiation","detail":"$5B ceiling achievable — Kathleen's condition is within range."}]}},{"type":"donut","props":{"title":"Optimus Use Cases (deployed)","segments":[{"label":"Manufacturing","percent":61},{"label":"Logistics","percent":19},{"label":"Home Trial","percent":12},{"label":"Government Pilot","percent":8}],"centerLabel":"14,200","centerValue":"units"}},{"type":"checklist","props":{"title":"Launch Checklist","items":[{"text":"Safety audit pass — awaiting 72h window","status":"pending"},{"text":"Insurance framework signed — Kathleen","status":"pending"},{"text":"Austin line at 820/day capacity","status":"done"},{"text":"OTA infrastructure validated","status":"done"},{"text":"Legal sign-off on labor metrics","status":"pending"}]}},{"type":"timeline","props":{"title":"Optimus Milestones","events":[{"date":"Mar 19","title":"Safety audit begins","category":"milestone"},{"date":"Mar 22","title":"Safety audit completes"},{"date":"Apr 1","title":"Home Edition ships — board vote","category":"milestone"},{"date":"Q3 2030","title":"Scale to 50K/month","impact":"Requires $2.8B CapEx"}]}}],"footerLeft":"Optimus Intelligence · Tesla Intelligence","footerRight":"Mar 19, 2030"}}]}
-```
-
-*Why this works:* Nine cards, three rows of three, no kpi-strip at all. The Glass leads with a hero stat card (with cyan tint), then mixes chart, pipeline, metric-list, vote-card, alert, donut, checklist, and timeline. Every row is a different mix. This is what card density looks like — not a sparse grid, a full glass.
-
----
-
-### Example 8: Dense Chart Row — Three All-Chart Columns, Then Two Wide Cards
-
-**Layout: `"3-2"` — three charts across the top, two big cards beneath**
-
-**Elon asks:** *"What's happening in energy?"*
-
-**The voice is saying (one sentence):** "Energy is the quiet story — thirty-one percent margin, growing faster than auto, and Powerwall backlog is the one constraint."
-
-**You return:** All three top slots are data-dense charts (bar, pie, line). Bottom two are wide mixed cards — a full metric breakdown and a roadmap:
-```json
-{"generativeSubsections":[{"id":"energy-briefing","templateId":"GridView","props":{"badge":"Energy Division · Mar 19, 2030","layout":"3-2","cards":[{"type":"bar-chart","props":{"title":"Quarterly Energy Revenue ($B)","bars":[{"label":"Q2 2029","value":6.1},{"label":"Q3 2029","value":7.4},{"label":"Q4 2029","value":8.9},{"label":"Q1 2030","value":"9.2"}],"unit":"$B"}},{"type":"pie-chart","props":{"title":"Revenue Mix by Product","slices":[{"name":"Megapack","value":48},{"name":"Powerwall","value":28},{"name":"Solar Roof","value":14},{"name":"Grid Services","value":10}]}},{"type":"line-chart","props":{"title":"Gross Margin Trend (%)","data":{"Q1 29":24.1,"Q2 29":26.8,"Q3 29":28.4,"Q4 29":30.1,"Q1 30":31.4},"unit":"%"}},{"type":"metric-list","props":{"title":"Energy Division Health","items":[{"label":"TTM Revenue","value":"$36B","status":"good","change":"+54% YoY"},{"label":"Gross Margin","value":"31.4%","status":"good","change":"+7.3pp YoY"},{"label":"Megapack Backlog","value":"$12.8B","status":"good","change":"14-month waitlist"},{"label":"Powerwall Backlog","value":"$3.1B","status":"watch","change":"Constrained by cell supply"},{"label":"Solar Installations","value":"4.2 GW Q1","status":"good"},{"label":"Grid Revenue","value":"$3.6B ann.","status":"good","change":"New segment"}]}},{"type":"checklist","props":{"title":"Energy Strategic Priorities","items":[{"text":"Resolve Powerwall cell supply — Samsung contract renewal Apr","status":"pending"},{"text":"Megapack Nevada Phase 2 — $4.1B, 44% complete","status":"pending"},{"text":"Australia grid contract — $800M, sign by May","status":"pending"},{"text":"Solar Roof installer network — 2,400 certified partners","status":"done"},{"text":"Grid Services API — launched Q4 2029","status":"done"}]}}],"footerLeft":"Energy Division Intelligence · Tesla Intelligence","footerRight":"Mar 19, 2030"}}]}
-```
-
-*Why this works:* The top row is pure charts — bar, pie, line — covering three completely different visual representations of the same segment. The bottom row spreads wide for a full metric list and a strategic checklist. No kpi-strip, no hero. The Glass decided charts lead.
-
----
-
-### Example 9: People Briefing — No Charts at All, 3×3 Relationship Grid
-
-**Layout: `"3-3-3"` — nine human-facing cards, zero charts, no numbers in row 1**
-
-**Elon asks:** *"Who are the people I need to be paying attention to right now?"*
-
-**The voice is saying (full response):** "Four names. Kathleen — your swing vote, needs a call before April. Hiro — cooling fast, needs a public statement, not a call. Tom Zhu — Shanghai is your most reliable operator and he's being headhunted. And Brandon in IR — Elliott is his job, and he needs resources before June."
-
-**You return:** Nine cards — all people/relationship/text, zero charts, zero kpi-strip. The Glass goes full narrative:
-```json
-{"generativeSubsections":[{"id":"people-watch","templateId":"GridView","props":{"badge":"People Intelligence · Mar 19, 2030","layout":"3-3-3","cards":[{"type":"person-card","props":{"name":"Kathleen Wilson-Thompson","title":"Director, Governance Chair","metric":"Conditional","metricLabel":"Optimus Vote","status":"watch","detail":"Swing vote. Wants $5B insurance ceiling. One call away from yes.","traits":["Strategic","Persuadable","Detail-driven"]}},{"type":"person-card","tint":"red","props":{"name":"Hiro Mizuno","title":"Director, Risk Committee Chair","metric":"No","metricLabel":"Optimus Vote","status":"bad","detail":"ESG cooling. A call won't fix this — needs a public positioning statement.","traits":["Principled","ESG-driven","Resistant to direct pressure"]}},{"type":"person-card","tint":"green","props":{"name":"Tom Zhu","title":"VP Manufacturing, Shanghai Lead","metric":"92.3%","metricLabel":"Plant Utilization","status":"good","detail":"Your best operator. Being approached externally. Retention risk if not recognized.","traits":["Execution-focused","Loyal","Under pressure"]}},{"type":"relationship-card","props":{"name":"Kathleen Wilson-Thompson","role":"Director, Governance Chair","sentiment":"watch","trajectory":"stable","lastContact":"Mar 11","daysSince":8,"commitments":["$5B insurance ceiling before YES vote","Pilot extended to 100 households"],"actionNeeded":"Call before Apr 10 — achievable ask","riskLevel":"medium"}},{"type":"relationship-card","tint":"red","props":{"name":"Hiro Mizuno","role":"Director, Risk Committee Chair","sentiment":"at-risk","trajectory":"cooling","lastContact":"Mar 11","daysSince":8,"commitments":["ESG concerns on Home Edition labor displacement"],"actionNeeded":"Public statement before Apr board — call won't move him","riskLevel":"high"}},{"type":"relationship-card","tint":"green","props":{"name":"Tom Zhu","role":"VP Manufacturing","sentiment":"strong","trajectory":"stable","lastContact":"Mar 17","daysSince":2,"commitments":["Q2 expansion plan delivery by Apr"],"actionNeeded":"Recognition + retention signal before Q2 planning","riskLevel":"low"}},{"type":"person-card","props":{"name":"Brandon Gorman","title":"Head of Investor Relations","metric":"Elliott","metricLabel":"Proxy Threat","status":"watch","detail":"Managing 0.8% Elliott stake before June AGM. Needs resources and air cover.","traits":["Diplomatic","Sharp","Understaffed"]}},{"type":"text","props":{"title":"Elliott Situation","body":"0.8% stake — too small to contest without a coalition. Real risk is noise: a proxy fight pulls board focus at exactly the wrong moment for Optimus launch.","bullets":["Get Brandon in front of shareholder base before Apr","No concessions — posture of strength","June AGM is the deadline, not a trigger"]}},{"type":"checklist","props":{"title":"People Actions — This Week","items":[{"text":"Call Kathleen — Apr 10 deadline, $5B is achievable","status":"pending"},{"text":"Draft public Optimus augmentation statement for Hiro","status":"pending"},{"text":"Send Tom Zhu retention signal before Q2 planning","status":"pending"},{"text":"Authorize Brandon for Elliott outreach budget","status":"pending"}]}}],"footerLeft":"People Intelligence · Tesla Intelligence","footerRight":"Mar 19, 2030"}}]}
-```
-
-*Why this works:* Zero charts. Zero kpi-strip. Three rows of pure people intelligence — person-cards, relationship-cards, text, and a checklist. Two of the relationship-cards get red/green tints to immediately signal who is a risk and who is an asset. The Glass goes fully narrative and it fills the viewport completely.
-
----
-
-### Example 10: Blitz Grid — 9 Cards, 1-3-3-2 Layout, Maximum Density
-
-**Layout: `"1-3-3-2"` — four rows, 9 cards total, kpi-strip anchors the top**
-
-**Elon asks:** *"Give me the full Tesla picture — everything."*
-
-**The voice is saying (one sentence):** "Factory at 84.8 average, energy carrying the margin story, Dojo is back, board vote in thirteen days."
-
-**You return:** A 9-card blitz across four rows — max density, every major domain:
-```json
-{"generativeSubsections":[{"id":"full-tesla-blitz","templateId":"GridView","props":{"badge":"Tesla Intelligence · Mar 19, 2030","layout":"1-3-3-2","cards":[{"type":"kpi-strip","span":"full","props":{"items":[{"label":"Global Output MTD","value":"8.05M","trend":"up","status":"good","change":"+3.2%"},{"label":"Energy Margin","value":"31.4%","trend":"up","status":"good","change":"Leads Auto"},{"label":"Dojo Compute","value":"5.0 EF","status":"good","change":"Restored"},{"label":"Board Vote","value":"13 Days","status":"watch"},{"label":"FSD ETA","value":"Mar 18","status":"good"}]}},{"type":"bar-chart","props":{"title":"Factory Utilization","bars":[{"label":"Shanghai","value":92.3},{"label":"Texas","value":90.0},{"label":"Berlin","value":85.7},{"label":"Mumbai","value":81.8},{"label":"Riyadh","value":68.0}],"unit":"%"}},{"type":"donut","props":{"title":"Revenue Mix TTM","segments":[{"label":"Auto","percent":62},{"label":"Energy","percent":20},{"label":"AI & CaaS","percent":18}],"centerLabel":"$179.6B","centerValue":"TTM"}},{"type":"alert","tint":"orange","props":{"title":"Live Watch Items","alerts":[{"severity":"warning","title":"Riyadh below ramp target","detail":"68% vs 75% Q1 target"},{"severity":"warning","title":"Jakarta relay audit Friday","detail":"Same model as Mar 8 failure — Berlin + Mumbai also at risk"},{"severity":"warning","title":"Kathleen window closes Apr 10","detail":"$5B insurance ceiling — call needed this week"}]}},{"type":"metric-list","props":{"title":"Financial Health","items":[{"label":"TTM Revenue","value":"$179.6B","status":"good","change":"+18.4% YoY"},{"label":"Gross Margin","value":"24.2%","status":"good"},{"label":"Free Cash Flow","value":"$11.3B","status":"good"},{"label":"CaaS Revenue","value":"$36B ann.","status":"good","change":"+42% YoY"}]}},{"type":"timeline","props":{"title":"Next 30 Days","events":[{"date":"Mar 19","title":"Jakarta relay audit"},{"date":"Mar 22","title":"FSD v18.5 OTA begins","category":"milestone"},{"date":"Apr 1","title":"Board meeting — Optimus vote","category":"milestone"},{"date":"Apr 10","title":"Kathleen deadline"}]}},{"type":"pipeline-card","props":{"title":"FSD v18.5 Release","stages":[{"label":"Training","status":"active","detail":"Resuming Mar 17"},{"label":"Validation","status":"pending"},{"label":"OTA Rollout","status":"pending","detail":"41.2M vehicles"}]}},{"type":"stat","tint":"green","props":{"label":"Optimus Units Ready","value":"14,200","change":"Ships Apr 1","trend":"up","status":"good","subtitle":"Austin line at 820/day"}},{"type":"stat","props":{"label":"Board Alignment","value":"9-1-1","change":"Kathleen conditional · Hiro no","trend":"flat","status":"watch","subtitle":"Call Kathleen before Apr 10"}}],"footerLeft":"Tesla Intelligence · Full Brief","footerRight":"Mar 19, 2030"}}]}
-```
-
-*Why this works:* Four rows, 9 cards. The kpi-strip anchors the top with 5 headline metrics. Three tight chart rows follow — factory bar-chart, revenue donut, alert card; metric-list, timeline, pipeline; two stat cards at the bottom. Every major Tesla domain has at least one card. The viewport is full.
-
----
-
-### Example 11: Comparison Grid — Layout `"2-3"`, No Strip, Side-by-Side Heroes
-
-**Layout: `"2-3"` — two wide hero cards on top, three detail cards underneath**
-
-**Elon asks:** *"Compare Shanghai and Texas head to head."*
-
-**The voice is saying (one word):** "Shanghai."
-
-**You return:** Two hero `stat` cards side by side at the top for the direct compare, then three detail cards below. No kpi-strip — the comparison IS the headline:
-```json
-{"generativeSubsections":[{"id":"shanghai-vs-texas","templateId":"GridView","props":{"badge":"Factory Comparison · Mar 19, 2030","layout":"2-3","cards":[{"type":"stat","tint":"green","props":{"label":"Shanghai Gigafactory","value":"92.3%","change":"Output: 2.4M MTD","trend":"up","status":"good","subtitle":"Highest utilization network-wide · Tom Zhu"}},{"type":"stat","props":{"label":"Texas Gigafactory","value":"90.0%","change":"Output: 1.8M MTD","trend":"up","status":"good","subtitle":"Cybertruck + Model Y · Phase 4 underway"}},{"type":"comparison-table","props":{"title":"Head to Head","headers":["Metric","Shanghai","Texas"],"rows":[["Utilization","92.3%","90.0%"],["MTD Output","2.4M","1.8M"],["Workers","24,000","18,500"],["Optimus Units","3,200","1,400"],["Expansion","Phase 3 live","Phase 4 72% complete"],["Lead Time","3.2 days","4.1 days"]]}},{"type":"bar-chart","props":{"title":"Monthly Output Trend (units)","bars":[{"label":"Shanghai Jan","value":2100000},{"label":"Shanghai Feb","value":2250000},{"label":"Shanghai Mar","value":2400000},{"label":"Texas Jan","value":1600000},{"label":"Texas Feb","value":1720000},{"label":"Texas Mar","value":1800000}],"unit":"units"}},{"type":"text","props":{"title":"Strategic Read","body":"Shanghai leads on every operational metric. Texas is newer and still ramping Phase 4. The 2.4pp utilization gap is structurally explained — not a performance concern.","bullets":["Shanghai: global export hub, highest margin plant","Texas: domestic demand + Cybertruck sole source","Phase 4 complete = Texas likely matches Shanghai by Q3"]}}],"footerLeft":"Manufacturing Intelligence · Tesla Intelligence","footerRight":"Mar 19, 2030"}}]}
-```
-
-*Why this works:* Two `stat` cards open the scene — immediate direct contrast, no strip needed. The comparison-table, bar-chart, and text card fill the bottom row with evidence. Five cards total is intentionally light here — the comparison is simple and deserves room to breathe. The Glass knows when fewer cards serves the story better.
-
----
-
-### Example 12: Incident War Room — Layout `"1-2-3"`, Red Tint Everywhere, Full Ops Mode
-
-**Layout: `"1-2-3"` — kpi-strip status, two wide incident cards, three action cards**
-
-**Elon asks:** *"What happened in Jakarta and what's our exposure?"*
-
-**The voice is saying (full response):** "Jakarta's back — eight days down, point-three exaflops lost, FSD delayed a week. The relay that failed is also in Berlin five and Mumbai eight. Those need to be replaced before Q2 or we're looking at the same thing in a different city."
-
-**You return:** Incident war-room layout. Red tints on the critical cards. Maximum operational detail:
-```json
-{"generativeSubsections":[{"id":"jakarta-incident","templateId":"GridView","props":{"badge":"Incident Response · Mar 19, 2030","layout":"1-2-3","cards":[{"type":"kpi-strip","span":"full","props":{"items":[{"label":"Status","value":"Resolved","trend":"up","status":"good","change":"Jakarta restored Mar 16"},{"label":"Compute Lost","value":"0.3 EF × 8d","status":"bad","change":"~57.6 EF-hours"},{"label":"FSD Delay","value":"~1 Week","status":"watch"},{"label":"CaaS Impact","value":"$12M SLA","status":"bad"},{"label":"At-Risk Clusters","value":"2","status":"bad","change":"Berlin 5 · Mumbai 8"}]}},{"type":"incident-card","tint":"red","props":{"severity":"resolved","title":"Jakarta Cluster 7 — CRF-420 Cooling Relay","summary":"CRF-420 cooling relay failure took Jakarta Cluster 7 offline for 8 days. Full 5.0 EF restored Mar 16.","timeline":[{"time":"Mar 8 02:14 UTC","description":"CRF-420 relay overtemperature alarm — cluster auto-shutdown"},{"time":"Mar 8 04:30 UTC","description":"On-site team confirms hardware failure, part ordered"},{"time":"Mar 12","description":"Replacement unit sourced from Austin spare depot"},{"time":"Mar 16 18:00 UTC","description":"CRF-420 replaced, thermal test passed, cluster restored"},{"time":"Mar 17 06:00","description":"FSD v18.5 training resumed at full rate"}],"impact":"0.3 EF offline 8 days. FSD v18.5 delayed ~7 days. $12M CaaS SLA credit owed.","resolution":"Full 5.0 EF restored. Post-mortem Friday Mar 19. Supply chain audit initiated."}},{"type":"domino-card","props":{"title":"If Berlin Cluster 5 fails next","probability":28,"exposure":"$22M + FSD delay","chain":[{"step":1,"event":"CRF-420 relay in Berlin 5 reaches thermal limit"},{"step":2,"event":"Berlin 5 offline — 0.2 EF lost","impact":"FSD training drops to 4.8 EF, extends v18.5 by additional 3 days"},{"step":3,"event":"Second SLA credit triggered — $10M","impact":"CaaS customer confidence risk"},{"step":4,"event":"Mumbai 8 relay placed on emergency watch","impact":"Reactive maintenance, not preventive — highest risk posture"}]}},{"type":"alert","tint":"red","props":{"title":"Immediate Actions Required","alerts":[{"severity":"critical","title":"Replace CRF-420 in Berlin Cluster 5","detail":"Same relay model. Estimated 48h preventive replacement window needed — schedule this week."},{"severity":"critical","title":"Replace CRF-420 in Mumbai Cluster 8","detail":"Same risk profile. Coordinate with Berlin swap to minimize compute impact."},{"severity":"warning","title":"Post-mortem Friday Mar 19","detail":"Root cause analysis on cooling relay supply chain and thermal monitoring gaps."}]}},{"type":"metric-list","props":{"title":"Cluster Health Post-Incident","items":[{"label":"Jakarta 7","value":"Online · 0.8 EF","status":"good","change":"Restored Mar 16"},{"label":"Austin 1-3","value":"Online · 1.8 EF","status":"good"},{"label":"Berlin 4","value":"Online · 0.3 EF","status":"good"},{"label":"Berlin 5","value":"⚠ At Risk · 0.3 EF","status":"bad","change":"CRF-420 not yet replaced"},{"label":"Mumbai 8","value":"⚠ At Risk · 0.5 EF","status":"bad","change":"CRF-420 not yet replaced"},{"label":"Shanghai 6","value":"Online · 0.5 EF","status":"good"},{"label":"Tokyo 9","value":"Online · 0.4 EF","status":"good"}]}},{"type":"stat","tint":"red","props":{"label":"Clusters at Risk","value":"2 of 9","change":"Berlin 5 · Mumbai 8 · same relay","trend":"down","status":"bad","subtitle":"Replace both before end of week or accept 28% cascade probability"}}],"footerLeft":"Dojo Incident Command · Tesla Intelligence","footerRight":"Mar 19, 2030"}}]}
-```
-
-*Why this works:* This is incident war-room mode. The kpi-strip leads with operational status. The incident-card (red tint) is the centerpiece — full timeline, full impact, full resolution. The domino-card shows the cascade risk. The alert card (also red tinted) has the three concrete actions. The metric-list shows every cluster's health. The final stat card is a hero risk number with a red tint. Three different cards use red tint — all three carry semantic urgency. The Glass does not pull punches.
+**Key layout principles:**
+- You do not need a kpi-strip in every grid. For people, comparison, and chart-heavy topics, lead with the strongest card type for that topic.
+- Never use the same card type more than 3 times in one grid. 3 identical cards in one row is intentional (stat triptych, bar-chart comparison, person-card compare) — never by accident.
+- Sparse grids (under 5 cards) are almost always wrong. Push toward 7–9 when the topic warrants it.
 
 <!-- TEMPLATE-SCHEMAS-START -->
 
