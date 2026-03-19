@@ -5,7 +5,7 @@ import { Send, Sparkles } from 'lucide-react';
 import { useVoiceSessionStore } from '@/lib/stores/voice-session-store';
 import { assets } from '@/assets';
 import { ToolCallIndicator } from './ToolCallIndicator';
-import { JsonPayloadBubble, isScenePayload } from './JsonPayloadBubble';
+
 
 const SLEEP_TIMEOUT = 5000;
 
@@ -113,19 +113,20 @@ export function ChatPanel() {
         {visibleTranscripts.map((t, i) => {
           // Tool call entries
           if (t.participant === 'tool') {
-            // generate_scene entries carry the full JSON payload — use the rich inspector
-            if (t.participantName === 'generate_scene' && isScenePayload(t.text)) {
+            // generate_scene: compact pill with copy — no expand/params display
+            if (t.participantName === 'generate_scene') {
               return (
-                <JsonPayloadBubble
+                <ToolCallIndicator
                   key={t.id}
                   toolName={t.participantName}
-                  rawText={t.text}
-                  timestamp={t.timestamp}
+                  parameters={{}}
+                  compact
+                  clipboardText={t.text}
                 />
               );
             }
 
-            // All other tool calls get the standard indicator
+            // All other tool calls get the standard expandable indicator
             let toolParams: Record<string, unknown> = {};
             try {
               toolParams = JSON.parse(t.text);

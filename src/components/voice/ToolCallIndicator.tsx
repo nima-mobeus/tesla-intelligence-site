@@ -6,7 +6,6 @@ import {
   ChevronUp,
   Copy,
   Check,
-  CheckCircle2,
   LayoutTemplate,
   History,
   Cloud,
@@ -25,6 +24,10 @@ interface ToolCallIndicatorProps {
   parameters: Record<string, unknown>;
   timestamp?: Date;
   defaultExpanded?: boolean;
+  /** When true: renders only icon + label + copy button — no expand/collapse */
+  compact?: boolean;
+  /** Override the text written to clipboard. Defaults to JSON.stringify({toolName, parameters}) */
+  clipboardText?: string;
 }
 
 const TOOL_DISPLAY_CONFIG: Record<string, { label: string; Icon: React.ElementType }> = {
@@ -48,13 +51,15 @@ export function ToolCallIndicator({
   toolName,
   parameters,
   defaultExpanded = false,
+  compact = false,
+  clipboardText,
 }: ToolCallIndicatorProps) {
   const [isExpanded, setIsExpanded] = useState(defaultExpanded);
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async (e: React.MouseEvent) => {
     e.stopPropagation();
-    const content = JSON.stringify({ toolName, parameters }, null, 2);
+    const content = clipboardText ?? JSON.stringify({ toolName, parameters }, null, 2);
     try {
       await navigator.clipboard.writeText(content);
       setCopied(true);
@@ -67,11 +72,50 @@ export function ToolCallIndicator({
   const config = TOOL_DISPLAY_CONFIG[toolName] || { label: toolName, Icon: Wrench };
   const DisplayIcon = config.Icon;
 
+  // ── Compact mode: icon + label + copy only, no expand ────────────────────
+  if (compact) {
+    return (
+      <div
+        className="mb-2 rounded-2xl border overflow-hidden relative group"
+        style={{
+          background: 'rgba(255,255,255,0.07)',
+          borderColor: 'rgba(255,255,255,0.10)',
+        }}
+      >
+        <div className="flex items-center justify-between px-3 sm:px-4 py-3">
+          <div className="flex items-center gap-2 min-w-0">
+            <DisplayIcon className="w-4 h-4 text-emerald-400 shrink-0" />
+            <span
+              className="text-caption font-mono font-medium truncate"
+              style={{ color: 'rgba(255,255,255,0.5)' }}
+            >
+              Called{' '}
+              <span style={{ color: 'rgba(255,255,255,0.85)' }}>{config.label}</span>
+            </span>
+          </div>
+          <button
+            onClick={handleCopy}
+            className="p-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 active:scale-95"
+            style={{ color: 'rgba(255,255,255,0.5)' }}
+            title="Copy to clipboard"
+          >
+            {copied ? (
+              <Check className="w-3.5 h-3.5 text-emerald-400" />
+            ) : (
+              <Copy className="w-3.5 h-3.5" />
+            )}
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // ── Full mode (default) ───────────────────────────────────────────────────
   return (
     <div
-      className="mb-2 rounded-2xl backdrop-blur-sm border overflow-hidden transition-all duration-300 relative group"
+      className="mb-2 rounded-2xl border overflow-hidden transition-all duration-300 relative group"
       style={{
-        background: 'rgba(255,255,255,0.05)',
+        background: 'rgba(255,255,255,0.07)',
         borderColor: 'rgba(255,255,255,0.10)',
       }}
     >
