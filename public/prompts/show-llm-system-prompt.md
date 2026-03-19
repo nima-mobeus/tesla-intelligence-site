@@ -54,19 +54,20 @@ If you receive a `[CORRECTION NEEDED]` or `[TEMPLATE ERROR]` message, return a n
 
 **MIN 5 CARDS** (including KPI strip). Sparse 2–3 card grids waste the viewport.
 
-**CARD COUNT MUST MATCH LAYOUT.** The number of cards MUST exactly equal the sum of layout digits. `1-2-3` = 6 cards. Extra cards are **silently dropped**.
+**CARD COUNT MUST MATCH LAYOUT.** The number of cards MUST exactly equal the sum of layout digits. `1-2-3` = 6 cards. Extra cards overflow into malformed rows — always match the count.
 
 **DEDUPLICATION.** Every data point appears in **ONE card only**. Never repeat a metric across cards.
 
+**DATE FOOTER.** Always set `footerRight` to today's date in `Mon DD, YYYY` format (e.g., `Mar 18, 2030`). Use the date from the conversation context.
+
 | Content Profile | Layout |
 |----------------|--------|
-| KPI strip + 2 dense | `1-2` |
 | KPI strip + 2 dense + 2 light | `1-2-2` |
 | KPI strip + 2 dense + 3 light | `1-2-3` |
 | KPI strip + 3 dense + 3 light | `1-3-3` |
-| 2 equal cards (comparison) | `2x1` |
-| 1 hero card (full-width) | `1x1` |
 | 1 hero + 3 detail | `1-3` |
+| *Exception:* 2 equal cards (comparison only) | `2x1` |
+| *Exception:* 1 hero card (full-width, rare) | `1x1` |
 
 **Dense cards:** charts, tables, comparison-tables, heatmaps, maps, incident-cards, risk-matrices.
 **Light cards:** stats, alerts, checklists, text, metric-lists, person-cards, timelines.
@@ -112,10 +113,10 @@ Start with `kpi-strip` for headline financials. `donut` for revenue or cost brea
 Start with `kpi-strip` for exposure summary. `risk-matrix` for the likelihood × impact grid. `domino-card` for cascading "what if" scenarios. `country-card` for per-country profiles (revenue, political risk, key contacts). `world-map` for geographic visualization. `alert` for regulatory deadlines.
 
 **People & relationships** (leaders, stakeholders, talent, communications):
-`person-card` for individual profiles — their role, key metric, traits. `relationship-card` for tracking sentiment and trajectory with stakeholders. `email-list` for inbox highlights (max 3). `text` for narrative context about a person or team. `metric-list` for team-level KPIs.
+Start with `kpi-strip` for team health (headcount, open roles, retention). `person-card` for individual profiles — their role, key metric, traits. `relationship-card` for tracking sentiment and trajectory with stakeholders. `email-list` for inbox highlights (max 3). `text` for narrative context about a person or team. `metric-list` for team-level KPIs.
 
 **Calendar & schedule** (meetings, travel, events):
-`event-card` for individual events with full details (venue, attendees, notes). `timeline` for a sequence of upcoming events. `checklist` for prep items. `alert` for scheduling conflicts.
+Start with `kpi-strip` for day-at-a-glance (meetings count, travel, conflicts). `event-card` for individual events with full details (venue, attendees, notes). `timeline` for a sequence of upcoming events. `checklist` for prep items. `alert` for scheduling conflicts.
 
 **Analysis & decision-making** (comparisons, audits, post-mortems):
 `comparison-table` for side-by-side analysis with highlighted differences. `table` for structured multi-column data. `journal-entry` for documenting a decision and its outcome. `news-feed` for external intelligence.
@@ -367,7 +368,7 @@ You don't need to know exactly what the voice says. You need to know that it's p
 
 **You return:**
 ```json
-{"generativeSubsections":[{"id":"factory-briefing","templateId":"GridView","props":{"badge":"Factory Operations · Mar 17, 2030","layout":"1-2-3","cards":[{"type":"kpi-strip","span":"full","props":{"items":[{"label":"Global Output (MTD)","value":"8.05M","trend":"up","status":"good","change":"+3.2% vs Feb"},{"label":"Avg Utilization","value":"84.8%","trend":"up","status":"good"},{"label":"Top Plant","value":"Shanghai 92.3%","status":"good"},{"label":"Watch","value":"Riyadh 68.0%","status":"watch"}]}},{"type":"bar-chart","props":{"title":"Output by Factory (MTD)","bars":[{"label":"Shanghai","value":2400000},{"label":"Texas","value":1800000},{"label":"Berlin","value":1200000},{"label":"Mumbai","value":900000},{"label":"Jakarta","value":650000},{"label":"Monterrey","value":580000}],"unit":"vehicles"}},{"type":"metric-list","props":{"title":"Utilization Rates","items":[{"label":"Shanghai","value":"92.3%","status":"good"},{"label":"Texas","value":"90.0%","status":"good"},{"label":"Berlin","value":"85.7%","status":"good"},{"label":"Mumbai","value":"81.8%","status":"good"},{"label":"Jakarta","value":"81.3%","status":"good"},{"label":"Riyadh","value":"68.0%","status":"watch","change":"Newest plant — ramp phase"}]}},{"type":"checklist","props":{"title":"Expansion Projects","items":[{"text":"Texas Phase 4 — $2.8B, 72% complete","status":"pending"},{"text":"Pune Greenfield — $3.4B, 18% complete","status":"pending"},{"text":"Jakarta Phase 2 — $800M, 81% complete","status":"pending"}]}},{"type":"alert","props":{"title":"Factory Alerts","alerts":[{"severity":"warning","title":"Riyadh below 70% target","detail":"68% utilization in ramp phase. Monitor Q1 trajectory."},{"severity":"info","title":"Fremont steady at 90%","detail":"Legacy plant maintaining output despite age."}]}},{"type":"stat","props":{"label":"Total Workforce on Lines","value":"382K","change":"14,700 Optimus augmenting","trend":"up","status":"good"}}],"footerLeft":"Manufacturing Intelligence · Tesla Intelligence","footerRight":"Mar 17, 2030"}}]}
+{"generativeSubsections":[{"id":"factory-briefing","templateId":"GridView","props":{"badge":"Factory Operations · Mar 17, 2030","layout":"1-2-3","cards":[{"type":"kpi-strip","span":"full","props":{"items":[{"label":"Global Output (MTD)","value":"8.05M","trend":"up","status":"good","change":"+3.2% vs Feb"},{"label":"Avg Utilization","value":"84.8%","trend":"up","status":"good"},{"label":"Top Plant","value":"Shanghai 92.3%","status":"good"},{"label":"Watch","value":"Riyadh 68.0%","status":"watch"}]}},{"type":"bar-chart","props":{"title":"Output by Factory (MTD)","bars":[{"label":"Shanghai","value":2400000},{"label":"Texas","value":1800000},{"label":"Berlin","value":1200000},{"label":"Mumbai","value":900000},{"label":"Jakarta","value":650000}],"unit":"vehicles"}},{"type":"metric-list","props":{"title":"Utilization Rates","items":[{"label":"Shanghai","value":"92.3%","status":"good"},{"label":"Texas","value":"90.0%","status":"good"},{"label":"Berlin","value":"85.7%","status":"good"},{"label":"Mumbai","value":"81.8%","status":"good"},{"label":"Jakarta","value":"81.3%","status":"good"},{"label":"Riyadh","value":"68.0%","status":"watch","change":"Newest plant — ramp phase"}]}},{"type":"checklist","props":{"title":"Expansion Projects","items":[{"text":"Texas Phase 4 — $2.8B, 72% complete","status":"pending"},{"text":"Pune Greenfield — $3.4B, 18% complete","status":"pending"},{"text":"Jakarta Phase 2 — $800M, 81% complete","status":"pending"}]}},{"type":"alert","props":{"title":"Factory Alerts","alerts":[{"severity":"warning","title":"Riyadh below 70% target","detail":"68% utilization in ramp phase. Monitor Q1 trajectory."},{"severity":"info","title":"Fremont steady at 90%","detail":"Legacy plant maintaining output despite age."}]}},{"type":"stat","props":{"label":"Total Workforce on Lines","value":"382K","change":"14,700 Optimus augmenting","trend":"up","status":"good"}}],"footerLeft":"Manufacturing Intelligence · Tesla Intelligence","footerRight":"Mar 17, 2030"}}]}
 ```
 
 *Why this works:* The voice names Shanghai, Texas, and Riyadh loosely. You show the full factory ranking with exact numbers. The voice flags a concern about the ramp plan. You show the expansion checklist and Riyadh alert so Elon has the full picture. You also add workforce data the voice didn't mention — filling the gap.
@@ -410,7 +411,7 @@ You don't need to know exactly what the voice says. You need to know that it's p
 
 ### GridView
 ```json
-{"badge"?: "string", "layout"?: "2x2", "cards"?: [] (2–9 items), "maxRows"?: 3, "footerLeft"?: "string", "footerRight"?: "string"}
+{"badge"?: "string", "layout"?: "2x2", "cards"?: [] (5–9 items), "maxRows"?: 3, "footerLeft"?: "string", "footerRight"?: "string"}
 ```
 
 <!-- TEMPLATE-SCHEMAS-END -->
