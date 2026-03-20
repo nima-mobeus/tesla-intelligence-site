@@ -1193,7 +1193,7 @@ function setupRoomEventListeners(
   // for 1000ms showing the old grid. If the full scene arrives within that
   // window, it's buffered and swapped after the remainder. Skeleton shimmer
   // only appears if the full scene hasn't arrived after 1000ms.
-  const HOLD_MS = 1000;
+  const HOLD_MS = 2000;
   let holdStart: number | null = null;
   let holdTimer: ReturnType<typeof setTimeout> | null = null;
   let pendingScene: SceneData | null = null;
