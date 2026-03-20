@@ -157,18 +157,22 @@ export function ChatPanel() {
                 }
               </div>
 
-              {/* Bubble — no backdrop-filter here; blur lives on .telelabor-panel (fixed, body-level stacking context)
-                   so it correctly composites against the background video. Bubbles only need semi-transparent bg. */}
+              {/* Bubble — animation wrapper ends with transform:none, so no stacking context is trapped.
+                   backdrop-filter here composites correctly against the background video, same as ToolCallIndicator. */}
               <div
-                className="chat-message-bubble max-w-[78%] sm:max-w-[72%] px-3.5 py-2.5 sm:px-4 sm:py-3 text-body leading-relaxed transition-all duration-300 rounded-2xl"
+                className="chat-message-bubble max-w-[78%] sm:max-w-[72%] px-3.5 py-2.5 sm:px-4 sm:py-3 text-body leading-relaxed transition-all duration-300 rounded-2xl overflow-hidden"
                 style={isUser ? {
-                  background: 'rgba(255, 255, 255, 0.12)',
+                  background: 'rgba(255, 255, 255, 0.10)',
                   color: 'rgba(255, 255, 255, 0.95)',
-                  border: '1px solid rgba(255, 255, 255, 0.15)',
+                  border: '1px solid rgba(255, 255, 255, 0.12)',
+                  backdropFilter: 'blur(8px)',
+                  WebkitBackdropFilter: 'blur(8px)',
                 } : {
-                  background: 'rgba(255, 255, 255, 0.08)',
+                  background: 'rgba(255, 255, 255, 0.07)',
                   color: 'rgba(255, 255, 255, 0.90)',
                   border: '1px solid rgba(255, 255, 255, 0.10)',
+                  backdropFilter: 'blur(8px)',
+                  WebkitBackdropFilter: 'blur(8px)',
                 }}
               >
                 {t.text}
