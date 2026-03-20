@@ -157,21 +157,25 @@ export function ChatPanel() {
                 }
               </div>
 
-              {/* Bubble — same blur/bg/border as ToolCallIndicator */}
+              {/* Bubble — overflow:hidden + translateZ forces own compositor layer so blur works inside overflow-y:auto */}
               <div
-                className="chat-message-bubble max-w-[78%] sm:max-w-[72%] px-3.5 py-2.5 sm:px-4 sm:py-3 text-body leading-relaxed transition-all duration-300 rounded-2xl"
+                className="chat-message-bubble max-w-[78%] sm:max-w-[72%] px-3.5 py-2.5 sm:px-4 sm:py-3 text-body leading-relaxed transition-all duration-300 rounded-2xl overflow-hidden"
                 style={isUser ? {
                   background: 'rgba(255, 255, 255, 0.10)',
                   color: 'rgba(255, 255, 255, 0.95)',
                   border: '1px solid rgba(255, 255, 255, 0.10)',
                   backdropFilter: 'blur(8px)',
                   WebkitBackdropFilter: 'blur(8px)',
+                  transform: 'translateZ(0)',
+                  willChange: 'transform',
                 } : {
                   background: 'rgba(255, 255, 255, 0.07)',
                   color: 'rgba(255, 255, 255, 0.90)',
                   border: '1px solid rgba(255, 255, 255, 0.10)',
                   backdropFilter: 'blur(8px)',
                   WebkitBackdropFilter: 'blur(8px)',
+                  transform: 'translateZ(0)',
+                  willChange: 'transform',
                 }}
               >
                 {t.text}
