@@ -96,13 +96,18 @@ export function ChatPanel() {
         pointerEvents: isChatPanelOpen ? 'auto' : 'none',
       }}
     >
-      {/* Chat messages area */}
+      {/* Top-fade overlay — pointer-events-none, no stacking context, so bubble backdropFilter still works */}
+      <div
+        className="absolute top-0 left-0 right-0 pointer-events-none z-10"
+        style={{
+          height: '96px',
+          background: 'linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.20) 60%, transparent 100%)',
+        }}
+      />
+
+      {/* Chat messages area — no mask so backdropFilter on bubbles works */}
       <div
         className="chat-messages-container flex-1 px-4 pt-20 pb-4 flex flex-col gap-3 overflow-y-auto"
-        style={{
-          maskImage: 'linear-gradient(to bottom, transparent 0px, transparent 60px, black 96px)',
-          WebkitMaskImage: 'linear-gradient(to bottom, transparent 0px, transparent 60px, black 96px)',
-        }}
       >
         {transcripts.length === 0 && isConnected && (
           <div className="flex-1 flex items-center justify-center">
