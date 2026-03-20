@@ -138,17 +138,21 @@ export function ChatPanel() {
           const isUser = t.participant === 'user';
 
           return (
+            // Bubble row — NO animation on wrapper, NO extra stacking context.
+            // Each bubble is a direct child of the flex-col scroll container,
+            // structurally identical to ToolCallIndicator so blur works.
             <div
               key={t.id}
-              className={`animate-chat-bubble-enter flex gap-2.5 ${isUser ? 'flex-row-reverse' : 'flex-row'}`}
-              style={{ animationDelay: `${Math.min(i * 0.05, 0.3)}s` }}
+              className={`flex gap-2.5 items-end ${isUser ? 'flex-row-reverse' : 'flex-row'}`}
             >
-              {/* Avatar icon */}
+              {/* Avatar */}
               <div
-                className="chat-avatar w-7 h-7 sm:w-8 sm:h-8 rounded-full backdrop-blur-sm flex items-center justify-center flex-shrink-0 self-end"
+                className="chat-avatar w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center flex-shrink-0"
                 style={{
                   background: isUser ? 'rgba(0, 180, 216, 0.12)' : 'rgba(255,255,255,0.05)',
                   border: isUser ? '1px solid rgba(0, 212, 245, 0.35)' : '1px solid rgba(255,255,255,0.10)',
+                  backdropFilter: 'blur(4px)',
+                  WebkitBackdropFilter: 'blur(4px)',
                 }}
               >
                 {isUser
@@ -157,20 +161,20 @@ export function ChatPanel() {
                 }
               </div>
 
-              {/* Bubble — animation wrapper ends with transform:none, so no stacking context is trapped.
-                   backdrop-filter here composites correctly against the background video, same as ToolCallIndicator. */}
+              {/* Bubble — outermost element in its row, same structural level as ToolCallIndicator.
+                   backdropFilter on the root element always composites against the page backdrop correctly. */}
               <div
-                className="chat-message-bubble max-w-[78%] sm:max-w-[72%] px-3.5 py-2.5 sm:px-4 sm:py-3 text-body leading-relaxed transition-all duration-300 rounded-2xl overflow-hidden"
+                className="chat-message-bubble max-w-[78%] sm:max-w-[72%] px-3.5 py-2.5 sm:px-4 sm:py-3 text-body leading-relaxed rounded-2xl overflow-hidden border"
                 style={isUser ? {
                   background: 'rgba(255, 255, 255, 0.10)',
                   color: 'rgba(255, 255, 255, 0.95)',
-                  border: '1px solid rgba(255, 255, 255, 0.12)',
+                  borderColor: 'rgba(255, 255, 255, 0.12)',
                   backdropFilter: 'blur(8px)',
                   WebkitBackdropFilter: 'blur(8px)',
                 } : {
                   background: 'rgba(255, 255, 255, 0.07)',
                   color: 'rgba(255, 255, 255, 0.90)',
-                  border: '1px solid rgba(255, 255, 255, 0.10)',
+                  borderColor: 'rgba(255, 255, 255, 0.10)',
                   backdropFilter: 'blur(8px)',
                   WebkitBackdropFilter: 'blur(8px)',
                 }}
