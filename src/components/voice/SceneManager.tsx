@@ -182,40 +182,43 @@ function SceneSkeleton({ layout }: { layout: string }) {
         >
           {Array(colCount)
             .fill(0)
-            .map((_, colIdx) => (
-              <div
-                key={colIdx}
-                className="rounded-xl animate-pulse"
-                style={{
-                  background: 'var(--theme-card-bg, rgba(255,255,255,0.05))',
-                  minHeight: rowIdx === 0 ? '60px' : '120px',
-                }}
-              >
-                {/* Shimmer lines inside card */}
-                <div className="p-4 space-y-3">
-                  <div
-                    className="h-3 rounded-full w-1/3 animate-pulse"
-                    style={{ background: 'var(--theme-scene-text-muted, rgba(255,255,255,0.1))', opacity: 0.3 }}
-                  />
-                  <div
-                    className="h-2 rounded-full w-2/3 animate-pulse"
-                    style={{ background: 'var(--theme-scene-text-muted, rgba(255,255,255,0.1))', opacity: 0.2, animationDelay: '150ms' }}
-                  />
-                  {rowIdx > 0 && (
-                    <>
-                      <div
-                        className="h-2 rounded-full w-1/2 animate-pulse"
-                        style={{ background: 'var(--theme-scene-text-muted, rgba(255,255,255,0.1))', opacity: 0.15, animationDelay: '300ms' }}
-                      />
-                      <div
-                        className="h-8 rounded-lg w-full animate-pulse mt-2"
-                        style={{ background: 'var(--theme-scene-text-muted, rgba(255,255,255,0.1))', opacity: 0.1, animationDelay: '450ms' }}
-                      />
-                    </>
-                  )}
+            .map((_, colIdx) => {
+              const delay = `${(rowIdx * colCount + colIdx) * 120}ms`;
+              return (
+                <div
+                  key={colIdx}
+                  className="rounded-xl animate-skeleton-bounce skeleton-shimmer-bg"
+                  style={{
+                    minHeight: rowIdx === 0 ? '60px' : '120px',
+                    animationDelay: delay,
+                  }}
+                >
+                  {/* Shimmer lines inside card */}
+                  <div className="p-4 space-y-3">
+                    <div
+                      className="h-3 rounded-full w-1/3"
+                      style={{ background: 'rgba(255,255,255,0.12)', animationDelay: delay }}
+                    />
+                    <div
+                      className="h-2 rounded-full w-2/3"
+                      style={{ background: 'rgba(255,255,255,0.08)', animationDelay: `calc(${delay} + 80ms)` }}
+                    />
+                    {rowIdx > 0 && (
+                      <>
+                        <div
+                          className="h-2 rounded-full w-1/2"
+                          style={{ background: 'rgba(255,255,255,0.06)', animationDelay: `calc(${delay} + 160ms)` }}
+                        />
+                        <div
+                          className="h-8 rounded-lg w-full mt-2"
+                          style={{ background: 'rgba(255,255,255,0.05)', animationDelay: `calc(${delay} + 240ms)` }}
+                        />
+                      </>
+                    )}
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
         </div>
       ))}
     </div>
