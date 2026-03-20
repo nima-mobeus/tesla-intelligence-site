@@ -96,18 +96,13 @@ export function ChatPanel() {
         pointerEvents: isChatPanelOpen ? 'auto' : 'none',
       }}
     >
-      {/* Top-fade overlay — pointer-events-none, no stacking context, so bubble backdropFilter still works */}
-      <div
-        className="absolute top-0 left-0 right-0 pointer-events-none z-10"
-        style={{
-          height: '96px',
-          background: 'linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.20) 60%, transparent 100%)',
-        }}
-      />
-
-      {/* Chat messages area — no mask so backdropFilter on bubbles works */}
+      {/* Chat messages area — mask-image fades bubbles under the top control bar */}
       <div
         className="chat-messages-container flex-1 px-4 pt-20 pb-4 flex flex-col gap-3 overflow-y-auto"
+        style={{
+          maskImage: 'linear-gradient(to bottom, transparent 0px, transparent 56px, black 92px)',
+          WebkitMaskImage: 'linear-gradient(to bottom, transparent 0px, transparent 56px, black 92px)',
+        }}
       >
         {transcripts.length === 0 && isConnected && (
           <div className="flex-1 flex items-center justify-center">
@@ -166,23 +161,23 @@ export function ChatPanel() {
                 }
               </div>
 
-              {/* Bubble */}
+              {/* Bubble — dark opaque backgrounds guarantee readability regardless of stacking context */}
               <div
                 className="chat-message-bubble max-w-[78%] sm:max-w-[72%] px-3.5 py-2.5 sm:px-4 sm:py-3 text-body leading-relaxed transition-all duration-300 rounded-2xl"
                 style={isUser ? {
-                  background: 'rgba(0, 180, 216, 0.18)',
-                  color: 'rgba(255, 255, 255, 0.95)',
-                  border: '1px solid rgba(0, 212, 245, 0.25)',
-                  boxShadow: 'none',
-                  backdropFilter: isChatPanelOpen ? 'blur(16px)' : 'none',
-                  WebkitBackdropFilter: isChatPanelOpen ? 'blur(16px)' : 'none',
+                  background: 'rgba(0, 65, 120, 0.82)',
+                  color: 'rgba(255, 255, 255, 0.97)',
+                  border: '1px solid rgba(0, 212, 245, 0.30)',
+                  boxShadow: '0 2px 16px rgba(0,0,0,0.25)',
+                  backdropFilter: isChatPanelOpen ? 'blur(20px)' : 'none',
+                  WebkitBackdropFilter: isChatPanelOpen ? 'blur(20px)' : 'none',
                 } : {
-                  background: 'rgba(255, 255, 255, 0.12)',
-                  color: 'rgba(255, 255, 255, 0.92)',
-                  border: '1px solid rgba(255,255,255,0.12)',
-                  boxShadow: 'none',
-                  backdropFilter: isChatPanelOpen ? 'blur(16px)' : 'none',
-                  WebkitBackdropFilter: isChatPanelOpen ? 'blur(16px)' : 'none',
+                  background: 'rgba(12, 18, 32, 0.84)',
+                  color: 'rgba(255, 255, 255, 0.95)',
+                  border: '1px solid rgba(255,255,255,0.10)',
+                  boxShadow: '0 2px 16px rgba(0,0,0,0.25)',
+                  backdropFilter: isChatPanelOpen ? 'blur(20px)' : 'none',
+                  WebkitBackdropFilter: isChatPanelOpen ? 'blur(20px)' : 'none',
                 }}
               >
                 {t.text}
