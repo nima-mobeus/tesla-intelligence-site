@@ -165,17 +165,17 @@ export function ChatPanel() {
               <div
                 className="chat-message-bubble max-w-[78%] sm:max-w-[72%] px-3.5 py-2.5 sm:px-4 sm:py-3 text-body leading-relaxed transition-all duration-300 rounded-2xl"
                 style={isUser ? {
-                  background: 'rgba(0, 65, 120, 0.82)',
-                  color: 'rgba(255, 255, 255, 0.97)',
-                  border: '1px solid rgba(0, 212, 245, 0.30)',
+                  background: 'rgba(235, 235, 235, 0.88)',
+                  color: 'rgba(10, 10, 10, 0.92)',
+                  border: '1px solid rgba(255,255,255,0.30)',
                   boxShadow: '0 2px 16px rgba(0,0,0,0.25)',
                   backdropFilter: isChatPanelOpen ? 'blur(20px)' : 'none',
                   WebkitBackdropFilter: isChatPanelOpen ? 'blur(20px)' : 'none',
                 } : {
-                  background: 'rgba(12, 18, 32, 0.84)',
-                  color: 'rgba(255, 255, 255, 0.95)',
-                  border: '1px solid rgba(255,255,255,0.10)',
-                  boxShadow: '0 2px 16px rgba(0,0,0,0.25)',
+                  background: 'rgba(18, 18, 18, 0.86)',
+                  color: 'rgba(235, 235, 235, 0.95)',
+                  border: '1px solid rgba(255,255,255,0.08)',
+                  boxShadow: '0 2px 16px rgba(0,0,0,0.30)',
                   backdropFilter: isChatPanelOpen ? 'blur(20px)' : 'none',
                   WebkitBackdropFilter: isChatPanelOpen ? 'blur(20px)' : 'none',
                 }}
