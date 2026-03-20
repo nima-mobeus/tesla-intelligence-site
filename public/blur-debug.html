@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+  body { margin: 0; background: url('https://picsum.photos/1200/800') center/cover; height: 100vh; font-family: sans-serif; }
+  .panel {
+    position: fixed; top: 0; right: 0;
+    width: 320px; height: 100vh;
+    z-index: 50;
+    display: flex; flex-direction: column;
+    gap: 10px; padding: 16px;
+    overflow-y: auto;
+    transition: right 0.5s, opacity 0.5s;
+  }
+  .label { color: lime; font: bold 11px monospace; margin: 0; }
+  /* Direct child — ToolCallIndicator style */
+  .direct {
+    background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 99px; padding: 12px 16px; color: white;
+    overflow: hidden; backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  }
+  /* Flex wrapper row — like chat bubble wrapper */
+  .row { display: flex; gap: 8px; align-items: flex-end; }
+  .avatar { width: 28px; height: 28px; border-radius: 50%; background: rgba(0,180,216,0.12); border: 1px solid rgba(0,212,245,0.35); flex-shrink: 0; }
+  .bubble {
+    background: rgba(255,255,255,0.10); border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 16px; padding: 10px 14px; color: white;
+    overflow: hidden; backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    max-width: 78%;
+  }
+  /* Opacity-only animation */
+  @keyframes fi { from { opacity: 0; } to { opacity: 1; } }
+  .anim { animation: fi 0.35s ease-out forwards; }
+  /* Transform animation (old approach) */
+  @keyframes fi2 { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
+  .anim2 { animation: fi2 0.35s ease-out forwards; }
+</style>
+</head>
+<body>
+<div class="panel">
+  <p class="label">1. DIRECT child (ToolCallIndicator) — should blur ✅</p>
+  <div class="direct">Direct child — blur?</div>
+
+  <p class="label">2. Inside plain flex row wrapper — blur?</p>
+  <div class="row">
+    <div class="avatar"></div>
+    <div class="bubble">Flex wrapper, no animation</div>
+  </div>
+
+  <p class="label">3. Flex row WITH opacity animation on wrapper</p>
+  <div class="row anim">
+    <div class="avatar"></div>
+    <div class="bubble">Opacity-anim wrapper</div>
+  </div>
+
+  <p class="label">4. Flex row WITH transform+opacity animation</p>
+  <div class="row anim2">
+    <div class="avatar"></div>
+    <div class="bubble">Transform-anim wrapper</div>
+  </div>
+
+  <p class="label">5. Blur on the ROW itself (no bubble bg)</p>
+  <div class="row" style="backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);background:rgba(255,255,255,0.07);border-radius:16px;padding:8px;overflow:hidden">
+    <div class="avatar"></div>
+    <div style="color:white;padding:4px 8px">Blur on row wrapper</div>
+  </div>
+
+  <p class="label">6. Bubble inside overflow-y:auto inner scroll</p>
+  <div style="max-height:100px;overflow-y:auto">
+    <div class="row">
+      <div class="avatar"></div>
+      <div class="bubble">Inside nested scroll</div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
