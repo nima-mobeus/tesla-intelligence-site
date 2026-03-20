@@ -157,23 +157,21 @@ export function ChatPanel() {
                 }
               </div>
 
-              {/* Bubble — card-glass treatment: transparent + blur through to video */}
+              {/* Bubble — same blur/bg/border as ToolCallIndicator */}
               <div
                 className="chat-message-bubble max-w-[78%] sm:max-w-[72%] px-3.5 py-2.5 sm:px-4 sm:py-3 text-body leading-relaxed transition-all duration-300 rounded-2xl"
                 style={isUser ? {
                   background: 'rgba(255, 255, 255, 0.10)',
                   color: 'rgba(255, 255, 255, 0.95)',
-                  border: '1px solid rgba(255, 255, 255, 0.12)',
-                  boxShadow: '0 4px 24px rgba(0,0,0,0.12)',
-                  backdropFilter: 'blur(6px)',
-                  WebkitBackdropFilter: 'blur(6px)',
+                  border: '1px solid rgba(255, 255, 255, 0.10)',
+                  backdropFilter: 'blur(8px)',
+                  WebkitBackdropFilter: 'blur(8px)',
                 } : {
                   background: 'rgba(255, 255, 255, 0.07)',
                   color: 'rgba(255, 255, 255, 0.90)',
-                  border: '1px solid rgba(255, 255, 255, 0.08)',
-                  boxShadow: '0 4px 24px rgba(0,0,0,0.12)',
-                  backdropFilter: 'blur(6px)',
-                  WebkitBackdropFilter: 'blur(6px)',
+                  border: '1px solid rgba(255, 255, 255, 0.10)',
+                  backdropFilter: 'blur(8px)',
+                  WebkitBackdropFilter: 'blur(8px)',
                 }}
               >
                 {t.text}
