@@ -157,25 +157,18 @@ export function ChatPanel() {
                 }
               </div>
 
-              {/* Bubble — overflow:hidden + translateZ forces own compositor layer so blur works inside overflow-y:auto */}
+              {/* Bubble — no backdrop-filter here; blur lives on .telelabor-panel (fixed, body-level stacking context)
+                   so it correctly composites against the background video. Bubbles only need semi-transparent bg. */}
               <div
-                className="chat-message-bubble max-w-[78%] sm:max-w-[72%] px-3.5 py-2.5 sm:px-4 sm:py-3 text-body leading-relaxed transition-all duration-300 rounded-2xl overflow-hidden"
+                className="chat-message-bubble max-w-[78%] sm:max-w-[72%] px-3.5 py-2.5 sm:px-4 sm:py-3 text-body leading-relaxed transition-all duration-300 rounded-2xl"
                 style={isUser ? {
-                  background: 'rgba(255, 255, 255, 0.10)',
+                  background: 'rgba(255, 255, 255, 0.12)',
                   color: 'rgba(255, 255, 255, 0.95)',
-                  border: '1px solid rgba(255, 255, 255, 0.10)',
-                  backdropFilter: 'blur(8px)',
-                  WebkitBackdropFilter: 'blur(8px)',
-                  transform: 'translateZ(0)',
-                  willChange: 'transform',
+                  border: '1px solid rgba(255, 255, 255, 0.15)',
                 } : {
-                  background: 'rgba(255, 255, 255, 0.07)',
+                  background: 'rgba(255, 255, 255, 0.08)',
                   color: 'rgba(255, 255, 255, 0.90)',
                   border: '1px solid rgba(255, 255, 255, 0.10)',
-                  backdropFilter: 'blur(8px)',
-                  WebkitBackdropFilter: 'blur(8px)',
-                  transform: 'translateZ(0)',
-                  willChange: 'transform',
                 }}
               >
                 {t.text}

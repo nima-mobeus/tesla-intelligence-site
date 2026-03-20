@@ -208,6 +208,17 @@ body {
   }
 }
 
+/* ── Telelabor Panel Blur ──
+   Blur lives HERE on the fixed panel (body-level stacking context),
+   not on individual bubbles inside overflow-y:auto containers.
+   Fixed elements composite directly against the page background,
+   so backdrop-filter reliably sees the video behind the panel. */
+.telelabor-panel {
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  background: rgba(5, 8, 14, 0.45);
+}
+
 /* ── Chat Messages Scroll ── */
 .chat-messages-container {
   overflow-y: auto;
