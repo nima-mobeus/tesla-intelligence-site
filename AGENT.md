@@ -12,7 +12,7 @@ This is a **client website** deployed on the Voice AI Platform. It has a persist
 - The **voice agent** (Python, runs server-side) controls the UI by calling `show_component(templateType, data)`
 - The **DynamicComponentRenderer** resolves `templateType` to a React component via the **component registry**
 - Components live in `src/components/tele-components/` and are auto-registered
-- The agent sends JSON data; the component renders it visually
+- The agent sends JSON data; the component renders it visually 
 
 ---
 
